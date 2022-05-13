@@ -1,6 +1,8 @@
 # DNL Frontend Challenge
 
-Hey 👋 Thanks for taking the time to do our coding challenge! 🙂
+Hey 👋 
+
+Thanks for taking the time to do our coding challenge! 🙂
 
 Start with cloning the project and setting it up. 💻
 The companies screen you see on `/companies` when you run the project is part of our product.
@@ -8,7 +10,7 @@ The companies screen you see on `/companies` when you run the project is part of
 In this step, the user can add companies for whom she wants to upload balance sheets at a later point in the app.
 She should be able to perform all CRUD actions on this screen.
 
-To make things easier for the challenge, you don't need to code the API connection and will only work with the Vuex store to achieve that. 🎉 
+🎉 To make things easier for the challenge, you don't need to code the API connection and will only work with the Vuex store to achieve that. 
 But we are nevertheless interested in what the implementation would look like.
 
 Since we have different customer requirements, the data a company consists of requires a dynamic form. This structure comes from the backend, and its elements are rendered dynamically. Have a look inside the store to see the type definitions. You can also find the companies store module there. It holds all the related companies' data inside the state that the backend created for you.
