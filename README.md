@@ -22,15 +22,3 @@ Since we have different customer requirements, the data a company consists of re
 1. Get the DynamicForm working with the provided data structure in the store
 2. Update the store according to the changes in the form, so the data is consistent
 3. Write the API documentation for the endpoints that you would need to connect the app to the backend
-
-## 💻 Project setup 
-
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
-npm run serve
-```
