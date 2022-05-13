@@ -17,7 +17,7 @@ Since we have different customer requirements, the data a company consists of re
 
 ℹ️ While you work on the implementation, the backend team would need to implement the real API endpoints based on what you suggest to them.
 
-## ✅ Tasks 
+#### ✅ Tasks 
 
 1. Get the DynamicForm working with the provided data structure in the store
 2. Update the store according to the changes in the form, so the data is consistent
