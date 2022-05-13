@@ -1,0 +1,147 @@
+{
+  "balance_sheet": {
+    "Aktiva": {
+      "Anlagevermögen": "+",
+      "Umlaufvermögen": "+",
+      "Aktive Rechnungsabgrenzungsposten": "+",
+      "Aktive latente Steuern": "+",
+      "Aktiver Unterschiedsbetrag aus der Vermögensverrechnung": "+",
+      "Nicht durch Eigenkapital gedeckter Fehlbetrag": "+",
+      "Sonstige Aktiva": "+"
+    },
+    "Anlagevermögen": {
+      "Immaterielle Vermögensgegenstände": "+",
+      "Sachanlagen": "+",
+      "Finanzanlagen": "+"
+    },
+    "Immaterielle Vermögensgegenstände": {
+      "Selbst geschaffene gewerbliche Schutzrechte und ähnliche Rechte und Werte": "+",
+      "entgeltlich erworbene Konzessionen, gewerbliche Schutzrechte und ähnliche Rechte und Werte sowie Lizenzen an solchen Rechten und Werten": "+",
+      "Geschäfts- oder Firmenwert": "+",
+      "geleistete Anzahlungen": "+",
+      "sonstige immaterielle Vermögensgegenstände": "+"
+    },
+    "Sachanlagen": {
+      "Grundstücke, grundstücksgleiche Rechte und Bauten einschließlich der Bauten auf fremden Grundstücken": "+",
+      "technische Anlagen und Maschinen": "+",
+      "andere Anlagen, Betriebs- und Geschäftsausstattung": "+",
+      "geleistete Anzahlungen und Anlagen im Bau": "+",
+      "sonstige Sachanlagen": "+"
+    },
+    "Finanzanlagen": {
+      "Anteile an verbundenen Unternehmen": "+",
+      "Ausleihungen an Gesellschafter": "+",
+      "Ausleihungen an verbundene Unternehmen": "+",
+      "Beteiligungen": "+",
+      "Ausleihungen an Unternehmen, mit denen ein Beteiligungsverhältnis besteht": "+",
+      "Wertpapiere des Anlagevermögens": "+",
+      "sonstige Ausleihungen": "+",
+      "sonstige Finanzanlagen": "+"
+    },
+    "Umlaufvermögen": {
+      "Vorräte": "+",
+      "Forderungen und sonstige Vermögensgegenstände": "+",
+      "Kassenbestand, Bundesbankguthaben, Guthaben bei Kreditinstituten und Schecks": "+",
+      "Wertpapiere des Umlaufvermögens": "+"
+    },
+    "Vorräte": {
+      "Roh-, Hilfs- und Betriebsstoffe": "+",
+      "unfertige Erzeugnisse, unfertige Leistungen": "+",
+      "fertige Erzeugnisse und Waren": "+",
+      "sonstige Vorräte": "+",
+      "geleistete Anzahlungen (Vorräte)": "+",
+      "erhaltene Anzahlungen auf Bestellungen (offen aktivisch abgegrenzt)": "+"
+    },
+    "Forderungen und sonstige Vermögensgegenstände": {
+      "Forderungen aus Lieferung und Leistung": "+",
+      "Forderungen gegen verbundene Unternehmen": "+",
+      "Forderungen gegen Unternehmen, mit denen ein Beteiligungsverhältnis besteht": "+",
+      "Forderungen gegen Gesellschafter": "+",
+      "Sonstige Vermögensgegenstände": "+"
+    },
+    "Passiva": {
+      "Eigenkapital": "+",
+      "Rückstellungen": "+",
+      "Verbindlichkeiten": "+",
+      "Passive Rechnungsabgrenzungsposten": "+",
+      "Passive latente Steuern": "+",
+      "Sonstige Sonderposten": "+"
+    },
+    "Eigenkapital": {
+      "Gezeichnetes Kapital": "+",
+      "Kapitalrücklage": "+",
+      "Gewinnrücklage": "+",
+      "Gewinnvortrag / Verlustvortrag": "+",
+      "Jahresüberschuss / -fehlbetrag": "+"
+    },
+    "Gewinnrücklage": {
+      "gesetzliche Rücklage": "+",
+      "Rücklage für Anteile an einem herrschenden oder mehrheitlich beteiligten Unternehmen": "+",
+      "satzungsmäßige Rücklagen": "+",
+      "andere Gewinnrücklagen": "+"
+    },
+    "Rückstellungen": {
+      "Rückstellungen für Pensionen und ähnliche Verpflichtungen": "+",
+      "Steuerrückstellungen": "+",
+      "sonstige Rückstellungen": "+"
+    },
+    "Verbindlichkeiten": {
+      "Anleihen": "+",
+      "Verbindlichkeiten gegenüber Kreditinstituten": "+",
+      "erhaltene Anzahlungen auf Bestellungen": "+",
+      "Verbindlichkeiten aus Lieferung und Leistung": "+",
+      "Verbindlichkeiten aus der Annahme gezogener Wechsel und der Ausstellung eigener Wechsel": "+",
+      "Verbindlichkeiten gegenüber Gesellschaftern": "+",
+      "Verbindlichkeiten gegenüber verbundenen Unternehmen": "+",
+      "Verbindlichkeiten gegenüber Unternehmen, mit denen ein Beteiligungsverhältnis besteht": "+",
+      "Sonstige Verbindlichkeiten": "+"
+    }
+  },
+  "income_statem": {
+    "Materialaufwand": {
+      "Aufwendungen für Roh-, Hilfs- und Betriebsstoffe und für bezogene Waren": "+",
+      "Aufwendungen für bezogene Leistungen": "+"
+    },
+    "Personalaufwand": {
+      "Löhne und Gehälter": "+",
+      "soziale Abgaben und Aufwendungen für Altersversorgung und für Unterstützung,": "+"
+    },
+    "Abschreibungen": {
+      "Abschreibungen auf immaterielle Vermögensgegenstände des Anlagevermögens und Sachanlagen": "+",
+      "Abschreibungen auf Vermögensgegenstände des Umlaufvermögens, soweit diese die in der Kapitalgesellschaft üblichen Abschreibungen überschreiten": "+"
+    },
+    "Ergebnis nach Steuern": {
+      "Umsatzerlöse": "+",
+      "Erhöhung oder Verminderung des Bestands an fertigen und unfertigen Erzeugnissen": "-",
+      "andere aktivierte Eigenleistungen": "-",
+      "sonstige betriebliche Erträge": "-",
+      "Materialaufwand": "-",
+      "Personalaufwand": "-",
+      "Abschreibungen": "-",
+      "sonstige betriebliche Aufwendungen": "-",
+      "Erträge aus Beteiligungen": "-",
+      "Erträge aus anderen Wertpapieren und Ausleihungen des Finanzanlagevermögens": "-",
+      "sonstige Zinsen und ähnliche Erträge": "-",
+      "Abschreibungen auf Finanzanlagen und auf Wertpapiere des Umlaufvermögens": "-",
+      "Zinsen und ähnliche Aufwendungen": "-",
+      "Steuern vom Einkommen und vom Ertrag": "-"
+    },
+    "Jahresüberschuss Jahresfehlbetrag": {
+      "Umsatzerlöse": "+",
+      "Erhöhung oder Verminderung des Bestands an fertigen und unfertigen Erzeugnissen": "-",
+      "andere aktivierte Eigenleistungen": "-",
+      "sonstige betriebliche Erträge": "-",
+      "Materialaufwand": "-",
+      "Personalaufwand": "-",
+      "Abschreibungen": "-",
+      "sonstige betriebliche Aufwendungen": "-",
+      "Erträge aus Beteiligungen": "-",
+      "Erträge aus anderen Wertpapieren und Ausleihungen des Finanzanlagevermögens": "-",
+      "sonstige Zinsen und ähnliche Erträge": "-",
+      "Abschreibungen auf Finanzanlagen und auf Wertpapiere des Umlaufvermögens": "-",
+      "Zinsen und ähnliche Aufwendungen": "-",
+      "Steuern vom Einkommen und vom Ertrag": "-",
+      "sonstige Steuern": "-"
+    }
+  }
+}
