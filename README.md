@@ -1,6 +1,4 @@
-# DNL Frontend Challenge
-
-Hey 👋 
+# Hey 👋 
 
 Thanks for taking the time to do our coding challenge! 🙂
 
