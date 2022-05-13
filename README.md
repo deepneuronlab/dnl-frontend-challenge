@@ -1,21 +1,21 @@
 # DNL Frontend Challenge
 
-Hey 👋, thanks for taking the time to do our coding challenge. 
+Hey 👋 Thanks for taking the time to do our coding challenge! 🙂
 
-Start with cloning the project and setting it up.
-The Companies screen you see on '/companies' when you run the project is part of our product.
+Start with cloning the project and setting it up. 💻
+The companies screen you see on `/companies` when you run the project is part of our product.
 
-In this step, the user can add companies for whom he wants to upload balance sheets at a later point in the app.
-He should be able to perform all CRUD actions on this screen.
+In this step, the user can add companies for whom she wants to upload balance sheets at a later point in the app.
+She should be able to perform all CRUD actions on this screen.
 
-To make things easier for the challenge, you don't need to code the API connection and will only work with the Vuex store to achieve that. But we are nevertheless interested in what the implementation would look like.
+To make things easier for the challenge, you don't need to code the API connection and will only work with the Vuex store to achieve that. 🎉 
+But we are nevertheless interested in what the implementation would look like.
 
-Since we have different customer requirements, the data a company consists of requires a dynamic form. This structure comes from the Backend, and its elements are rendered dynamically. Have a look inside the store to see the type definitions. You can also find the companies store module there. It holds all the related companies' data inside the state that the backend created for you.
+Since we have different customer requirements, the data a company consists of requires a dynamic form. This structure comes from the backend, and its elements are rendered dynamically. Have a look inside the store to see the type definitions. You can also find the companies store module there. It holds all the related companies' data inside the state that the backend created for you.
 
-A coworker already started with the challenge but didn't finish it; please complete it for him and create a Pull Request.
+A coworker already started with the challenge but didn't finish it; please complete it for him and create a Pull Request. ✅
 
-While you work on the implementation, the backend team would need to implement the real API endpoints based on what you suggest to them.
-
+ℹ️ While you work on the implementation, the backend team would need to implement the real API endpoints based on what you suggest to them.
 
 ### Tasks
 
