@@ -38,22 +38,33 @@ import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { mapGetters } from 'vuex';
+import { Company, CompanyForm, CompanyTableHeaderItem } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
-  components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
+  components: {
+    AppBar,
+    MainContainer,
+    DataTableCompanies,
+    BtnMain,
+    FormDialog,
+    DeleteDialog,
+  },
   data: () => ({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    formStructure: [],
   }),
   computed: {
-    ...mapGetters({
-      tableItems: 'companies/companies',
-      tableHeaders: 'companies/companyTableHeaders',
-    }),
+    tableItems(): Company[] {
+      return this.$store.getters.companies.companies;
+    },
+    tableHeaders(): CompanyTableHeaderItem[] {
+      return this.$store.getters.companies.companyTableHeaders;
+    },
+    formStructure(): CompanyForm[] {
+      return this.$store.getters.companies.companyForm;
+    },
   },
   methods: {
     closeAddCompanyDialogVisible() {
