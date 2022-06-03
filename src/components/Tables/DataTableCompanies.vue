@@ -28,19 +28,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import BtnTableAction from '@/components/UI/BtnTableAction.vue';
+import { Company, CompanyTableHeaderItem } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'DataTableCompanies',
   components: { BtnTableAction },
   props: {
     tableHeaders: {
-      type: Array,
+      type: Array as PropType<CompanyTableHeaderItem[]>,
       required: true,
     },
     tableItems: {
-      type: Array,
+      type: Array as PropType<Company[]>,
       required: true,
     },
   },
