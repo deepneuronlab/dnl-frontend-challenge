@@ -19,15 +19,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { FormElements } from '@/store/form-types';
 
 export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
     formStructure: {
-      type: Array,
+      type: Array as PropType<FormElements[]>,
       required: true,
     },
     isVisible: {
