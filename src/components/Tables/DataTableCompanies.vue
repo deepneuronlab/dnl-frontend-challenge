@@ -46,7 +46,7 @@ export default Vue.extend({
     },
   },
   computed: {
-    allTableHeaders() {
+    allTableHeaders(): CompanyTableHeaderItem[] {
       const newTableHeaders = [
         ...this.tableHeaders,
         { text: 'Actions', value: 'actions', sortable: false },
