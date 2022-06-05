@@ -6,7 +6,7 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container><DynamicForm :formStructure="formStructure" /></v-container>
       </v-card-text>
 
       <v-card-actions>

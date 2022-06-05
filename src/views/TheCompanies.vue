@@ -57,13 +57,13 @@ export default Vue.extend({
   }),
   computed: {
     tableItems(): Company[] {
-      return this.$store.getters.companies.companies;
+      return this.$store.getters['companies/companies'];
     },
     tableHeaders(): CompanyTableHeaderItem[] {
-      return this.$store.getters.companies.companyTableHeaders;
+      return this.$store.getters['companies/companyTableHeaders'];
     },
     formStructure(): CompanyForm[] {
-      return this.$store.getters.companies.companyForm;
+      return this.$store.getters['companies/companyForm'];
     },
   },
   methods: {
