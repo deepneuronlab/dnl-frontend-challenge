@@ -7,12 +7,12 @@ Create a new company
 **Method** : `POST`
 
 **Data constraints**
+Data are validated against the defined dynamic schema of the company.
 
+Example:
 
 ```json
 {
-   
-   
       "companyName": "Company X", // required | name of the company
       "language": "de", // required | available options: de, en
       "2020": "good", // required | available options: "good", "bad"

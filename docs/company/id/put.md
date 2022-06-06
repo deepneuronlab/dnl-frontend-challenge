@@ -7,8 +7,9 @@ Edit existing company by id
 **Method** : `PUT`
 
 **Data constraints**
+Data are validated against the defined dynamic schema of the company.
 
-
+Example:
 ```json
 {
    

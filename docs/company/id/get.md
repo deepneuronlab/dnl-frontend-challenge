@@ -13,6 +13,8 @@ Get company detail by id
 
 **Content example**
 
+Based on company data schema being set.
+
 ```json
 {
       "companyId": "id1",

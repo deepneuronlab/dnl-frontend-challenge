@@ -12,6 +12,7 @@ Delete a company by id
 **Code** : `200 OK`
 
 **Content example**
+Based on company data schema being set.
 
 ```json
 {

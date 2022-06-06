@@ -18,6 +18,8 @@ Show all companies
 
 **Code** : `200 OK`
 
+Based on company data schema being set.
+
 **Content** : 
 ```json
 {
