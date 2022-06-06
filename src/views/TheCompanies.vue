@@ -88,7 +88,6 @@ export default Vue.extend({
       this.isAddCompanyDialogVisible = false;
     },
     deleteCompany() {
-      console.log(this.deleteCompanyId);
       this.$store.dispatch('companies/deleteCompany', this.deleteCompanyId);
       this.isDeleteDialogVisible = false;
     },
