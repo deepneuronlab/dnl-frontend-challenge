@@ -22,7 +22,7 @@ export interface CompanyTableHeaderItem {
 export type CompanyForm = FormElements[];
 
 export interface CompanyUpdatePayload {
-  index: number;
+  companyId: string;
   updatedCompany: Company
 }
 

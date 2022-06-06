@@ -10,8 +10,8 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
     updateCompany({ commit }, payload: CompanyUpdatePayload) {
         commit('updateCompany', payload)
     },
-    deleteCompany({ commit }, index) {
-        commit('deleteCompany', index)
+    deleteCompany({ commit }, companyId) {
+        commit('deleteCompany', companyId)
     }
 };
 

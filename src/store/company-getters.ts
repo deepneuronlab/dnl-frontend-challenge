@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { CompaniesState } from './companies-types';
+import { CompaniesState, Company } from './companies-types';
 import { BaseState } from './types';
 
 const companiesGetters: GetterTree<CompaniesState, BaseState> = {
@@ -12,6 +12,11 @@ const companiesGetters: GetterTree<CompaniesState, BaseState> = {
   companyForm(state) {
     return state.companyForm;
   },
+  companyById(state) {
+    return (companyId: string) => {
+      return state.companies?.find(o => o.id === companyId)
+    }
+  }
 };
 
 export default companiesGetters;
