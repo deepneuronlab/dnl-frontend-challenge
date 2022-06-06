@@ -13,13 +13,13 @@
             text="Edit"
             icon="mdi-pencil"
             :disabled="false"
-            @clickAction="$emit('editItem', item)"
+            @clickAction="$emit('editItem', item.companyId)"
           />
           <BtnTableAction
             text="Delete"
             icon="mdi-delete"
             :disabled="false"
-            @clickAction="$emit('deleteItem', item)"
+            @clickAction="$emit('deleteItem', item.companyId)"
           />
         </template>
       </v-data-table>
