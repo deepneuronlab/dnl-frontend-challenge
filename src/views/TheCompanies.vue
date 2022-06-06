@@ -11,7 +11,7 @@
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
         @editItem="setEditCompanyId"
-        @deleteITem="setDeleteCompanyId"
+        @deleteItem="setDeleteCompanyId"
       />
       <FormDialog
         v-if="formStructure"
@@ -28,7 +28,11 @@
         :companyId="editCompanyId"
         @close="isEditCompanyDialogVisible = false"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog
+        :isVisible="isDeleteDialogVisible"
+        @close="isDeleteDialogVisible = false"
+        @delete="deleteCompany"
+      />
     </MainContainer>
   </div>
 </template>
@@ -78,9 +82,15 @@ export default Vue.extend({
     },
     setDeleteCompanyId(companyId: string) {
       this.deleteCompanyId = companyId;
+      this.isDeleteDialogVisible = true;
     },
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    deleteCompany() {
+      console.log(this.deleteCompanyId);
+      this.$store.dispatch('companies/deleteCompany', this.deleteCompanyId);
+      this.isDeleteDialogVisible = false;
     },
   },
 });

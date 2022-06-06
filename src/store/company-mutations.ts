@@ -18,7 +18,7 @@ const companiesMutations: MutationTree<CompaniesState> = {
     },
     deleteCompany(state: CompaniesState, companyId) {
         const index = state.companies?.findIndex(company => {
-            return company.id == companyId
+            return company.companyId == companyId
         }) as number
 
         if (index >= 0) {
