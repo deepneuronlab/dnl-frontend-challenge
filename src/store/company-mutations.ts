@@ -8,20 +8,20 @@ const companiesMutations: MutationTree<CompaniesState> = {
     updateCompany(state: CompaniesState, payload: CompanyUpdatePayload) {
 
         const index = state.companies?.findIndex(company => {
-            return company.id == payload.companyId
-        })
+            return company.companyId == payload.companyId
+        }) as number
 
-        if (index) {
-            state.companies?.splice(index, 1, payload.updatedCompany)
+        if (index >= 0) {
+            state.companies?.splice(index, 1, { ...payload.updatedCompany })
         }
 
     },
     deleteCompany(state: CompaniesState, companyId) {
         const index = state.companies?.findIndex(company => {
             return company.id == companyId
-        })
+        }) as number
 
-        if (index) {
+        if (index >= 0) {
             state.companies?.splice(index, 1)
         }
     }

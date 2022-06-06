@@ -14,7 +14,7 @@ const companiesGetters: GetterTree<CompaniesState, BaseState> = {
   },
   companyById(state) {
     return (companyId: string) => {
-      return state.companies?.find(o => o.id === companyId)
+      return state.companies?.find(o => o.companyId === companyId)
     }
   }
 };
