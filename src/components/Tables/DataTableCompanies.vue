@@ -49,7 +49,7 @@ export default Vue.extend({
     allTableHeaders(): CompanyTableHeaderItem[] {
       const newTableHeaders = [
         ...this.tableHeaders,
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Actions', value: 'actions', sortable: false, align: 'right' },
       ];
       return newTableHeaders;
     },
