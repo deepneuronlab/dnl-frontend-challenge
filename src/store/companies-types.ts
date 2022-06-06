@@ -23,6 +23,5 @@ export type CompanyForm = FormElements[];
 
 export interface CompanyUpdatePayload {
   companyId: string;
-  updatedCompany: Company
+  updatedCompany: Company;
 }
-

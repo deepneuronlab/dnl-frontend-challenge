@@ -61,7 +61,7 @@ export default Vue.extend({
   },
   watch: {
     value: {
-      handler: function (newVal) {
+      handler: function(newVal) {
         this.formData = newVal;
       },
       immediate: true,
@@ -77,7 +77,7 @@ export default Vue.extend({
     return {
       formData: {} as Company,
       rules: {
-        required: (requiredConfig: boolean) => (value: any) => {
+        required: (requiredConfig: boolean) => (value: string | number | null) => {
           if (requiredConfig) {
             return (!!value && requiredConfig) || 'This field is required';
           } else {

@@ -67,10 +67,10 @@ export default Vue.extend({
     };
   },
   watch: {
-    companyId: function (newVal) {
+    companyId: function(newVal) {
       this.formData = { ...this.getCompanyById(newVal) };
     },
-    isVisible: function (newVal) {
+    isVisible: function(newVal) {
       if (newVal) {
         this.$nextTick(() => {
           ((this.$refs.dynamicForm as Vue).$refs.form as VForm).resetValidation();
