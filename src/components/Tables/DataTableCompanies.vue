@@ -22,6 +22,13 @@
             @clickAction="$emit('deleteItem', item.companyId)"
           />
         </template>
+
+        <template
+          v-for="(header, headerIndex) in tableHeaders"
+          v-slot:[`item.${header.value}`]="slotScope"
+        >
+          <p :key="`header-${headerIndex}`">{{ slotScope.item[header.value] || '-' }}</p>
+        </template>
       </v-data-table>
     </v-layout>
   </v-container>
