@@ -48,8 +48,8 @@ export default Vue.extend({
       type: String,
       required: true,
     },
-    index: {
-      type: Number,
+    companyId: {
+      type: String,
       required: false,
     },
   },
@@ -58,10 +58,26 @@ export default Vue.extend({
       formData: {} as Company,
     };
   },
+  mounted() {
+    if (this.companyId) {
+      this.formData = this.getCompanyById(this.companyId);
+    }
+  },
   methods: {
+    getCompanyById(id: string) {
+      return this.$store.getters['companies/companyByIndex'](id);
+    },
     save(): void {
       const isValid = ((this.$refs.dynamicForm as Vue).$refs.form as VForm).validate();
       if (isValid) {
+        if (this.companyId) {
+          this.$store.dispatch('companies/updateCompany', {
+            companyId: this.companyId,
+            updatedCompany: this.formData,
+          });
+        } else {
+          this.$store.dispatch('companies/addCompany', this.formData);
+        }
       }
     },
   },
