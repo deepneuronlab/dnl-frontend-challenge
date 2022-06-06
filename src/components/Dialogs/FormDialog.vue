@@ -1,5 +1,11 @@
 <template>
-  <v-dialog v-model="isVisible" @click:outside="$emit('close')" max-width="500px">
+  <v-dialog
+    :value="isVisible"
+    @keydown.esc="$emit('close')"
+    @keydown.enter="save()"
+    @click:outside="$emit('close')"
+    max-width="500px"
+  >
     <v-card>
       <v-card-title>
         <span class="headline">{{ title }}</span>
@@ -14,7 +20,9 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" text @click="save()">
+          {{ companyId ? 'Update' : 'Save' }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -58,14 +66,21 @@ export default Vue.extend({
       formData: {} as Company,
     };
   },
-  mounted() {
-    if (this.companyId) {
-      this.formData = this.getCompanyById(this.companyId);
-    }
+  watch: {
+    companyId: function (newVal) {
+      this.formData = { ...this.getCompanyById(newVal) };
+    },
+    isVisible: function (newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          ((this.$refs.dynamicForm as Vue).$refs.form as VForm).resetValidation();
+        });
+      }
+    },
   },
   methods: {
     getCompanyById(id: string) {
-      return this.$store.getters['companies/companyByIndex'](id);
+      return this.$store.getters['companies/companyById'](id);
     },
     save(): void {
       const isValid = ((this.$refs.dynamicForm as Vue).$refs.form as VForm).validate();
@@ -76,9 +91,15 @@ export default Vue.extend({
             updatedCompany: this.formData,
           });
         } else {
-          this.$store.dispatch('companies/addCompany', this.formData);
+          this.$store.dispatch('companies/addCompany', {
+            ...this.formData,
+            companyId: (Math.random() + 1).toString(36).substring(7),
+          });
+          ((this.$refs.dynamicForm as Vue).$refs.form as VForm).reset();
         }
       }
+
+      this.$emit('close');
     },
   },
 });

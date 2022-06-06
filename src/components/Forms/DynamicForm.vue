@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" class="dynamic-form" lazy-validation>
+  <v-form ref="form" class="dynamic-form">
     <v-container fluid>
       <div
         v-for="(dynamicInputField, fieldIndex) in formStructure"
@@ -11,6 +11,8 @@
           :label="dynamicInputField.label"
           :placeholder="dynamicInputField.placeholder"
           :rules="[rules.required(dynamicInputField.required)]"
+          @focus="$event.target.select()"
+          autofocus
         ></v-text-field>
         <v-select
           v-if="dynamicInputField.type == 'selectField'"
@@ -34,7 +36,6 @@
           >
           </v-radio>
         </v-radio-group>
-        <button type="submit">Submit</button>
       </div>
     </v-container>
   </v-form>
@@ -59,6 +60,12 @@ export default Vue.extend({
     },
   },
   watch: {
+    value: {
+      handler: function (newVal) {
+        this.formData = newVal;
+      },
+      immediate: true,
+    },
     formData: {
       handler(newFormData) {
         this.$emit('input', newFormData);
