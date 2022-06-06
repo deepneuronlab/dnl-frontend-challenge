@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="isFormValid" class="dynamic-form">
+  <v-form ref="form" class="dynamic-form" lazy-validation>
     <v-container fluid>
       <div
         v-for="(dynamicInputField, fieldIndex) in formStructure"
@@ -7,10 +7,10 @@
       >
         <v-text-field
           v-if="dynamicInputField.type == 'textField'"
-          :v-model="formData[dynamicInputField.key]"
+          v-model="formData[dynamicInputField.key]"
           :label="dynamicInputField.label"
           :placeholder="dynamicInputField.placeholder"
-          :required="dynamicInputField.required"
+          :rules="[rules.required(dynamicInputField.required)]"
         ></v-text-field>
         <v-select
           v-if="dynamicInputField.type == 'selectField'"
@@ -18,13 +18,13 @@
           :items="dynamicInputField.items"
           :label="dynamicInputField.label"
           :placeholder="dynamicInputField.placeholder"
-          :required="dynamicInputField.required"
+          :rules="[rules.required(dynamicInputField.required)]"
         ></v-select>
         <v-radio-group
           v-if="dynamicInputField.type == 'radioGroup'"
           :label="dynamicInputField.label"
           v-model="formData[dynamicInputField.key]"
-          :required="dynamicInputField.required"
+          :rules="[rules.required(dynamicInputField.required)]"
         >
           <v-radio
             v-for="(option, radioOptionIndex) in dynamicInputField.items"
@@ -34,6 +34,7 @@
           >
           </v-radio>
         </v-radio-group>
+        <button type="submit">Submit</button>
       </div>
     </v-container>
   </v-form>
@@ -52,11 +53,31 @@ export default Vue.extend({
       type: Array as PropType<FormElements[]>,
       required: true,
     },
+    value: {
+      type: Object as PropType<Company>,
+      required: true,
+    },
+  },
+  watch: {
+    formData: {
+      handler(newFormData) {
+        this.$emit('input', newFormData);
+      },
+      deep: true,
+    },
   },
   data() {
     return {
-      isFormValid: false,
       formData: {} as Company,
+      rules: {
+        required: (requiredConfig: boolean) => (value: any) => {
+          if (requiredConfig) {
+            return (!!value && requiredConfig) || 'This field is required';
+          } else {
+            return true;
+          }
+        },
+      },
     };
   },
 });

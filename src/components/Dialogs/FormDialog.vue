@@ -6,7 +6,9 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm :formStructure="formStructure" /></v-container>
+        <v-container
+          ><DynamicForm ref="dynamicForm" :formStructure="formStructure" v-model="formData"
+        /></v-container>
       </v-card-text>
 
       <v-card-actions>
@@ -22,6 +24,13 @@
 import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 import { FormElements } from '@/store/form-types';
+import { Company } from '@/store/companies-types';
+
+type VForm = Vue & {
+  validate: () => boolean;
+  resetValidation: () => boolean;
+  reset: () => void;
+};
 
 export default Vue.extend({
   name: 'FormDialog',
@@ -39,11 +48,23 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    index: {
+      type: Number,
+      required: false,
+    },
   },
   data() {
-    return {};
+    return {
+      formData: {} as Company,
+    };
   },
-  methods: {},
+  methods: {
+    save(): void {
+      const isValid = ((this.$refs.dynamicForm as Vue).$refs.form as VForm).validate();
+      if (isValid) {
+      }
+    },
+  },
 });
 </script>
 
