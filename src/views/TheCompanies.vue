@@ -11,6 +11,7 @@
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
         @deleteItem="setCompanyToDelete"
+        @editItem="editCompany"
       />
       <FormDialog
         v-if="formStructure"
@@ -24,6 +25,7 @@
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
+        :companyId="selectedCompanyId"
         @close="isEditCompanyDialogVisible = false"
       />
       <DeleteDialog
@@ -54,13 +56,13 @@ export default Vue.extend({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    formStructure: [],
-    companyToDeleteId: null as string | null,
+    selectedCompanyId: null as string | null,
   }),
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      formStructure: 'companies/companyForm',
     }),
   },
   methods: {
@@ -68,12 +70,16 @@ export default Vue.extend({
       this.isAddCompanyDialogVisible = false;
     },
     setCompanyToDelete(company: Company) {
-      this.companyToDeleteId = company.companyId;
+      this.selectedCompanyId = company.companyId;
       this.isDeleteDialogVisible = true;
     },
     deleteCompany() {
-      this.$store.dispatch(`companies/${ACTIONS.DELETE_COMPANY}`, this.companyToDeleteId);
+      this.$store.dispatch(`companies/${ACTIONS.DELETE_COMPANY}`, this.selectedCompanyId);
       this.isDeleteDialogVisible = false;
+    },
+    editCompany(company: Company) {
+      this.selectedCompanyId = company.companyId;
+      this.isEditCompanyDialogVisible = true;
     },
   },
 });
