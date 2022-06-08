@@ -21,3 +21,7 @@ export interface CompanyTableHeaderItem {
 }
 export type CompanyForm = FormElements[];
 
+export interface CompanyUpdatePayload {
+  companyId: string;
+  company: Company;
+}
