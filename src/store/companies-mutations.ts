@@ -21,7 +21,6 @@ const companiesMutations: MutationTree<CompaniesState> = {
 
   deleteCompany(state: CompaniesState, companyId) {
     const { companies } = state;
-
     const index = companies?.findIndex(company => {
       return company.companyId == companyId;
     }) as number;

@@ -10,6 +10,7 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @deleteItem="setCompanyToDelete"
       />
       <FormDialog
         v-if="formStructure"
@@ -25,7 +26,11 @@
         :formStructure="formStructure"
         @close="isEditCompanyDialogVisible = false"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog
+        :isVisible="isDeleteDialogVisible"
+        @delete="deleteCompany"
+        @close="isDeleteDialogVisible = false"
+      />
     </MainContainer>
   </div>
 </template>
@@ -39,6 +44,8 @@ import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapGetters } from 'vuex';
+import { ACTIONS } from '../store/constants';
+import { Company } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
@@ -48,6 +55,7 @@ export default Vue.extend({
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
     formStructure: [],
+    companyToDeleteId: null as string | null,
   }),
   computed: {
     ...mapGetters({
@@ -58,6 +66,14 @@ export default Vue.extend({
   methods: {
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    setCompanyToDelete(company: Company) {
+      this.companyToDeleteId = company.companyId;
+      this.isDeleteDialogVisible = true;
+    },
+    deleteCompany() {
+      this.$store.dispatch(`companies/${ACTIONS.DELETE_COMPANY}`, this.companyToDeleteId);
+      this.isDeleteDialogVisible = false;
     },
   },
 });
