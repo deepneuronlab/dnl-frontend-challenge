@@ -6,7 +6,9 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm ref="dynamicForm" v-model="formData" :formStructure="formStructure" />
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
@@ -19,15 +21,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { FormElements } from '@/store/form-types';
+import { Company } from '@/store/companies-types';
+import { ACTIONS } from '../../store/constants';
 
 export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
     formStructure: {
-      type: Array,
+      type: Array as PropType<FormElements[]>,
       required: true,
     },
     isVisible: {
@@ -38,11 +43,65 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    companyId: {
+      type: String,
+      required: false,
+    },
+  },
+  watch: {
+    companyId: function(newVal) {
+      this.formData = { ...this.getCompanyById(newVal) };
+    },
+    isVisible: function(newVal) {
+      if (newVal) {
+        this.$nextTick(() => {
+          ((this.$refs.dynamicForm as Vue).$refs.vform as Vue & {
+            resetValidation: () => boolean;
+          }).resetValidation();
+        });
+      }
+    },
   },
   data() {
-    return {};
+    return {
+      formData: {} as Company,
+    };
   },
-  methods: {},
+  methods: {
+    genrateId: (len: number): string => {
+      const hex = '0123456789ABCDEF';
+      let output = '';
+      for (let i = 0; i < len; ++i) {
+        output += hex.charAt(Math.floor(Math.random() * hex.length));
+      }
+      return output;
+    },
+    getCompanyById(id: string) {
+      return this.$store.getters['companies/companyById'](id);
+    },
+    save(): void {
+      const isValid = ((this.$refs.dynamicForm as Vue).$refs.vform as Vue & {
+        validate: () => boolean;
+      }).validate();
+      if (isValid) {
+        if (this.companyId) {
+          this.$store.dispatch(`companies/${ACTIONS.UPDATE_COMPANY}`, {
+            companyId: this.companyId,
+            company: this.formData,
+          });
+        } else {
+          this.$store.dispatch(`companies/${ACTIONS.ADD_COMPANY}`, {
+            ...this.formData,
+            companyId: this.genrateId(8),
+          });
+          ((this.$refs.dynamicForm as Vue).$refs.vform as Vue & {
+            reset: () => boolean;
+          }).reset();
+        }
+      }
+      this.$emit('close');
+    },
+  },
 });
 </script>
 

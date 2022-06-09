@@ -10,6 +10,8 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @deleteItem="setCompanyToDelete"
+        @editItem="editCompany"
       />
       <FormDialog
         v-if="formStructure"
@@ -23,9 +25,14 @@
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
+        :companyId="selectedCompanyId"
         @close="isEditCompanyDialogVisible = false"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog
+        :isVisible="isDeleteDialogVisible"
+        @delete="deleteCompany"
+        @close="isDeleteDialogVisible = false"
+      />
     </MainContainer>
   </div>
 </template>
@@ -39,6 +46,8 @@ import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapGetters } from 'vuex';
+import { ACTIONS } from '../store/constants';
+import { Company } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
@@ -47,17 +56,30 @@ export default Vue.extend({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    formStructure: [],
+    selectedCompanyId: null as string | null,
   }),
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      formStructure: 'companies/companyForm',
     }),
   },
   methods: {
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    setCompanyToDelete(company: Company) {
+      this.selectedCompanyId = company.companyId;
+      this.isDeleteDialogVisible = true;
+    },
+    deleteCompany() {
+      this.$store.dispatch(`companies/${ACTIONS.DELETE_COMPANY}`, this.selectedCompanyId);
+      this.isDeleteDialogVisible = false;
+    },
+    editCompany(company: Company) {
+      this.selectedCompanyId = company.companyId;
+      this.isEditCompanyDialogVisible = true;
     },
   },
 });
