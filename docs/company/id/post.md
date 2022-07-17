@@ -11,7 +11,7 @@ Data are validated against the defined dynamic schema of the company.
 
 Example:
 
-```json
+```json in Post body
 {
       "companyName": "Company X", // required | name of the company
       "language": "de", // required | available options: de, en
@@ -21,12 +21,13 @@ Example:
 
 ## Success Response
 
-**Code** : `201 CREATED`
+**Code** : `200 CREATED`
 
 **Content example**
 
 ```json
 {
+    "data":{
       "companyId": "id1",
       "className": "company-item",
       "companyName": "Company X",
@@ -34,5 +35,8 @@ Example:
       "updatedAt": "string",
       "language": "de",
       "2020": "good",
+      },
+    "error":[],
+    "status": 200
 }
 ```

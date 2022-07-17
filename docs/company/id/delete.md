@@ -16,12 +16,29 @@ Based on company data schema being set.
 
 ```json
 {
-      "companyId": "id1",
-      "className": "company-item",
-      "companyName": "Company X",
-      "createdAt": "string",
-      "updatedAt": "string",
-      "language": "de",
-      "2020": "good",
+      "data": {
+            "message": "Company Deleted Successfully"
+      },
+      "error": [],
+      "status": 200
+}
+
+```
+
+
+## Failure Response
+
+**Code** : `404`
+
+
+**Content example**
+
+```json
+{
+    "data":{},
+    "error":[{
+      "message": "Could not delete. Company Not Found"
+    }],
+    "status": 404
 }
 ```

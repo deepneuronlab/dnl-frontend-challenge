@@ -27,6 +27,7 @@ Example:
 
 ```json
 {
+    "data":{
       "companyId": "id1",
       "className": "company-item",
       "companyName": "Company X",
@@ -34,5 +35,8 @@ Example:
       "updatedAt": "string",
       "language": "de",
       "2020": "good",
+      },
+    "error":[],
+    "status": 200
 }
 ```
