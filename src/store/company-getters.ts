@@ -9,6 +9,14 @@ const companiesGetters: GetterTree<CompaniesState, BaseState> = {
   companyTableHeaders(state) {
     return state.companyTableHeaders;
   },
+  companyForm(state) {
+    return state.companyForm;
+  },
+  companyById(state) {
+    return (companyId: string) => {
+      return state.companies?.find(o => o.companyId === companyId);
+    };
+  },
 };
 
 export default companiesGetters;

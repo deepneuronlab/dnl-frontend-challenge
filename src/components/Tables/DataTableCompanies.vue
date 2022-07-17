@@ -13,14 +13,20 @@
             text="Edit"
             icon="mdi-pencil"
             :disabled="false"
-            @clickAction="$emit('editItem', item)"
+            @clickAction="$emit('editItem', item.companyId)"
           />
           <BtnTableAction
             text="Delete"
             icon="mdi-delete"
             :disabled="false"
-            @clickAction="$emit('deleteItem', item)"
+            @clickAction="$emit('deleteItem', item.companyId)"
           />
+        </template>
+        <template
+          v-for="(header, headerIndex) in tableHeaders"
+          v-slot:[`item.${header.value}`]="slotScope"
+        >
+          <p :key="`header-${headerIndex}`">{{ slotScope.item[header.value] || '-' }}</p>
         </template>
       </v-data-table>
     </v-layout>
@@ -28,27 +34,28 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import BtnTableAction from '@/components/UI/BtnTableAction.vue';
+import { Company, CompanyTableHeaderItem } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'DataTableCompanies',
   components: { BtnTableAction },
   props: {
     tableHeaders: {
-      type: Array,
+      type: Array as PropType<CompanyTableHeaderItem[]>,
       required: true,
     },
     tableItems: {
-      type: Array,
+      type: Array as PropType<Company[]>,
       required: true,
     },
   },
   computed: {
-    allTableHeaders() {
+    allTableHeaders(): CompanyTableHeaderItem[] {
       const newTableHeaders = [
         ...this.tableHeaders,
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Actions', value: 'actions', sortable: false, align: 'right' },
       ];
       return newTableHeaders;
     },
