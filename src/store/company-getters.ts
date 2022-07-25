@@ -9,6 +9,9 @@ const companiesGetters: GetterTree<CompaniesState, BaseState> = {
   companyTableHeaders(state) {
     return state.companyTableHeaders;
   },
+  companyForm(state) {
+    return state.companyForm;
+  },
 };
 
 export default companiesGetters;
