@@ -6,7 +6,9 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm :formStructure="formStructure" @input="input" ref="dynamicForm" />
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
@@ -19,15 +21,25 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
+import { FormElements } from '@/store/form-types';
+import { Company } from '@/store/companies-types';
+import { required } from 'vuelidate/lib/validators';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 
 export default Vue.extend({
   name: 'FormDialog',
+  validations() {
+    return {
+      formData: {
+        companyName: { required },
+      },
+    };
+  },
   components: { DynamicForm },
   props: {
     formStructure: {
-      type: Array,
+      type: Array as PropType<FormElements[]>,
       required: true,
     },
     isVisible: {
@@ -38,11 +50,37 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    companyToEditId: {
+      type: String,
+    },
   },
   data() {
-    return {};
+    return {
+      formData: {} as Company,
+    };
   },
-  methods: {},
+  methods: {
+    input(value: string | number | boolean, key: string) {
+      this.formData[key] = value;
+    },
+    save() {
+      const dynamicForm = this.$refs.dynamicForm as any; // $refs items can be anythings (HTMLElement, Vue component...), we need to manually cast it.
+      const isValid = dynamicForm.$refs.dynamicForm.validate();
+      if (isValid) {
+        if (this.companyToEditId) {
+          this.$store.dispatch('companies/updateCompany', {
+            ...this.formData,
+            companyId: this.companyToEditId,
+          });
+        } else {
+          this.$store.dispatch('companies/addCompany', this.formData);
+        }
+        this.formData = {} as Company;
+        this.$emit('close');
+        dynamicForm.$refs.dynamicForm.reset();
+      }
+    },
+  },
 });
 </script>
 

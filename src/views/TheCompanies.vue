@@ -10,22 +10,30 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @editItem="openEditDialog"
+        @deleteItem="openDeleteDialog"
       />
       <FormDialog
         v-if="formStructure"
         title="Add Company"
         :isVisible="isAddCompanyDialogVisible"
         :formStructure="formStructure"
-        @close="closeAddCompanyDialogVisible()"
+        @close="isAddCompanyDialogVisible = false"
       />
       <FormDialog
         v-if="formStructure"
+        :companyToEditId="companyToEditId"
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
         @close="isEditCompanyDialogVisible = false"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog
+        v-if="companyToDeleteId"
+        :isVisible="isDeleteDialogVisible"
+        @close="isDeleteDialogVisible = false"
+        @delete="deleteCompany"
+      />
     </MainContainer>
   </div>
 </template>
@@ -38,26 +46,40 @@ import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
+import { Company } from '@/store/companies-types';
 import { mapGetters } from 'vuex';
 
 export default Vue.extend({
   name: 'TheCompanies',
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
   data: () => ({
-    isEditCompanyDialogVisible: false,
-    isAddCompanyDialogVisible: false,
-    isDeleteDialogVisible: false,
-    formStructure: [],
+    isEditCompanyDialogVisible: false as boolean,
+    isAddCompanyDialogVisible: false as boolean,
+    isDeleteDialogVisible: false as boolean,
+    companyToEditId: null as string | null,
+    companyToDeleteId: null as string | null,
   }),
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      formStructure: 'companies/companyForm',
     }),
   },
   methods: {
-    closeAddCompanyDialogVisible() {
-      this.isAddCompanyDialogVisible = false;
+    openEditDialog(company: Company) {
+      this.companyToEditId = company.companyId;
+      this.isEditCompanyDialogVisible = true;
+    },
+    openDeleteDialog(company: Company) {
+      this.companyToDeleteId = company.companyId;
+      this.isDeleteDialogVisible = true;
+    },
+    deleteCompany() {
+      if (this.companyToDeleteId) {
+        this.$store.dispatch('companies/deleteCompany', this.companyToDeleteId);
+        this.isDeleteDialogVisible = false;
+      }
     },
   },
 });
