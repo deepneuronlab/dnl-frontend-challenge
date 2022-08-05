@@ -51,7 +51,7 @@ export default Vue.extend({
   components: {},
   props: {
     formStructure: {
-      type: Array as PropType<FormElements[]>, //to-fix
+      type: Array as PropType<FormElements[]>,
       required: true,
     },
   },
@@ -60,7 +60,6 @@ export default Vue.extend({
       formValid: false,
       rules: {
         required: (isRequired: boolean) => (value: string | number | null) => {
-          console.log(isRequired, value);
           if (isRequired) {
             return !!value || 'This field is required';
           } else {
