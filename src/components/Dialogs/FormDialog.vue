@@ -6,21 +6,25 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm :formStructure='formStructure' v-model="value" ref='dynamicForm'/>
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" text @click="$emit('save')"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { Company } from '@/store/companies-types';
+
 
 export default Vue.extend({
   name: 'FormDialog',
@@ -38,11 +42,12 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    value: {
+      type: Object as PropType<Company>,
+      required: false,
+    }
   },
-  data() {
-    return {};
-  },
-  methods: {},
+
 });
 </script>
 

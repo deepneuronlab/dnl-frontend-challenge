@@ -45,10 +45,13 @@ export default Vue.extend({
     },
   },
   computed: {
+    /**
+     *
+     */
     allTableHeaders() {
       const newTableHeaders = [
         ...this.tableHeaders,
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Actions', value: 'actions', sortable: false, align: 'right' },
       ];
       return newTableHeaders;
     },
