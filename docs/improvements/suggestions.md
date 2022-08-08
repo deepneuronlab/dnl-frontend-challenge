@@ -15,7 +15,7 @@
 - As an improvement instead of Manual Importing which I am using for DynamicForm, DynamicImport with vuetify-loader should be used. This requires a config through webpack but in the end better performance will be received.
 
 
-- Tests should be written, this is a note for me :D (Other than Unit testing, things like PACT can be used as integration testing instead of classic end-to-end test approach)
+- Tests should be written in a detailed way, this is a note for me :D (Other than Unit testing, things like PACT can be used as integration testing instead of classic end-to-end test approach)
 
 
 #Notes
