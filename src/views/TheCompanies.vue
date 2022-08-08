@@ -4,40 +4,32 @@
     <MainContainer>
       <v-row justify="space-between" align="center" class="mr-0 ml-0 mt-10 mb-1">
         <h2 class="grey--text text--darken-4">Companies</h2>
-        <BtnMain text="Company" icon="mdi-plus" @click="isAddCompanyDialogVisible = true" />
+        <BtnMain text="Company" icon="mdi-plus" @click="handleDialogVisibility('add')" />
       </v-row>
       <DataTableCompanies
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
-        @editItem='setCompanyToEdit'
-        @deleteItem='setCompanyIdToDelete'
+        @editItem="setCompanyToEdit"
+        @deleteItem="setCompanyIdToDelete"
       />
+
       <FormDialog
         v-if="formStructure"
-        title="Add Company"
-        v-model="companyToAdd"
-        :isVisible="isAddCompanyDialogVisible"
+        :title="mode === 'edit' ? 'Edit Company' : 'Add Company'"
+        v-model="companyFormData"
+        :isVisible="isCompanyDialogVisible"
         :formStructure="formStructure"
-        @close="isAddCompanyDialogVisible = false"
-        @save="onAddCompany"
-        ref='addCompanyFormDialog'
-      />
-      <FormDialog
-        v-if="formStructure"
-        title="Edit Company"
-        :isVisible="isEditCompanyDialogVisible"
-        :formStructure="formStructure"
-        v-model='companyToEdit'
-        @close="isEditCompanyDialogVisible = false"
-        @save="onUpdateCompany()"
-        ref='editCompanyFormDialog'
+        @close="isCompanyDialogVisible = false"
+        @save="onSaveCompany"
+        ref="companyFormDialog"
       />
 
       <DeleteDialog
         :isVisible="isDeleteCompanyDialogVisible"
         @close="isDeleteCompanyDialogVisible = false"
-        @delete='onDeleteCompany' />
+        @delete="onDeleteCompany"
+      />
     </MainContainer>
   </div>
 </template>
@@ -53,79 +45,72 @@ import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapGetters } from 'vuex';
 import { Company } from '@/store/companies-types';
 
-
 export default Vue.extend({
   name: 'TheCompanies',
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
   data: () => ({
-    isEditCompanyDialogVisible: false,
-    isAddCompanyDialogVisible: false,
     isDeleteCompanyDialogVisible: false,
-    companyToAdd: {},
-    companyToEdit: null as null | Company,
+    isCompanyDialogVisible: false,
+    companyFormData: {} as object | Company,
     companyIdToDelete: null as string | null,
-
+    mode: 'add',
   }),
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
-      formStructure: 'companies/companyForm'
+      formStructure: 'companies/companyForm',
     }),
   },
   methods: {
     /**
      *
+     * @param mode
+     */
+    handleDialogVisibility(mode: string) {
+      this.mode = mode;
+      this.isCompanyDialogVisible = true;
+    },
+    /**
+     *
      * @param company
      */
     setCompanyToEdit(company: Company) {
-      this.companyToEdit = company
-      this.isEditCompanyDialogVisible = true;
+      this.companyFormData = company;
+      this.isCompanyDialogVisible = true;
+      this.mode = 'edit';
     },
     /**
      *
      * @param company
      */
     setCompanyIdToDelete(company: Company) {
-      this.companyIdToDelete = company.companyId
+      this.companyIdToDelete = company.companyId;
       this.isDeleteCompanyDialogVisible = true;
     },
     /**
      *
      */
-    onAddCompany() {
-      const addCompanyFormDialog = this.$refs.addCompanyFormDialog as any;
-      const dynamicForm = addCompanyFormDialog.$refs.dynamicForm as any;
+    onSaveCompany() {
+      const companyFormDialog = this.$refs.companyFormDialog as any;
+      const dynamicForm = companyFormDialog.$refs.dynamicForm as any;
       const form = dynamicForm.$refs.form as any;
       const isCompanyFormValid = form.validate();
-      if(isCompanyFormValid) {
-        this.$store.dispatch('companies/addCompany', this.companyToAdd)
+      if (isCompanyFormValid && this.mode === 'add') {
+        this.$store.dispatch('companies/addCompany', this.companyFormData);
+      } else if (isCompanyFormValid && this.mode === 'edit') {
+        this.$store.dispatch('companies/updateCompany', this.companyFormData);
       }
-        this.companyToAdd = {} as Company
+      this.companyFormData = {} as Company;
 
-      this.isAddCompanyDialogVisible = false;
-    },
-    /**
-     *
-     */
-    onUpdateCompany() {
-      const editCompanyFormDialog = this.$refs.editCompanyFormDialog as any;
-      const dynamicForm = editCompanyFormDialog.$refs.dynamicForm as any;
-      const form = dynamicForm.$refs.form as any;
-      const isCompanyFormValid = form.validate();
-      if(isCompanyFormValid) {
-        this.$store.dispatch('companies/updateCompany', this.companyToEdit)
-      }
-      this.companyToEdit = {} as Company
-
-      this.isEditCompanyDialogVisible = false;
+      this.isCompanyDialogVisible = false;
     },
     /**
      *
      */
     onDeleteCompany() {
-      if(this.companyIdToDelete) {
-        this.$store.dispatch('companies/deleteCompany', this.companyIdToDelete)
+      if (this.companyIdToDelete) {
+        this.$store.dispatch('companies/deleteCompany', this.companyIdToDelete);
         this.isDeleteCompanyDialogVisible = false;
       }
     },

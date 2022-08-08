@@ -9,12 +9,13 @@
 - Toaster management for all request handles
 
 
-- Using only one FormDialog component to update and add depending on a flag called mode 
+- Handling DynamicForm in a more generic way, which enables it to take as many parameters as it needs and generates necessary components as well as nested components 
 
 
+- As an improvement instead of Manual Importing which I am using for DynamicForm, DynamicImport with vuetify-loader should be used. This requires a config through webpack but in the end better performance will be received.
 
 
-
+- Tests should be written, this is a note for me :D (Other than Unit testing, things like PACT can be used as integration testing instead of classic end-to-end test approach)
 
 
 #Notes
@@ -26,3 +27,6 @@
 
 
 - Company id is created via uuid but normally I would expect an ID creation on the back-end side.
+
+
+- If we are dealing with a big Company entity mostly it can be wise to consider GraphQL, I have prepared the API Docs according to Rest API 

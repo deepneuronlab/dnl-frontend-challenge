@@ -7,7 +7,7 @@
 
       <v-card-text>
         <v-container>
-          <DynamicForm :formStructure='formStructure' v-model="value" ref='dynamicForm'/>
+          <DynamicForm :formStructure="formStructure" v-model="value" ref="dynamicForm" />
         </v-container>
       </v-card-text>
 
@@ -24,7 +24,6 @@
 import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 import { Company } from '@/store/companies-types';
-
 
 export default Vue.extend({
   name: 'FormDialog',
@@ -45,9 +44,8 @@ export default Vue.extend({
     value: {
       type: Object as PropType<Company>,
       required: false,
-    }
+    },
   },
-
 });
 </script>
 
