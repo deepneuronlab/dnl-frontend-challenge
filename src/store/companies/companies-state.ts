@@ -30,7 +30,12 @@ const companiesState: CompaniesState = {
       2019: 'good',
     },
   ],
-  companyTableHeaders: [{ text: 'Name', value: 'companyName' }],
+  companyTableHeaders: [
+    { text: 'Name', value: 'companyName' },
+    { text: 'Language', value: 'language' },
+    { text: 'Updated at', value: 'updatedAt' },
+    { text: 'Created at', value: 'createdAt' },
+  ],
   companyForm: [
     {
       type: 'textField',
