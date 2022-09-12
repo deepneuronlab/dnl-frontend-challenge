@@ -1,4 +1,4 @@
-import { CompaniesState } from './companies-types';
+import { CompaniesState } from '@/types/companies-types';
 
 const companiesState: CompaniesState = {
   companies: [

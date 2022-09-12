@@ -1,4 +1,4 @@
-import { FormElements } from '@/store/form-types';
+import { FormElements } from './form-types';
 
 export interface CompaniesState {
   companies: Company[] | null;
@@ -20,4 +20,3 @@ export interface CompanyTableHeaderItem {
   value: string | number;
 }
 export type CompanyForm = FormElements[];
-

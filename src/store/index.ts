@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { BaseState } from './types';
-import companiesStore from './companies-store';
+import { BaseState } from '@/types/types';
+import companiesStore from './companies/companies-store';
 
 Vue.use(Vuex);
 

@@ -4,7 +4,7 @@ import lodash from 'lodash';
 import router from './router/router';
 import vuetify from './plugins/vuetify';
 import App from './App.vue';
-import store from './store/store';
+import store from './store';
 import './registerServiceWorker';
 
 Vue.config.productionTip = false;

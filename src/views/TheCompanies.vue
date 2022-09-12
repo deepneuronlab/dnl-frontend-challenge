@@ -38,7 +38,7 @@ import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
   name: 'TheCompanies',
@@ -50,8 +50,10 @@ export default Vue.extend({
     formStructure: [],
   }),
   computed: {
+    ...mapState('companies', {
+      tableItems: 'companies',
+    }),
     ...mapGetters({
-      tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
     }),
   },
