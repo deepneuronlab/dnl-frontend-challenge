@@ -5,7 +5,7 @@ interface InputValidationRules {
 }
 
 const rules: InputValidationRules = {
-  required: (v: any) => !!v || 'This field is required.',
+  required: (v: string | number | boolean | unknown) => !!v || 'This field is required.',
 };
 
 export default rules;

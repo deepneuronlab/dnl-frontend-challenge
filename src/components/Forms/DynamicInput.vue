@@ -88,7 +88,8 @@ export default Vue.extend({
           .filter((key: string) => {
             return (
               Object.prototype.hasOwnProperty.call(rules, key) &&
-              companyInputStructure[key] === true
+              // eslint-disable-next-line
+              (companyInputStructure as any)[key] === true
             );
           })
           .map((rule: string) => {

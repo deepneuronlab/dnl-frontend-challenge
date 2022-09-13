@@ -31,7 +31,8 @@ export default Vue.extend({
     value: {
       handler(newModelValue) {
         this.formValue = newModelValue;
-        if (this.$refs.dynamicForm) (this.$refs.dynamicForm as any).validate();
+        if (this.$refs.dynamicForm)
+          (this.$refs.dynamicForm as Vue & { validate: () => boolean }).validate();
       },
       immediate: true,
     },
