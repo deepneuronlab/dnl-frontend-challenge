@@ -10,11 +10,6 @@
       title="Add Company"
       @close="isAddCompanyDialogVisible = false"
     />
-    <FormDialog
-      :isVisible="isEditCompanyDialogVisible"
-      title="Edit Company"
-      @close="isEditCompanyDialogVisible = false"
-    />
   </div>
 </template>
 
@@ -29,7 +24,6 @@ export default Vue.extend({
   name: 'CompaniesPage',
   components: { DataTableCompanies, BtnMain, FormDialog },
   data: () => ({
-    isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
   }),
   computed: {

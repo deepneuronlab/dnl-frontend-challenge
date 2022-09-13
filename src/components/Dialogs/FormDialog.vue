@@ -7,22 +7,27 @@
 
       <v-card-text>
         <v-container>
-          <DynamicForm v-model="dynamicFormData" :form-structure="formStructure" />
+          <DynamicForm
+            v-model="dynamicFormData"
+            :form-structure="formStructure"
+            @validationChange="onFormValidationChange"
+          />
         </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="closeDialog()"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" text :disabled="!isFormValid" @click="save()"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import { mapState, mapActions } from 'vuex';
+import { Company } from '@/types/companies-types';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 
 export default Vue.extend({
@@ -33,30 +38,56 @@ export default Vue.extend({
       type: Boolean,
       required: true,
     },
+    isEditing: {
+      type: Boolean,
+      default: false,
+    },
     title: {
       type: String,
       required: true,
     },
+    value: {
+      type: Object as PropType<Company>,
+    },
   },
+
+  watch: {
+    value: {
+      handler(newVal) {
+        // Avoid mutating the data before the user hits save
+        if (newVal) this.dynamicFormData = { ...newVal };
+      },
+      immediate: true,
+    },
+  },
+
+  data: () => ({
+    dynamicFormData: {},
+    isFormValid: false,
+  }),
+
   computed: {
     ...mapState('companies', {
       formStructure: 'companyForm',
     }),
   },
-  data() {
-    return {
-      dynamicFormData: {},
-    };
-  },
+
   methods: {
-    ...mapActions('companies', ['createCompany']),
+    ...mapActions('companies', ['createCompany', 'updateCompany']),
     async save() {
-      await this.createCompany(this.dynamicFormData);
+      if (this.isEditing) {
+        this.updateCompany(this.dynamicFormData);
+      } else {
+        this.createCompany(this.dynamicFormData);
+      }
       await this.$nextTick();
-      this.resetData();
+      this.resetFormData();
       this.closeDialog();
     },
-    resetData() {
+    onFormValidationChange(isValid: boolean) {
+      this.isFormValid = isValid;
+    },
+    resetFormData() {
       this.dynamicFormData = {};
     },
     closeDialog() {

@@ -8,7 +8,7 @@
               text="Edit"
               icon="mdi-pencil"
               :disabled="false"
-              @clickAction="$emit('editItem', item)"
+              @clickAction="openEditDialog(item)"
             />
             <BtnTableAction
               text="Delete"
@@ -23,8 +23,16 @@
 
     <DeleteDialog
       :is-visible="isDeleteDialogVisible"
-      @confirm-delete="onConfirmDeleteCompany"
+      @confirmDelete="onConfirmDeleteCompany"
       @close="closeDeleteDialog"
+    />
+
+    <FormDialog
+      v-model="companyToEdit"
+      :is-visible="isEditDialogVisible"
+      is-editing
+      title="Edit Company"
+      @close="isEditDialogVisible = false"
     />
   </v-layout>
 </template>
@@ -34,10 +42,12 @@ import Vue from 'vue';
 import { mapActions } from 'vuex';
 import BtnTableAction from '@/components/UI/BtnTableAction.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
+import FormDialog from '@/components/Dialogs/FormDialog.vue';
+import { Company } from '@/types/companies-types';
 
 export default Vue.extend({
   name: 'DataTableCompanies',
-  components: { BtnTableAction, DeleteDialog },
+  components: { BtnTableAction, DeleteDialog, FormDialog },
   props: {
     tableHeaders: {
       type: Array,
@@ -50,7 +60,9 @@ export default Vue.extend({
   },
   data: () => ({
     isDeleteDialogVisible: false,
-    selectedCompanyId: null as string | unknown,
+    isEditDialogVisible: false,
+    companyToDeleteId: null as string | unknown,
+    companyToEdit: null as Company | unknown,
   }),
 
   computed: {
@@ -66,20 +78,25 @@ export default Vue.extend({
     ...mapActions('companies', ['deleteCompany']),
 
     async onConfirmDeleteCompany() {
-      await this.deleteCompany(this.selectedCompanyId);
+      this.deleteCompany(this.companyToDeleteId);
       await this.$nextTick();
-      this.resetSelectedCompanyId();
+      this.resetSelectedCompany();
       this.closeDeleteDialog();
     },
     openDeleteDialog(companyId: string) {
       this.isDeleteDialogVisible = true;
-      this.selectedCompanyId = companyId;
+      this.companyToDeleteId = companyId;
+    },
+    openEditDialog(company: Company) {
+      this.isEditDialogVisible = true;
+      this.companyToEdit = company;
     },
     closeDeleteDialog() {
       this.isDeleteDialogVisible = false;
     },
-    resetSelectedCompanyId() {
-      this.selectedCompanyId = null;
+    resetSelectedCompany() {
+      this.companyToEdit = null;
+      this.companyToDeleteId = null;
     },
   },
 });

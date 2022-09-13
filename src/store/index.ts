@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { BaseState } from '@/types/types';
+import { CompanyBaseState } from '@/types/types';
 import companiesStore from './companies/companies-store';
 
 Vue.use(Vuex);
 
-const store: StoreOptions<BaseState> = {
+const store: StoreOptions<CompanyBaseState> = {
   modules: {
     companies: companiesStore,
   },

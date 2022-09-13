@@ -1,8 +1,8 @@
 import { GetterTree } from 'vuex';
 import { CompaniesState } from '@/types/companies-types';
-import { BaseState } from '@/types/types';
+import { CompanyBaseState } from '@/types/types';
 
-const companiesGetters: GetterTree<CompaniesState, BaseState> = {
+const companiesGetters: GetterTree<CompaniesState, CompanyBaseState> = {
   companyTableHeaders(state) {
     return state.companyTableHeaders;
   },

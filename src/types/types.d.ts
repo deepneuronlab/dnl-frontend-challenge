@@ -1,5 +1,5 @@
 import { CompaniesState } from './companies-types';
 
-export interface BaseState {
+export interface CompanyBaseState {
   companies: CompaniesState;
 }
