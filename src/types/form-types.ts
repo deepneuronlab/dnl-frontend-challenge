@@ -4,7 +4,7 @@ export interface FormSelect {
   type: 'selectField';
   key: string;
   label: string;
-  items: FormItem[];
+  items: InputItem[];
   placeholder: string;
   required: boolean;
 }
@@ -21,11 +21,11 @@ export interface FormRadioButtonGroup {
   type: 'radioGroup';
   key: string;
   label: string;
-  items: FormItem[];
+  items: InputItem[];
   required: boolean;
 }
 
-export interface FormItem {
+export interface InputItem {
   text: string;
   value: string;
 }

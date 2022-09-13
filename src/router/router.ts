@@ -14,7 +14,7 @@ const router = new Router({
     {
       path: '/companies',
       name: 'companies',
-      component: () => import(/* webpackChunkName: "companies" */ '../views/TheCompanies.vue'),
+      component: () => import(/* webpackChunkName: "companies" */ '../views/Companies.vue'),
       meta: {
         requiresAuth: true,
       },

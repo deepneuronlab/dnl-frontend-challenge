@@ -14,7 +14,7 @@
               text="Delete"
               icon="mdi-delete"
               :disabled="false"
-              @clickAction="openDeleteDialog(item)"
+              @clickAction="openDeleteDialog(item.companyId)"
             />
           </template>
         </v-data-table>
@@ -32,7 +32,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapActions } from 'vuex';
-import { Company } from '@/types/companies-types';
 import BtnTableAction from '@/components/UI/BtnTableAction.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 
@@ -51,7 +50,7 @@ export default Vue.extend({
   },
   data: () => ({
     isDeleteDialogVisible: false,
-    selectedCompany: null as Company | unknown,
+    selectedCompanyId: null as string | unknown,
   }),
 
   computed: {
@@ -67,17 +66,20 @@ export default Vue.extend({
     ...mapActions('companies', ['deleteCompany']),
 
     async onConfirmDeleteCompany() {
-      await this.deleteCompany((this.selectedCompany as Company)?.companyId);
+      await this.deleteCompany(this.selectedCompanyId);
       await this.$nextTick();
+      this.resetSelectedCompanyId();
       this.closeDeleteDialog();
     },
-    openDeleteDialog(company: Company) {
+    openDeleteDialog(companyId: string) {
       this.isDeleteDialogVisible = true;
-      this.selectedCompany = company;
+      this.selectedCompanyId = companyId;
     },
     closeDeleteDialog() {
       this.isDeleteDialogVisible = false;
-      this.selectedCompany = null;
+    },
+    resetSelectedCompanyId() {
+      this.selectedCompanyId = null;
     },
   },
 });

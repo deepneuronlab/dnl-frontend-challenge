@@ -4,23 +4,15 @@
       <h2 class="grey--text text--darken-4">Companies</h2>
       <BtnMain text="Company" icon="mdi-plus" @click="isAddCompanyDialogVisible = true" />
     </v-row>
-    <DataTableCompanies
-      :table-headers="tableHeaders"
-      :table-items="tableItems"
-      @deleteItem="isDeleteDialogVisible = true"
-    />
+    <DataTableCompanies :table-headers="tableHeaders" :table-items="tableItems" />
     <FormDialog
-      v-if="formStructure"
-      title="Add Company"
       :isVisible="isAddCompanyDialogVisible"
-      :formStructure="formStructure"
-      @close="closeAddCompanyDialogVisible()"
+      title="Add Company"
+      @close="isAddCompanyDialogVisible = false"
     />
     <FormDialog
-      v-if="formStructure"
-      title="Edit Company"
       :isVisible="isEditCompanyDialogVisible"
-      :formStructure="formStructure"
+      title="Edit Company"
       @close="isEditCompanyDialogVisible = false"
     />
   </div>
@@ -34,12 +26,11 @@ import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import { mapGetters, mapState } from 'vuex';
 
 export default Vue.extend({
-  name: 'TheCompanies',
+  name: 'CompaniesPage',
   components: { DataTableCompanies, BtnMain, FormDialog },
   data: () => ({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
-    formStructure: [],
   }),
   computed: {
     ...mapState('companies', {
@@ -49,12 +40,5 @@ export default Vue.extend({
       tableHeaders: 'companies/companyTableHeaders',
     }),
   },
-  methods: {
-    closeAddCompanyDialogVisible() {
-      this.isAddCompanyDialogVisible = false;
-    },
-  },
 });
 </script>
-
-<style lang="scss" scoped></style>
