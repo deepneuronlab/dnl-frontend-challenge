@@ -18,7 +18,7 @@ import Vue from 'vue';
 import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
-import { mapGetters, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default Vue.extend({
   name: 'CompaniesPage',
@@ -29,9 +29,7 @@ export default Vue.extend({
   computed: {
     ...mapState('companies', {
       tableItems: 'companies',
-    }),
-    ...mapGetters({
-      tableHeaders: 'companies/companyTableHeaders',
+      tableHeaders: 'companyTableHeaders',
     }),
   },
 });
