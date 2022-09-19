@@ -50,6 +50,7 @@ const store: StoreOptions<BaseState> = {
           },
         ];
       }
+      console.log(state.companies, 'response data');
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [id]: removedProperty, ...restObject } = state.companies.companyFormData;
       state.companies.companyFormData = restObject;

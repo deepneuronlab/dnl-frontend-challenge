@@ -38,7 +38,6 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'DynamicInput',
-  components: {},
   props: ['formElement', 'inputValue'],
   watch: {
     radios(value) {

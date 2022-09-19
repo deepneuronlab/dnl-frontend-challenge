@@ -42,22 +42,30 @@ import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapGetters, mapState } from 'vuex';
-import { Company, CompanyForm } from '@/store/companies-types';
+import { CompaniesState, Company, CompanyForm } from '@/store/companies-types';
+
+interface TheCompaniesType {
+  selectedCompany: string | undefined;
+  action: string;
+  canSubmit: boolean;
+}
 
 export default Vue.extend({
   name: 'TheCompanies',
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
-  data: () => ({
+  data: (): TheCompaniesType => ({
     selectedCompany: undefined,
     action: '',
     canSubmit: false,
   }),
   computed: {
     ...mapState({
-      inputValues(state) {
+      inputValues(state: { companies: CompaniesState }) {
         return (
           state.companies.companyFormData[this.selectedCompany] ||
-          state.companies.companies.find(company => company.companyId === this.selectedCompany) ||
+          state?.companies?.companies?.find(
+            company => company.companyId === this.selectedCompany,
+          ) ||
           {}
         );
       },
@@ -72,7 +80,7 @@ export default Vue.extend({
     }),
   },
   methods: {
-    onAction(company: Company, action) {
+    onAction(company: Company, action: string) {
       this.action = action;
       this.selectedCompany = company.companyId;
     },
