@@ -6,13 +6,20 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm
+            :inputValues="inputValues"
+            :formValue="formValue"
+            :formStructure="formStructure"
+            v-on="$listeners"
+          />
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" text @click="$emit('save')"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -26,6 +33,8 @@ export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
+    inputValues: {},
+    formValue: {},
     formStructure: {
       type: Array,
       required: true,
@@ -39,10 +48,6 @@ export default Vue.extend({
       required: true,
     },
   },
-  data() {
-    return {};
-  },
-  methods: {},
 });
 </script>
 

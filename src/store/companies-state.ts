@@ -9,7 +9,7 @@ const companiesState: CompaniesState = {
       createdAt: 'string',
       updatedAt: 'string',
       language: 'de',
-      2020: 'good',
+      balance: { value: 'good', year: '2020' },
     },
     {
       companyId: 'id2',
@@ -18,7 +18,7 @@ const companiesState: CompaniesState = {
       createdAt: 'string',
       updatedAt: 'string',
       language: 'de',
-      2021: 'bad',
+      balance: { value: 'bad', year: '2021' },
     },
     {
       companyId: 'id3',
@@ -27,10 +27,14 @@ const companiesState: CompaniesState = {
       createdAt: 'string',
       updatedAt: 'string',
       language: 'en',
-      2019: 'good',
+      balance: { value: 'good', year: '2019' },
     },
   ],
-  companyTableHeaders: [{ text: 'Name', value: 'companyName' }],
+  companyTableHeaders: [
+    { text: 'Name', value: 'companyName' },
+    { text: 'Language', value: 'language' },
+    { text: 'Balance', value: 'balance' },
+  ],
   companyForm: [
     {
       type: 'textField',
@@ -41,8 +45,8 @@ const companiesState: CompaniesState = {
     },
     {
       type: 'selectField',
-      key: '2019',
-      label: 'Balance 2019',
+      key: 'balance',
+      label: 'Balance 2022',
       placeholder: 'Type',
       required: false,
       items: [
@@ -73,6 +77,7 @@ const companiesState: CompaniesState = {
       ],
     },
   ],
+  companyFormData: {},
 };
 
 export default companiesState;

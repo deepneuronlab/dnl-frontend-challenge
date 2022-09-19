@@ -8,6 +8,9 @@
         class="data-table__table"
         item-class="className"
       >
+        <template v-slot:[`item.balance`]="{ item }">
+          {{ item.balance.year }}: {{ item.balance.value }}
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <BtnTableAction
             text="Edit"

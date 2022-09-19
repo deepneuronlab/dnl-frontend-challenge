@@ -4,28 +4,31 @@
     <MainContainer>
       <v-row justify="space-between" align="center" class="mr-0 ml-0 mt-10 mb-1">
         <h2 class="grey--text text--darken-4">Companies</h2>
-        <BtnMain text="Company" icon="mdi-plus" @click="isAddCompanyDialogVisible = true" />
+        <BtnMain text="Company" icon="mdi-plus" @click="action = 'update'" />
       </v-row>
       <DataTableCompanies
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @deleteItem="item => onAction(item, 'delete')"
+        @editItem="item => onAction(item, 'update')"
       />
       <FormDialog
         v-if="formStructure"
-        title="Add Company"
-        :isVisible="isAddCompanyDialogVisible"
+        :isVisible="action === 'update'"
+        :inputValues="inputValues"
         :formStructure="formStructure"
-        @close="closeAddCompanyDialogVisible()"
+        :title="selectedCompany ? 'Edit Company' : 'Add Company'"
+        @close="close"
+        @save="canSubmit && addNewCompany(selectedCompany)"
+        @onFormElementChange="editCompanyFormData"
+        @onFormValidate="onValidateForm"
       />
-      <FormDialog
-        v-if="formStructure"
-        title="Edit Company"
-        :isVisible="isEditCompanyDialogVisible"
-        :formStructure="formStructure"
-        @close="isEditCompanyDialogVisible = false"
+      <DeleteDialog
+        :isVisible="action === 'delete'"
+        @delete="deleteCompany"
+        @close="action = null"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
     </MainContainer>
   </div>
 </template>
@@ -38,26 +41,58 @@ import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
+import { Company, CompanyForm } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
   data: () => ({
-    isEditCompanyDialogVisible: false,
-    isAddCompanyDialogVisible: false,
-    isDeleteDialogVisible: false,
-    formStructure: [],
+    selectedCompany: undefined,
+    action: '',
+    canSubmit: false,
   }),
   computed: {
+    ...mapState({
+      inputValues(state) {
+        return (
+          state.companies.companyFormData[this.selectedCompany] ||
+          state.companies.companies.find(company => company.companyId === this.selectedCompany) ||
+          {}
+        );
+      },
+    }),
+    formStructure(): CompanyForm {
+      const { companyForm } = this.$store.state.companies;
+      return companyForm;
+    },
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
     }),
   },
   methods: {
-    closeAddCompanyDialogVisible() {
-      this.isAddCompanyDialogVisible = false;
+    onAction(company: Company, action) {
+      this.action = action;
+      this.selectedCompany = company.companyId;
+    },
+    close() {
+      this.selectedCompany = undefined;
+      this.action = '';
+    },
+    onValidateForm(value: boolean) {
+      this.canSubmit = value;
+    },
+    addNewCompany(id = undefined) {
+      this.$store.commit('addNewCompany', id);
+      this.close();
+    },
+    editCompanyFormData(newFormData: Company) {
+      this.$store.commit('editCompanyFormData', newFormData);
+    },
+    deleteCompany() {
+      this.$store.commit('deleteCompany', this.selectedCompany);
+      this.close();
     },
   },
 });
