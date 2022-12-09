@@ -1,5 +1,5 @@
 <template>
-  <v-radio-group :rules="rules" v-model="value" @change="change">
+  <v-radio-group :rules="rules" v-model="groupValue" @change="change">
     <template v-slot:label v-if="!!label">
       <div>{{ label }}</div>
     </template>
@@ -17,7 +17,9 @@
 // got couple of ideas to improve here:
 // - it may extend VRadioGroup
 // - it should adopt props for inner VRadio components
-export default {
+
+import Vue from 'vue';
+export default Vue.extend({
   name: 'CRadioGroup',
   props: {
     value: {
@@ -35,10 +37,20 @@ export default {
       required: true,
     },
   },
+  computed: {
+    groupValue: {
+      get() {
+        return this.value;
+      },
+      set(val) {
+        this.$emit('input', val);
+      },
+    },
+  },
   methods: {
     change(value: string) {
       this.$emit('input', value);
     },
   },
-};
+});
 </script>
