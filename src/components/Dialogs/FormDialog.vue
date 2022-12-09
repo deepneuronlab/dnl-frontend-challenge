@@ -6,43 +6,80 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm
+            ref="dform"
+            v-model="computedFormValues"
+            :form-fields="formStructure"
+            @validate="updateFormValidity"
+          ></DynamicForm>
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" text @click="save()" :disabled="!isFormValid">
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 
 export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
+    isVisible: {
+      type: Boolean,
+      required: true,
+    },
     formStructure: {
       type: Array,
       required: true,
     },
-    isVisible: {
-      type: Boolean,
-      required: true,
+    formValues: {
+      type: Object as PropType<any>,
+      required: false,
+      default: () => ({}),
     },
     title: {
       type: String,
       required: true,
     },
   },
-  data() {
-    return {};
+  computed: {
+    computedFormValues: {
+      get() {
+        return Object.assign({}, this.formValues);
+      },
+    },
   },
-  methods: {},
+  data() {
+    return {
+      mutatedFormValues: null,
+      isFormValid: true,
+    };
+  },
+  methods: {
+    save() {
+      // with object usually better to emit
+      this.$emit('save', Object.assign({}, this.computedFormValues));
+      this.$refs.dform.reset();
+    },
+    closeDialog() {
+      this.$refs.dform.reset();
+      this.$emit('close');
+    },
+    updateFormValidity(valid: boolean) {
+      this.isFormValid = valid;
+    },
+  },
 });
 </script>
 
