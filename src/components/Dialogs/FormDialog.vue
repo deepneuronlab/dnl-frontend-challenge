@@ -58,9 +58,6 @@ export default Vue.extend({
       get() {
         return Object.assign({}, this.formValues);
       },
-      set(value) {
-        this.formValues = value;
-      },
     },
   },
   data() {
