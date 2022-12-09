@@ -1,12 +1,12 @@
 <template>
   <v-form ref="form" v-model="isFormValid" class="dynamic-form">
     <v-container fluid>
-      <div v-for="f in fields" :key="`form-field-${f.key}`">
+      <div v-for="field in fields" :key="`form-field-${field.key}`">
         <component
-          :is="f.vuetifyComponent"
-          @input="val => setFormFieldValue(f.key, val)"
-          :value="getFormFieldValue(f.key)"
-          v-bind="f.vuetifyProps"
+          :is="field.vuetifyComponent"
+          @input="val => setFormFieldValue(field.key, val)"
+          :value="getFormFieldValue(field.key)"
+          v-bind="field.vuetifyProps"
         />
       </div>
     </v-container>
@@ -88,10 +88,16 @@ export default Vue.extend({
         if (field.items) {
           fieldOpts.vuetifyProps['items'] = field.items;
         }
+        //TODO: poor implementation :(, better use vuelidate
+        if (field.required) {
+          fieldOpts.vuetifyProps = Object.assign(fieldOpts.vuetifyProps, {
+            rules: [requireField()],
+          });
+        }
 
         return fieldOpts;
       });
-    }
+    },
   },
   methods: {
     setFormFieldValue(field: string, value: any) {
@@ -102,8 +108,13 @@ export default Vue.extend({
     },
     reset() {
       this.$refs.form.reset();
-    }
+    },
   },
+  watch: {
+    isFormValid(val) {
+      this.$emit('validate', val);
+    }
+  }
 });
 </script>
 
