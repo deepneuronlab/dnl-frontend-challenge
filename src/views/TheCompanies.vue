@@ -10,6 +10,7 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @editItem="handleEditItem"
       />
       <FormDialog
         v-if="formStructure"
@@ -38,26 +39,58 @@ import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
+import { Company } from '@/store/companies-types';
+import { FormElements } from '@/store/form-types';
 
-export default Vue.extend({
+interface Data {
+  isEditCompanyDialogVisible: boolean;
+  isAddCompanyDialogVisible: boolean;
+  isDeleteDialogVisible: boolean;
+  editingCompany: Company | null;
+}
+
+// tslint:disable no-empty-interface
+interface Methods {}
+// tslint:disable no-empty-interface
+interface Computed {
+  formStructure: Array<FormElements>;
+}
+// tslint:disable no-empty-interface
+interface Props {}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   name: 'TheCompanies',
-  components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
+  components: {
+    AppBar,
+    MainContainer,
+    DataTableCompanies,
+    BtnMain,
+    FormDialog,
+    DeleteDialog,
+  },
   data: () => ({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    formStructure: [],
+    editingCompany: null,
   }),
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
     }),
+    ...mapState('companies', {
+      formStructure: 'companyForm',
+    }),
   },
   methods: {
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    handleEditItem(item: Company) {
+      this.isEditCompanyDialogVisible = true;
+      this.editingCompany = item;
     },
   },
 });

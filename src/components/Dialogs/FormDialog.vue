@@ -6,7 +6,9 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm :formStructure="formStructure" />
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
@@ -22,7 +24,18 @@
 import Vue from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 
-export default Vue.extend({
+// tslint:disable-next-line
+interface Data {}
+
+// tslint:disable-next-line
+interface Methods {}
+
+// tslint:disable-next-line
+interface Computed {}
+// tslint:disable-next-line
+interface Props {}
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
@@ -38,11 +51,15 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    formValue: {
+      type: Object,
+    },
   },
   data() {
-    return {};
+    return {
+      internalValue: null,
+    };
   },
-  methods: {},
 });
 </script>
 
