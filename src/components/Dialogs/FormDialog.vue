@@ -7,14 +7,17 @@
 
       <v-card-text>
         <v-container>
-          <DynamicForm :formStructure="formStructure" v-model="this.internalValue" />
+          <DynamicForm
+            :formStructure="formStructure"
+            v-model="this.internalValue"
+            ref="dynamicForm" />
         </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" text @click="save()" :disable="!formValid"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -24,10 +27,12 @@
 import Vue from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 import { FormElements } from '@/store/form-types';
+import _ from 'lodash';
 
 // tslint:disable-next-line
 interface Data {
   internalValue: object | null;
+  formValid: boolean,
 }
 
 // tslint:disable-next-line
@@ -69,17 +74,23 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   data() {
     return {
       internalValue: null,
+      formValid: false,
     };
   },
   watch: {
     '$props.form'() {
       this.updateInternalValue();
     },
+    isVisible(newValue) {
+      if (!newValue) {
+        this.$refs.dynamicForm.reset();
+      }
+    },
   },
   methods: {
     updateInternalValue(): void {
       if (this.form !== undefined) {
-        this.internalValue = this.form;
+        this.internalValue = _.cloneDeep(this.form);
       } else {
         this.internalValue = this.formStructure.reduce((acc: { [key: string]: string, }, item: FormElements) => {
           acc[item.key] = '';
@@ -88,7 +99,10 @@ export default Vue.extend<Data, Methods, Computed, Props>({
       }
     },
     save() {
-      this.$emit('save', this.internalValue);
+      const valid = this.$refs.dynamicForm.validate();
+      if (valid) {
+        this.$emit('save', this.internalValue);
+      }
     },
   },
   mounted() {

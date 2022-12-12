@@ -1,5 +1,8 @@
 <template>
-  <v-form v-model="isFormValid" class="dynamic-form">
+  <v-form
+    v-model="isFormValid"
+    class="dynamic-form" 
+    ref="form">
     <v-container fluid>
       <template v-for="field in formStructure">
         <template v-if="field.type === 'selectField'">
@@ -9,6 +12,7 @@
             :label="field.label"
             :placeholder="field.placeholder"
             :required="field.required"
+            :rules="createRules(field)"
             v-model="form[field.key]"
           ></v-select>
         </template>
@@ -18,12 +22,14 @@
             :label="field.label"
             :placeholder="field.placeholder"
             :required="field.required"
+            :rules="createRules(field)"
             v-model="form[field.key]"
           ></v-text-field>
         </template>
         <template v-else-if="field.type === 'radioGroup'">
           <v-radio-group
             v-model="form[field.key]"
+            :rules="createRules(field)"
             :key="field.key">
             <v-radio
               v-for="radioItem in field.items"
@@ -40,15 +46,16 @@
 
 <script lang="ts">
 import { FormElements } from '@/store/form-types';
+import { validationMixin } from 'vuelidate';
 import Vue from 'vue';
 
 interface Data {
-  isFormValid: boolean;
+  valid: boolean;
 }
 
 interface Methods {
-  updateInternalValue: () => void;
-  save: () => void;
+  validate: () => boolean;
+  createRules: (v: FormElements) => ((v: unknown) => boolean)[],
 }
 
 interface Computed {}
@@ -58,6 +65,7 @@ interface Props {
   form?: object;
 }
 export default Vue.extend<Data, Methods, Computed, Props>({
+  mixins: [validationMixin],
   name: 'DynamicForm',
   components: {},
   props: {
@@ -70,14 +78,30 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     },
   },
   model: {
-      prop: 'form',
-      event: 'change'
+    prop: 'form',
+    event: 'change'
   },
   data() {
     return {
-      isFormValid: false,
+      isFormValid: true,
     };
   },
+  methods: {
+    createRules(field: FormElements) {
+      const rules = [];
+      if (field.required) {
+        rules.push((value: unknown) => !!value || `${field.label} Required.`,)
+      }
+      return rules;
+    },
+    validate() {
+      this.$refs.form.validate();
+      return this.isFormValid;
+    },
+    reset() {
+      this.$refs.form.reset();
+    }
+  }
 });
 </script>
 
