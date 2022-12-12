@@ -24,6 +24,7 @@
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
+        :form="editingCompany"
         @close="isEditCompanyDialogVisible = false"
       />
       <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />

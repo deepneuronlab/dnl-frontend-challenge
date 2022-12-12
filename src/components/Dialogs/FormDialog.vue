@@ -7,7 +7,7 @@
 
       <v-card-text>
         <v-container>
-          <DynamicForm :formStructure="formStructure" />
+          <DynamicForm :formStructure="formStructure" v-model="this.internalValue" />
         </v-container>
       </v-card-text>
 
@@ -23,17 +23,28 @@
 <script lang="ts">
 import Vue from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { FormElements } from '@/store/form-types';
 
 // tslint:disable-next-line
-interface Data {}
+interface Data {
+  internalValue: object | null;
+}
 
 // tslint:disable-next-line
-interface Methods {}
+interface Methods {
+  updateInternalValue: () => void;
+  save: () => void;
+}
 
 // tslint:disable-next-line
 interface Computed {}
 // tslint:disable-next-line
-interface Props {}
+interface Props {
+  formStructure: FormElements[];
+  isVisible: boolean;
+  title: string;
+  form?: object;
+}
 
 export default Vue.extend<Data, Methods, Computed, Props>({
   name: 'FormDialog',
@@ -51,7 +62,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
       type: String,
       required: true,
     },
-    formValue: {
+    form: {
       type: Object,
     },
   },
@@ -59,6 +70,29 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     return {
       internalValue: null,
     };
+  },
+  watch: {
+    '$props.form'() {
+      this.updateInternalValue();
+    },
+  },
+  methods: {
+    updateInternalValue(): void {
+      if (this.form !== undefined) {
+        this.internalValue = this.form;
+      } else {
+        this.internalValue = this.formStructure.reduce((acc: { [key: string]: string, }, item: FormElements) => {
+          acc[item.key] = '';
+          return acc;
+        }, {});
+      }
+    },
+    save() {
+      this.$emit('save', this.internalValue);
+    },
+  },
+  mounted() {
+    this.updateInternalValue();
   },
 });
 </script>
