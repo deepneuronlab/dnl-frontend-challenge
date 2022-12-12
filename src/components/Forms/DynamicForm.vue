@@ -1,8 +1,5 @@
 <template>
-  <v-form
-    v-model="isFormValid"
-    class="dynamic-form" 
-    ref="form">
+  <v-form v-model="isFormValid" class="dynamic-form" ref="form">
     <v-container fluid>
       <template v-for="field in formStructure">
         <template v-if="field.type === 'selectField'">
@@ -27,10 +24,7 @@
           ></v-text-field>
         </template>
         <template v-else-if="field.type === 'radioGroup'">
-          <v-radio-group
-            v-model="form[field.key]"
-            :rules="createRules(field)"
-            :key="field.key">
+          <v-radio-group v-model="form[field.key]" :rules="createRules(field)" :key="field.key">
             <v-radio
               v-for="radioItem in field.items"
               :key="field.key + radioItem.value"
@@ -50,12 +44,13 @@ import { validationMixin } from 'vuelidate';
 import Vue from 'vue';
 
 interface Data {
-  valid: boolean;
+  isFormValid: boolean;
 }
 
 interface Methods {
   validate: () => boolean;
-  createRules: (v: FormElements) => ((v: unknown) => boolean)[],
+  reset: () => void;
+  createRules: (v: FormElements) => ((v: unknown) => string | true)[];
 }
 
 interface Computed {}
@@ -79,7 +74,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   },
   model: {
     prop: 'form',
-    event: 'change'
+    event: 'change',
   },
   data() {
     return {
@@ -90,7 +85,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     createRules(field: FormElements) {
       const rules = [];
       if (field.required) {
-        rules.push((value: unknown) => !!value || `${field.label} Required.`,)
+        rules.push((value: unknown) => !!value || `${field.label} Required.`);
       }
       return rules;
     },
@@ -100,8 +95,8 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     },
     reset() {
       this.$refs.form.reset();
-    }
-  }
+    },
+  },
 });
 </script>
 

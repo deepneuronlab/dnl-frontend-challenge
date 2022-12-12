@@ -33,7 +33,8 @@
       <DeleteDialog
         :isVisible="isDeleteDialogVisible"
         @close="isDeleteDialogVisible = false"
-        @delete="deleteCompany" />
+        @delete="deleteCompany"
+      />
     </MainContainer>
   </div>
 </template>
@@ -63,16 +64,17 @@ interface Methods {
   saveCompany: (c: Company) => void;
   editItem: (c: Company) => void;
   createCompany: (c: Company) => void;
-  updateCompany: (c: Company) => void;
   deleteItem: (c: Company) => void;
   deleteCompany: () => void;
   closeAddCompanyDialogVisible: () => void;
   closeEditCompanyDialogVisible: () => void;
 }
+
 // tslint:disable no-empty-interface
 interface Computed {
   formStructure: Array<FormElements>;
 }
+
 // tslint:disable no-empty-interface
 interface Props {}
 
@@ -128,13 +130,13 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     },
     deleteCompany() {
       this.isDeleteDialogVisible = false;
-      this.deleteCompanyAction(this.deletingCompany);
+      this.deleteCompanyAction(this.deletingCompany as Company);
     },
     ...mapActions('companies', {
       updateCompanyAction: 'updateCompany',
       deleteCompanyAction: 'deleteCompany',
       createCompanyAction: 'createCompany',
-    })
+    }),
   },
 });
 </script>

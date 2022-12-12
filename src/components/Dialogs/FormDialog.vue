@@ -9,8 +9,9 @@
         <v-container>
           <DynamicForm
             :formStructure="formStructure"
-            v-model="this.internalValue"
-            ref="dynamicForm" />
+            v-model="internalValue"
+            ref="dynamicForm"
+          />
         </v-container>
       </v-card-text>
 
@@ -32,7 +33,7 @@ import _ from 'lodash';
 // tslint:disable-next-line
 interface Data {
   internalValue: object | null;
-  formValid: boolean,
+  formValid: boolean;
 }
 
 // tslint:disable-next-line
@@ -41,9 +42,9 @@ interface Methods {
   save: () => void;
 }
 
-// tslint:disable-next-line
+// tslint:disable no-empty-interface
 interface Computed {}
-// tslint:disable-next-line
+// tslint:disable no-empty-interface
 interface Props {
   formStructure: FormElements[];
   isVisible: boolean;
@@ -89,12 +90,15 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   },
   methods: {
     updateInternalValue(): void {
-      this.internalValue = this.formStructure.reduce((acc: { [key: string]: string, }, item: FormElements) => {
-        if (!Reflect.has(acc, item.key)) {
-          acc[item.key] = '';
-        }
-        return acc;
-      }, (_.cloneDeep(this.form || {}) as { [key: string]: string, }));
+      this.internalValue = this.formStructure.reduce(
+        (acc: { [key: string]: string }, item: FormElements) => {
+          if (!Reflect.has(acc, item.key)) {
+            acc[item.key] = '';
+          }
+          return acc;
+        },
+        _.cloneDeep(this.form || {}) as { [key: string]: string },
+      );
     },
     save() {
       const valid = this.$refs.dynamicForm.validate();
