@@ -18,6 +18,7 @@
         title="Add Company"
         :isVisible="isAddCompanyDialogVisible"
         :formStructure="formStructure"
+        @save="createCompany"
         @close="closeAddCompanyDialogVisible()"
       />
       <FormDialog
@@ -27,7 +28,7 @@
         :formStructure="formStructure"
         :form="editingCompany"
         @save="saveCompany"
-        @close="isEditCompanyDialogVisible = false"
+        @close="closeEditCompanyDialogVisible"
       />
       <DeleteDialog
         :isVisible="isDeleteDialogVisible"
@@ -61,10 +62,12 @@ interface Data {
 interface Methods {
   saveCompany: (c: Company) => void;
   editItem: (c: Company) => void;
+  createCompany: (c: Company) => void;
   updateCompany: (c: Company) => void;
   deleteItem: (c: Company) => void;
   deleteCompany: () => void;
   closeAddCompanyDialogVisible: () => void;
+  closeEditCompanyDialogVisible: () => void;
 }
 // tslint:disable no-empty-interface
 interface Computed {
@@ -100,8 +103,16 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     }),
   },
   methods: {
+    createCompany(company: Company) {
+      this.isAddCompanyDialogVisible = false;
+      this.createCompanyAction(company);
+    },
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    closeEditCompanyDialogVisible() {
+      this.isEditCompanyDialogVisible = false;
+      this.editingCompany = null;
     },
     editItem(item: Company) {
       this.isEditCompanyDialogVisible = true;
@@ -122,6 +133,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     ...mapActions('companies', {
       updateCompanyAction: 'updateCompany',
       deleteCompanyAction: 'deleteCompany',
+      createCompanyAction: 'createCompany',
     })
   },
 });

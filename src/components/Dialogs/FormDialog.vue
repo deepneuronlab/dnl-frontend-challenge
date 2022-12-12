@@ -89,14 +89,12 @@ export default Vue.extend<Data, Methods, Computed, Props>({
   },
   methods: {
     updateInternalValue(): void {
-      if (this.form !== undefined) {
-        this.internalValue = _.cloneDeep(this.form);
-      } else {
-        this.internalValue = this.formStructure.reduce((acc: { [key: string]: string, }, item: FormElements) => {
+      this.internalValue = this.formStructure.reduce((acc: { [key: string]: string, }, item: FormElements) => {
+        if (!Reflect.has(acc, item.key)) {
           acc[item.key] = '';
-          return acc;
-        }, {});
-      }
+        }
+        return acc;
+      }, (_.cloneDeep(this.form || {}) as { [key: string]: string, }));
     },
     save() {
       const valid = this.$refs.dynamicForm.validate();

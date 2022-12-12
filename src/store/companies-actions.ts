@@ -8,13 +8,19 @@ const actions: ActionTree<CompaniesState, BaseState> = {
         const companiesList = _.cloneDeep(state.companies) as Array<Company>;
         const updateIndex = companiesList.findIndex((company) => company.companyId === payload.companyId);
         companiesList.splice(updateIndex, 1, payload);
-        commit(mutationKeys.updateMutations, companiesList);
+        commit(mutationKeys.updateCompanies, companiesList);
     },
     deleteCompany: ({ commit, state }: ActionContext<CompaniesState, BaseState>, payload: Company) => {
         const companiesList = _.cloneDeep(state.companies) as Array<Company>;
         const updateIndex = companiesList.findIndex((company) => company.companyId === payload.companyId);
         companiesList.splice(updateIndex, 1);
-        commit(mutationKeys.updateMutations, companiesList);
+        commit(mutationKeys.updateCompanies, companiesList);
+    },
+    createCompany: ({ commit, state }: ActionContext<CompaniesState, BaseState>, payload: Company) => {
+        const companiesList = _.cloneDeep(state.companies) as Array<Company>;
+        payload.companyId = (new Date()).getTime().toString();
+        companiesList.push(payload);
+        commit(mutationKeys.updateCompanies, companiesList);
     },
 };
 
