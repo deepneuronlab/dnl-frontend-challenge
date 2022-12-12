@@ -101,7 +101,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     save() {
       const valid = this.$refs.dynamicForm.validate();
       if (valid) {
-        this.$emit('save', this.internalValue);
+        this.$emit('save', _.cloneDeep(this.internalValue));
       }
     },
   },

@@ -10,7 +10,8 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
-        @editItem="handleEditItem"
+        @editItem="editItem"
+        @deleteItem="deleteItem"
       />
       <FormDialog
         v-if="formStructure"
@@ -25,9 +26,13 @@
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
         :form="editingCompany"
+        @save="saveCompany"
         @close="isEditCompanyDialogVisible = false"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog
+        :isVisible="isDeleteDialogVisible"
+        @close="isDeleteDialogVisible = false"
+        @delete="deleteCompany" />
     </MainContainer>
   </div>
 </template>
@@ -40,7 +45,7 @@ import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { Company } from '@/store/companies-types';
 import { FormElements } from '@/store/form-types';
 
@@ -49,10 +54,18 @@ interface Data {
   isAddCompanyDialogVisible: boolean;
   isDeleteDialogVisible: boolean;
   editingCompany: Company | null;
+  deletingCompany: Company | null;
 }
 
 // tslint:disable no-empty-interface
-interface Methods {}
+interface Methods {
+  saveCompany: (c: Company) => void;
+  editItem: (c: Company) => void;
+  updateCompany: (c: Company) => void;
+  deleteItem: (c: Company) => void;
+  deleteCompany: () => void;
+  closeAddCompanyDialogVisible: () => void;
+}
 // tslint:disable no-empty-interface
 interface Computed {
   formStructure: Array<FormElements>;
@@ -75,6 +88,7 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
     editingCompany: null,
+    deletingCompany: null,
   }),
   computed: {
     ...mapGetters({
@@ -89,10 +103,26 @@ export default Vue.extend<Data, Methods, Computed, Props>({
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
     },
-    handleEditItem(item: Company) {
+    editItem(item: Company) {
       this.isEditCompanyDialogVisible = true;
       this.editingCompany = item;
     },
+    saveCompany(company: Company) {
+      this.isEditCompanyDialogVisible = false;
+      this.updateCompanyAction(company);
+    },
+    deleteItem(company: Company) {
+      this.isDeleteDialogVisible = true;
+      this.deletingCompany = company;
+    },
+    deleteCompany() {
+      this.isDeleteDialogVisible = false;
+      this.deleteCompanyAction(this.deletingCompany);
+    },
+    ...mapActions('companies', {
+      updateCompanyAction: 'updateCompany',
+      deleteCompanyAction: 'deleteCompany',
+    })
   },
 });
 </script>
