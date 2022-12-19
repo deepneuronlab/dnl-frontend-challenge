@@ -6,13 +6,15 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container
+          ><DynamicForm :formStructure="formStructure" :formData="formData"
+        /></v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" text @click="saveFormData"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -38,11 +40,21 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    formData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    saveFormData() {
+      this.$emit('saveFormData', this.formData);
+    },
+  },
 });
 </script>
 

@@ -9,7 +9,7 @@ export interface FormSelect {
   required: boolean;
 }
 
-interface FormTextField {
+export interface FormTextField {
   type: 'textField';
   key: string;
   label: string;
