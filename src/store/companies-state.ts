@@ -39,39 +39,39 @@ const companiesState: CompaniesState = {
       placeholder: 'Type name',
       required: true,
     },
-    {
-      type: 'selectField',
-      key: '2019',
-      label: 'Balance 2019',
-      placeholder: 'Type',
-      required: false,
-      items: [
-        {
-          text: 'Good',
-          value: 'good',
-        },
-        {
-          text: 'Bad',
-          value: 'bad',
-        },
-      ],
-    },
-    {
-      type: 'radioGroup',
-      key: 'language',
-      label: 'Language',
-      required: false,
-      items: [
-        {
-          text: 'de',
-          value: 'de',
-        },
-        {
-          text: 'en',
-          value: 'en',
-        },
-      ],
-    },
+    // {
+    //   type: 'selectField',
+    //   key: '2019',
+    //   label: 'Balance 2019',
+    //   placeholder: 'Type',
+    //   required: false,
+    //   items: [
+    //     {
+    //       text: 'Good',
+    //       value: 'good',
+    //     },
+    //     {
+    //       text: 'Bad',
+    //       value: 'bad',
+    //     },
+    //   ],
+    // },
+    // {
+    //   type: 'radioGroup',
+    //   key: 'language',
+    //   label: 'Language',
+    //   required: false,
+    //   items: [
+    //     {
+    //       text: 'de',
+    //       value: 'de',
+    //     },
+    //     {
+    //       text: 'en',
+    //       value: 'en',
+    //     },
+    //   ],
+    // },
   ],
 };
 

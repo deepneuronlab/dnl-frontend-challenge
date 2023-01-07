@@ -6,7 +6,9 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm :formStructure="formStructure" :formModel="formModel" />
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
@@ -37,6 +39,12 @@ export default Vue.extend({
     title: {
       type: String,
       required: true,
+    },
+    formModel: {
+      type: Object,
+      default() {
+        return {};
+      },
     },
   },
   data() {

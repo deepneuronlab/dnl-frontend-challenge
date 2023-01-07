@@ -4,7 +4,7 @@
     <MainContainer>
       <v-row justify="space-between" align="center" class="mr-0 ml-0 mt-10 mb-1">
         <h2 class="grey--text text--darken-4">Companies</h2>
-        <BtnMain text="Company" icon="mdi-plus" @click="isAddCompanyDialogVisible = true" />
+        <BtnMain text="Company" icon="mdi-plus" @click="addCompany" />
       </v-row>
       <DataTableCompanies
         v-if="tableHeaders && tableItems"
@@ -39,6 +39,7 @@ import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapGetters } from 'vuex';
+import { CompanyForm } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
@@ -47,17 +48,22 @@ export default Vue.extend({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    formStructure: [],
+    formStructure: [] as CompanyForm,
   }),
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      companyForm: 'companies/companyForm',
     }),
   },
   methods: {
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    addCompany() {
+      this.isAddCompanyDialogVisible = true;
+      this.formStructure = this.companyForm;
     },
   },
 });
