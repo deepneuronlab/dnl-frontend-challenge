@@ -50,7 +50,11 @@ export default Vue.extend({
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    save() {
+      this.$emit('close');
+    },
+  },
 });
 </script>
 
