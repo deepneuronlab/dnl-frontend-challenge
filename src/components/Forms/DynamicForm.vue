@@ -11,7 +11,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { PropType } from 'vue';
-import { CompanyForm } from '@/store/companies-types';
+import { CompanyForm, Company} from '@/store/companies-types';
 import TextField from './TextField.vue';
 import RadioGroup from './RadioGroup.vue';
 import SelectField from './SelectField.vue';
@@ -30,7 +30,7 @@ export default Vue.extend({
     },
     formModel:
     {
-      type: Object,
+      type: Object as PropType<Company>,
     },
   },
   data() {

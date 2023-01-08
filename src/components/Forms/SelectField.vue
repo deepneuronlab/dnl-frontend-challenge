@@ -20,8 +20,7 @@ export default Vue.extend({
 <template>
   <v-expand-transition>
     <div>
-      <v-select v-model="model.whatever" :label="inputType.label" :items="inputType.items"
-        :required="inputType.required"></v-select>
+      <v-select v-model="model[inputType.key]" :label="inputType.label" :items="inputType.items" :required="inputType.required"></v-select>
     </div>
   </v-expand-transition>
 </template>

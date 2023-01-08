@@ -20,9 +20,8 @@ export default Vue.extend({
 <template>
   <v-expand-transition>
     <v-container class="px-0" fluid>
-      <v-radio-group v-model="model.www" :label="inputType.label" row>
-        <v-radio v-for="langItem in inputType.items" :key="langItem.value" :label="langItem.text"
-          :value="langItem.value" />
+      <v-radio-group v-model="model[inputType.key]" :label="inputType.label" row>
+        <v-radio v-for="langItem in inputType.items" :key="langItem.value" :label="langItem.text" :value="langItem.value" />
       </v-radio-group>
     </v-container>
   </v-expand-transition>

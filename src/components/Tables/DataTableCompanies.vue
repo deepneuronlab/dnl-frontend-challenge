@@ -1,26 +1,11 @@
 <template>
   <v-container class="data-table pl-0 pr-0" v-if="tableHeaders">
     <v-layout>
-      <v-data-table
-        @click:row="$emit('clickedRow', $event)"
-        :headers="allTableHeaders"
-        :items="tableItems"
-        class="data-table__table"
-        item-class="className"
-      >
+      <v-data-table @click:row="$emit('clickedRow', $event)" :headers="allTableHeaders" :items="tableItems"
+        class="data-table__table" item-class="className">
         <template v-slot:[`item.actions`]="{ item }">
-          <BtnTableAction
-            text="Edit"
-            icon="mdi-pencil"
-            :disabled="false"
-            @clickAction="$emit('editItem', item)"
-          />
-          <BtnTableAction
-            text="Delete"
-            icon="mdi-delete"
-            :disabled="false"
-            @clickAction="$emit('deleteItem', item)"
-          />
+          <BtnTableAction text="Edit" icon="mdi-pencil" :disabled="false" @clickAction="$emit('editItem', item)" />
+          <BtnTableAction text="Delete" icon="mdi-delete" :disabled="false" @clickAction="$emit('deleteItem', item)" />
         </template>
       </v-data-table>
     </v-layout>
@@ -59,6 +44,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .data-table {
   min-width: 100%;
+
   .v-data-table {
     min-width: 100%;
   }

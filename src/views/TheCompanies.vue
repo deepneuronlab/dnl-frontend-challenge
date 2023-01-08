@@ -4,27 +4,15 @@
     <MainContainer>
       <v-row justify="space-between" align="center" class="mr-0 ml-0 mt-10 mb-1">
         <h2 class="grey--text text--darken-4">Companies</h2>
-        <BtnMain text="Company" icon="mdi-plus" @click="addCompany" />
+        <BtnMain text="Company" icon="mdi-plus" @click="createCompany" />
       </v-row>
-      <DataTableCompanies
-        v-if="tableHeaders && tableItems"
-        :tableHeaders="tableHeaders"
-        :tableItems="tableItems"
-      />
-      <FormDialog
-        v-if="formStructure"
-        title="Add Company"
-        :isVisible="isAddCompanyDialogVisible"
-        :formStructure="formStructure"
-        @close="closeAddCompanyDialogVisible()"
-      />
-      <FormDialog
-        v-if="formStructure"
-        title="Edit Company"
-        :isVisible="isEditCompanyDialogVisible"
-        :formStructure="formStructure"
-        @close="isEditCompanyDialogVisible = false"
-      />
+
+      <DataTableCompanies v-if="tableHeaders && tableItems" :tableHeaders="tableHeaders" :tableItems="tableItems"  @deleteItem="deleteCompany" @editItem="editCompany"/>
+
+      <FormDialog v-if="formStructure" title="Add Company" :isVisible="isEditDialogVisible"
+        :formStructure="formStructure" :formModel="formModel" @close="closeCompanyDialog()" @saveDialogForm="saveCompany" />
+      <!-- <FormDialog v-if="formStructure" title="Edit Company" :isVisible="isEditCompanyDialogVisible"
+        :formStructure="formStructure" @close="isEditCompanyDialogVisible = false" /> -->
       <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
     </MainContainer>
   </div>
@@ -38,17 +26,18 @@ import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { mapGetters } from 'vuex';
-import { CompanyForm } from '@/store/companies-types';
+import { mapGetters, mapActions } from 'vuex';
+import { CompanyForm, Company } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
   data: () => ({
-    isEditCompanyDialogVisible: false,
-    isAddCompanyDialogVisible: false,
+    isEditDialogVisible: false,
+    // isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
     formStructure: [] as CompanyForm,
+    formModel: {} as Company
   }),
   computed: {
     ...mapGetters({
@@ -58,15 +47,40 @@ export default Vue.extend({
     }),
   },
   methods: {
-    closeAddCompanyDialogVisible() {
-      this.isAddCompanyDialogVisible = false;
+    ...mapActions({
+      saveCompany: 'companies/addCompany',
+      deleteCompany: 'companies/delete'
+    }),
+    closeCompanyDialog() {
+      this.isEditDialogVisible = false;
     },
-    addCompany() {
-      this.isAddCompanyDialogVisible = true;
+    createCompany() {
+      console.log('creating company');
+      this.isEditDialogVisible = true;
       this.formStructure = this.companyForm;
+    },
+    editCompany(item: Company) {
+      console.log('editing company');
+      console.log(item);
+      this.isEditDialogVisible = true;
+      this.formModel = item;
+      this.formStructure = this.companyForm;
+      // this.formStructure = this.companyForm;
+    },
+    deleteCompany(item: Company) {
+      console.log('deleting company');
+      console.log(item);
+      this.isDeleteDialogVisible = true;
+      this.formStructure = this.companyForm;
+    },
+    saveCompany(item: Company) {
+      this.saveCompany(item);
+      this.isEditDialogVisible = false;
     },
   },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>
