@@ -4,16 +4,12 @@ import { Company } from '@/store/companies-types';
 import { BaseState } from './types';
 
 const companiesActions: ActionTree<CompaniesState, BaseState> = {
-  
-  addCompany({ commit }, company: Company) {
-    commit('createCompany', company);
-  },
-  updateCompany({ commit }, data: Company) {
-    commit('editCompany', data);
+  createOrUpdateCompany({ commit }, company: Company) {
+    commit('createOrUpdateCompany', company);
   },
 
-  deleteCompany({ commit }, id) {
-    commit('deleteCompany', id);
+  deleteCompany({ commit }, company: Company) {
+    commit('deleteCompany', company);
   },
 };
 

@@ -4,16 +4,14 @@
     <MainContainer>
       <v-row justify="space-between" align="center" class="mr-0 ml-0 mt-10 mb-1">
         <h2 class="grey--text text--darken-4">Companies</h2>
-        <BtnMain text="Company" icon="mdi-plus" @click="createCompany" />
+        <BtnMain text="Company" icon="mdi-plus" @click="createCompanyDialog" />
       </v-row>
 
-      <DataTableCompanies v-if="tableHeaders && tableItems" :tableHeaders="tableHeaders" :tableItems="tableItems"  @deleteItem="deleteCompany" @editItem="editCompany"/>
+      <DataTableCompanies v-if="tableHeaders && tableItems" :tableHeaders="tableHeaders" :tableItems="tableItems"  @deleteItem="deleteCompanyDialog" @editItem="editCompanyDialog"/>
 
       <FormDialog v-if="formStructure" title="Add Company" :isVisible="isEditDialogVisible"
         :formStructure="formStructure" :formModel="formModel" @close="closeCompanyDialog()" @saveDialogForm="saveCompany" />
-      <!-- <FormDialog v-if="formStructure" title="Edit Company" :isVisible="isEditCompanyDialogVisible"
-        :formStructure="formStructure" @close="isEditCompanyDialogVisible = false" /> -->
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog :isVisible="isDeleteDialogVisible" :formModel="formModel" @close="isDeleteDialogVisible = false" @delete="deleteCompany" />
     </MainContainer>
   </div>
 </template>
@@ -34,7 +32,6 @@ export default Vue.extend({
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
   data: () => ({
     isEditDialogVisible: false,
-    // isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
     formStructure: [] as CompanyForm,
     formModel: {} as Company
@@ -48,34 +45,34 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions({
-      saveCompany: 'companies/addCompany',
-      deleteCompany: 'companies/delete'
+      createOrUpdateCompanyAction: 'companies/createOrUpdateCompany',
+      deleteCompanyAction: 'companies/deleteCompany'
     }),
     closeCompanyDialog() {
       this.isEditDialogVisible = false;
     },
-    createCompany() {
-      console.log('creating company');
+    createCompanyDialog() {
       this.isEditDialogVisible = true;
       this.formStructure = this.companyForm;
+      this.formModel = {} as Company;
     },
-    editCompany(item: Company) {
-      console.log('editing company');
-      console.log(item);
+    editCompanyDialog(item: Company) {
       this.isEditDialogVisible = true;
       this.formModel = item;
       this.formStructure = this.companyForm;
-      // this.formStructure = this.companyForm;
     },
-    deleteCompany(item: Company) {
-      console.log('deleting company');
-      console.log(item);
+    deleteCompanyDialog(item: Company) {
       this.isDeleteDialogVisible = true;
+      this.formModel = item;
       this.formStructure = this.companyForm;
     },
     saveCompany(item: Company) {
-      this.saveCompany(item);
+      this.createOrUpdateCompanyAction(item);
       this.isEditDialogVisible = false;
+    },
+    deleteCompany(item: Company) {
+      this.deleteCompanyAction(item);
+      this.isDeleteDialogVisible = false;
     },
   },
 });

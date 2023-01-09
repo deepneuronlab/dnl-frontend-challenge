@@ -5,7 +5,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')">Cancel</v-btn>
-        <v-btn color="blue darken-1" text @click="$emit('delete')">OK</v-btn>
+        <v-btn color="blue darken-1" text @click="deleteCompany">OK</v-btn>
         <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
@@ -21,6 +21,17 @@ export default Vue.extend({
     isVisible: {
       type: Boolean,
       required: true,
+    },
+    formModel: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+  methods: {
+    deleteCompany() {
+      this.$emit('delete', this.formModel);
     },
   },
 });
