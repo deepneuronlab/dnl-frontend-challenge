@@ -7,11 +7,14 @@
         <BtnMain text="Company" icon="mdi-plus" @click="createCompanyDialog" />
       </v-row>
 
-      <DataTableCompanies v-if="tableHeaders && tableItems" :tableHeaders="tableHeaders" :tableItems="tableItems"  @deleteItem="deleteCompanyDialog" @editItem="editCompanyDialog"/>
+      <DataTableCompanies v-if="tableHeaders && tableItems" :tableHeaders="tableHeaders" :tableItems="tableItems"
+        @deleteItem="deleteCompanyDialog" @editItem="editCompanyDialog" />
 
       <FormDialog v-if="formStructure" title="Add Company" :isVisible="isEditDialogVisible"
-        :formStructure="formStructure" :formModel="formModel" @close="closeCompanyDialog()" @saveDialogForm="saveCompany" />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" :formModel="formModel" @close="isDeleteDialogVisible = false" @delete="deleteCompany" />
+        :formStructure="formStructure" :formModel="formModel" @close="closeCompanyDialog()"
+        @saveDialogForm="saveCompany" ref="companyDialog"/>
+      <DeleteDialog :isVisible="isDeleteDialogVisible" :formModel="formModel" @close="isDeleteDialogVisible = false"
+        @delete="deleteCompany" />
     </MainContainer>
   </div>
 </template>
@@ -67,8 +70,15 @@ export default Vue.extend({
       this.formStructure = this.companyForm;
     },
     saveCompany(item: Company) {
-      this.createOrUpdateCompanyAction(item);
-      this.isEditDialogVisible = false;
+      const companyDialog = this.$refs.companyDialog as any;
+      const dynamicForm = companyDialog.$refs.dynamicForm as any;
+      const form = dynamicForm.$refs.form as any;
+      const isCompanyFormValid = form.validate();
+      if(isCompanyFormValid)
+      {      
+        this.createOrUpdateCompanyAction(item);
+        this.isEditDialogVisible = false;
+      }
     },
     deleteCompany(item: Company) {
       this.deleteCompanyAction(item);

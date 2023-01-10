@@ -13,14 +13,19 @@ export default Vue.extend({
     inputType: {
       type: Object as PropType<FormTextField>,
     },
-  }
+  },
+  data: () => ({
+      nameRules: [
+        (v: string)   => !!v || 'Name is required',
+      ]
+    }),
 });
 </script>
 
 <template>
   <v-expand-transition>
     <div>
-      <v-text-field v-model="model[inputType.key]" :label="inputType.label" :required="inputType.required"></v-text-field>
+      <v-text-field v-model="model[inputType.key]" :label="inputType.label" :rules="nameRules" :required="inputType.required"></v-text-field>
     </div>
   </v-expand-transition>
 </template>

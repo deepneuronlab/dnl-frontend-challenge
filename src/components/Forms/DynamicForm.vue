@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="isFormValid" class="dynamic-form">
+  <v-form v-model="isFormValid" class="dynamic-form" ref="form">
     <v-container fluid> 
       <div v-for="formInput in formStructure" v-bind:key="formInput.type">
         <component :is="formInput.type" :model="formModel" :inputType="formInput"/>
@@ -15,6 +15,7 @@ import { CompanyForm, Company} from '@/store/companies-types';
 import TextField from './TextField.vue';
 import RadioGroup from './RadioGroup.vue';
 import SelectField from './SelectField.vue';
+
 
 export default Vue.extend({
   name: 'DynamicForm',
@@ -35,7 +36,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      isFormValid: false,
+      isFormValid: true,
     };
   },
 });

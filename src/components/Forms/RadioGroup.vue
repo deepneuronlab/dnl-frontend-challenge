@@ -13,14 +13,19 @@ export default Vue.extend({
     inputType: {
       type: Object as PropType<FormRadioButtonGroup>,
     },
-  }
+  },
+  data: () => ({
+      radioRules: [
+        (v: unknown)   => !!v || 'Language is required',
+      ]
+    }),
 });
 </script>
 
 <template>
   <v-expand-transition>
     <v-container class="px-0" fluid>
-      <v-radio-group v-model="model[inputType.key]" :label="inputType.label" row>
+      <v-radio-group v-model="model[inputType.key]" :label="inputType.label" :rules="radioRules" :required="inputType.required" row>
         <v-radio v-for="langItem in inputType.items" :key="langItem.value" :label="langItem.text" :value="langItem.value" />
       </v-radio-group>
     </v-container>

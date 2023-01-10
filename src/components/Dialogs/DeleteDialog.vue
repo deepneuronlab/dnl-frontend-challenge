@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-model="isVisible" @click:outside="$emit('close')" max-width="500px">
+  <v-dialog v-model="isVisible" @click:outside="$emit('close')" max-width="600px">
     <v-card>
-      <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+      <v-card-title class="headline">Are you sure you want to delete '{{formModel.companyName}}'?</v-card-title>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')">Cancel</v-btn>
@@ -14,6 +14,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { PropType } from 'vue';
+import { Company} from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'DeleteDialog',
@@ -23,10 +25,7 @@ export default Vue.extend({
       required: true,
     },
     formModel: {
-      type: Object,
-      default() {
-        return {};
-      },
+      type: Object as PropType<Company>
     },
   },
   methods: {

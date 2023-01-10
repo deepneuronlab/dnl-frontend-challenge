@@ -7,7 +7,7 @@
 
       <v-card-text>
         <v-container>
-          <DynamicForm :formStructure="formStructure" :formModel="formModel"/>
+          <DynamicForm :formStructure="formStructure" :formModel="formModel" ref="dynamicForm"/>
         </v-container>
       </v-card-text>
 
