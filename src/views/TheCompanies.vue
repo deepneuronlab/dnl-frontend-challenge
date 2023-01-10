@@ -30,6 +30,9 @@ import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapGetters, mapActions } from 'vuex';
 import { CompanyForm, Company } from '@/store/companies-types';
 
+/*** import the helper ***/
+//import { callMethodWithParams } from '@/helpers/api-helper';
+
 export default Vue.extend({
   name: 'TheCompanies',
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
@@ -85,6 +88,21 @@ export default Vue.extend({
       this.isDeleteDialogVisible = false;
     },
   },
+  /*** Example of call to the request helper to load the companies from the backend ***/
+  // setup()
+  // {
+  // /** Ajax */
+  // async function getCompanies(): Promise<void> {
+  //     dataTable.loading = true;
+
+  //     const data: Company[] = await callMethodWithParams<Company[]>({
+  //       Method: 'GetCompanies',
+  //       Params: { },
+  //     });
+
+  //     tableItems = data;
+  //   }
+  // },
 });
 </script>
 
