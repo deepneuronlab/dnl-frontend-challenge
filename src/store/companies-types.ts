@@ -4,6 +4,11 @@ export interface CompaniesState {
   companies: Company[] | null;
   companyTableHeaders: CompanyTableHeaderItem[] | null;
   companyForm: CompanyForm | null;
+  companyFormValues: CompanyArbitraryValues;
+}
+
+export interface CompanyArbitraryValues {
+  [key: string]: string | number | boolean;
 }
 
 export interface Company {

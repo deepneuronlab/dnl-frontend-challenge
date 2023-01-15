@@ -7,7 +7,7 @@
 
       <v-card-text>
         <v-container>
-          <DynamicForm :companyForm="companyForm" />
+          <DynamicForm :formStructure="formStructure" />
         </v-container>
       </v-card-text>
 
@@ -28,7 +28,7 @@ export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
-    companyForm: {
+    formStructure: {
       type: Array,
       required: true,
     },

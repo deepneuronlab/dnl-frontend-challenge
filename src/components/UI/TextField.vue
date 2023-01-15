@@ -3,9 +3,10 @@
     :label="label"
     :placeholder="placeholder"
     :value="value"
+    :required="required"
     type="text"
     clearable
-    @input="$emit('updateFormValue', $event)"
+    @input="$emit('onChange', $event)"
   />
 </template>
 
@@ -18,6 +19,7 @@ export default Vue.extend({
     label: { type: String, required: false },
     placeholder: { type: String, required: false, default: 'Type here...' },
     value: { type: String, required: false },
+    required: { type: Boolean, required: false },
   },
 });
 </script>

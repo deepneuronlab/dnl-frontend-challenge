@@ -5,7 +5,8 @@
     item-value="value"
     :label="label"
     return-object
-    @input="$emit('updateFormValue', $event.value)"
+    value="value"
+    @input="$emit('onChange', $event.value)"
   >
   </v-select>
 </template>
@@ -20,6 +21,7 @@ export default Vue.extend({
   props: {
     label: { type: String, required: false },
     items: { type: Array as PropType<Array<FormItem>>, required: true },
+    value: { type: String, required: false, default: '' },
   },
 });
 </script>

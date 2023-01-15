@@ -12,8 +12,8 @@ const companiesGetters: GetterTree<CompaniesState, BaseState> = {
   companyForm(state) {
     return state.companyForm;
   },
-  formValue(state, key) {
-    return state.companyForm?.find(formElement => formElement.key === key);
+  formValues(state) {
+    return state.companyFormValues;
   },
 };
 
