@@ -10,6 +10,7 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @showDeleteDialog="showDeleteDialog"
       />
       <FormDialog
         v-if="formStructure"
@@ -25,7 +26,11 @@
         :formStructure="formStructure"
         @close="isEditCompanyDialogVisible = false"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog
+        :isVisible="isDeleteDialogVisible"
+        @delete="deleteCompany"
+        @close="isDeleteDialogVisible = false"
+      />
     </MainContainer>
   </div>
 </template>
@@ -40,13 +45,21 @@ import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 
+declare interface BaseComponentData {
+  isEditCompanyDialogVisible: boolean;
+  isAddCompanyDialogVisible: boolean;
+  isDeleteDialogVisible: boolean;
+  selectedCompany?: string;
+}
+
 export default Vue.extend({
   name: 'TheCompanies',
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
-  data: () => ({
+  data: (): BaseComponentData => ({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
+    selectedCompany: undefined,
   }),
   computed: {
     ...mapGetters({
@@ -58,6 +71,22 @@ export default Vue.extend({
   methods: {
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    showDeleteDialog(companyId: string) {
+      this.isDeleteDialogVisible = true;
+      this.selectedCompany = companyId;
+    },
+    deleteCompany() {
+      this.$store
+        .dispatch('companies/deleteCompany', this.selectedCompany)
+        .then(() => {
+          this.isDeleteDialogVisible = false;
+          this.selectedCompany = undefined;
+        })
+        .catch(error => {
+          console.log(error);
+          // show toast message or some other error UI
+        });
     },
   },
 });

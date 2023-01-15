@@ -17,6 +17,14 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
 
     context.commit('addCompany', company);
   },
+  deleteCompany(context, companyId: string) {
+    const foundCompanyIdx = context.state.companies?.findIndex(
+      company => company.companyId === companyId,
+    );
+    if (foundCompanyIdx === undefined || foundCompanyIdx === -1) return;
+
+    context.state.companies?.splice(foundCompanyIdx, 1);
+  },
 };
 
 export default companiesActions;

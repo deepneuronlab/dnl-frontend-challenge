@@ -2,12 +2,15 @@ import { MutationTree } from 'vuex';
 import { CompaniesState, Company } from './companies-types';
 
 const companiesMutations: MutationTree<CompaniesState> = {
-  updateFormValue(state, payload: { key: string; value: string }) {
+  updateFormValue(state, formItem: { key: string; value: string }) {
     if (!state.companyFormValues) return;
-    state.companyFormValues[payload.key] = payload.value;
+    state.companyFormValues[formItem.key] = formItem.value;
   },
-  addCompany(state, payload: Company) {
-    state.companies?.push(payload);
+  addCompany(state, company: Company) {
+    state.companies?.push(company);
+  },
+  updateCompanies(state, companies) {
+    state.companies = companies;
   },
 };
 

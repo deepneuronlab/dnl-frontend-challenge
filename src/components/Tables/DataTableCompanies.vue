@@ -19,7 +19,7 @@
             text="Delete"
             icon="mdi-delete"
             :disabled="false"
-            @clickAction="$emit('deleteItem', item)"
+            @clickAction="$emit('showDeleteDialog', item.companyId)"
           />
         </template>
       </v-data-table>
