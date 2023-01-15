@@ -7,6 +7,7 @@ export interface FormSelect {
   items: FormItem[];
   placeholder: string;
   required: boolean;
+  value?: string;
 }
 
 interface FormTextField {
@@ -15,6 +16,7 @@ interface FormTextField {
   label: string;
   placeholder: string;
   required: boolean;
+  value?: string;
 }
 
 export interface FormRadioButtonGroup {
@@ -23,6 +25,7 @@ export interface FormRadioButtonGroup {
   label: string;
   items: FormItem[];
   required: boolean;
+  value?: string;
 }
 
 export interface FormItem {

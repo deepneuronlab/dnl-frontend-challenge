@@ -1,5 +1,12 @@
 <template>
-  <v-select :items="items" item-text="text" item-value="value" :label="label" return-object>
+  <v-select
+    :items="items"
+    item-text="text"
+    item-value="value"
+    :label="label"
+    return-object
+    @input="$emit('updateFormValue', $event.value)"
+  >
   </v-select>
 </template>
 

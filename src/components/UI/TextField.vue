@@ -1,5 +1,12 @@
 <template>
-  <v-text-field :label="label" :placeholder="placeholder" type="text" clearable />
+  <v-text-field
+    :label="label"
+    :placeholder="placeholder"
+    :value="value"
+    type="text"
+    clearable
+    @input="$emit('updateFormValue', $event)"
+  />
 </template>
 
 <script lang="ts">
@@ -10,6 +17,7 @@ export default Vue.extend({
   props: {
     label: { type: String, required: false },
     placeholder: { type: String, required: false, default: 'Type here...' },
+    value: { type: String, required: false },
   },
 });
 </script>

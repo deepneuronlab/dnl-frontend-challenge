@@ -12,17 +12,17 @@
         :tableItems="tableItems"
       />
       <FormDialog
-        v-if="formStructure"
+        v-if="companyForm"
         title="Add Company"
         :isVisible="isAddCompanyDialogVisible"
-        :formStructure="formStructure"
+        :companyForm="companyForm"
         @close="closeAddCompanyDialogVisible()"
       />
       <FormDialog
-        v-if="formStructure"
+        v-if="companyForm"
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
-        :formStructure="formStructure"
+        :companyForm="companyForm"
         @close="isEditCompanyDialogVisible = false"
       />
       <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
@@ -47,12 +47,12 @@ export default Vue.extend({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    formStructure: [],
   }),
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      companyForm: 'companies/companyForm',
     }),
   },
   methods: {
