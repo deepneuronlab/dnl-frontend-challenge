@@ -32,13 +32,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import AppBar from '@/components/UI/AppBar.vue';
 import MainContainer from '@/components/Containers/MainContainer.vue';
 import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { mapGetters } from 'vuex';
 
 export default Vue.extend({
   name: 'TheCompanies',
