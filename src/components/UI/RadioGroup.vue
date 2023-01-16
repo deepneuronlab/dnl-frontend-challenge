@@ -20,7 +20,7 @@ export default Vue.extend({
     items: { type: Array as PropType<Array<FormItem>>, required: true },
     inputKey: { type: String, required: true },
     required: { type: Boolean, required: false },
-    formData: { type: Object, required: true }
+    formData: { type: Object, required: true },
   },
 });
 </script>

@@ -67,7 +67,7 @@ export default Vue.extend({
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
     selectedCompanyId: null,
-    formData: {}
+    formData: {},
   }),
   computed: {
     ...mapGetters({
@@ -76,13 +76,13 @@ export default Vue.extend({
       formStructure: 'companies/companyForm',
     }),
   },
-  created(){
+  created() {
     this.formStructure?.forEach((v: string) => {
-      this.formData[v] = ''
-    })
+      this.formData[v] = '';
+    });
   },
   methods: {
-    clearForm(){
+    clearForm() {
       this.formData = Object.assign({});
     },
     closeAddCompanyDialogVisible() {
@@ -114,10 +114,15 @@ export default Vue.extend({
         return;
       }
 
-      this.$store.dispatch('companies/updateCompany', {companyId: this.selectedCompanyId, formValues: this.formData}).then(() => {
-        this.isEditCompanyDialogVisible = false;
-        this.clearForm();
-      });
+      this.$store
+        .dispatch('companies/updateCompany', {
+          companyId: this.selectedCompanyId,
+          formValues: this.formData,
+        })
+        .then(() => {
+          this.isEditCompanyDialogVisible = false;
+          this.clearForm();
+        });
     },
     deleteCompany() {
       this.$store

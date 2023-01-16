@@ -21,8 +21,8 @@ export default Vue.extend({
   props: {
     label: { type: String, required: false },
     items: { type: Array as PropType<Array<FormItem>>, required: true },
-    formData: { type: Object, required: true},
-    inputKey: { type: String, required: true }
+    formData: { type: Object, required: true },
+    inputKey: { type: String, required: true },
   },
 });
 </script>

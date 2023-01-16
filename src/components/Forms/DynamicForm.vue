@@ -41,7 +41,6 @@ import SelectField from '@/components/UI/SelectField.vue';
 import RadioGroup from '@/components/UI/RadioGroup.vue';
 import { PropType } from 'vue';
 import { FormElements } from '@/store/form-types';
-import { mapGetters } from 'vuex';
 
 export default Vue.extend({
   name: 'DynamicForm',
@@ -52,8 +51,9 @@ export default Vue.extend({
       required: true,
     },
     formData: {
-      type: Object, required: true
-    }
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {

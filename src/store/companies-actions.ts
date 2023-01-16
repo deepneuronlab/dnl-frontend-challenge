@@ -1,3 +1,4 @@
+import { API } from '@/api';
 import cloneDeep from 'lodash/cloneDeep';
 import { ActionTree } from 'vuex';
 import { CompaniesState, Company } from './companies-types';
@@ -5,7 +6,7 @@ import { BaseState } from './types';
 
 const companiesActions: ActionTree<CompaniesState, BaseState> = {
   saveForm(context, payload) {
-    console.log(context, payload)
+    console.log(context, payload);
     const intermediaryFormData: Partial<Company> = {
       companyId:
         Date.now().toString(36) +
@@ -23,8 +24,7 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
 
     context.commit('addCompany', company);
   },
-  updateCompany(context, {companyId, formValues}: {companyId: string, formValues: {}}) {
-
+  updateCompany(context, { companyId, formValues }: { companyId: string; formValues: {} }) {
     const companyIdx = context.state.companies?.findIndex(
       company => company.companyId === companyId,
     );
@@ -38,7 +38,7 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
 
     newCompanies[companyIdx] = {
       ...newCompanies[companyIdx],
-      ...formValues
+      ...formValues,
     };
 
     context.commit('updateCompanies', newCompanies);
@@ -53,6 +53,20 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
     }
 
     context.commit('deleteCompany', foundCompanyIdx);
+  },
+
+  async getFormStructureFromServer(context, companyId: string) {
+    context.commit('loading', true);
+
+    // const formStructure =
+    await API.company
+      .getFormStructure({ companyId })
+      .then(res => {
+        context.commit('saveFormStructure', res.formStructure);
+      })
+      .catch(err => {
+        context.commit('showError', err);
+      });
   },
 };
 

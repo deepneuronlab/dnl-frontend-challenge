@@ -10,7 +10,7 @@ const companiesMutations: MutationTree<CompaniesState> = {
   },
   deleteCompany(state, companyIndex: number) {
     state.companies?.splice(companyIndex, 1);
-  }
+  },
 };
 
 export default companiesMutations;

@@ -47,8 +47,8 @@ export default Vue.extend({
     },
     formData: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {};
