@@ -73,7 +73,6 @@ const companiesState: CompaniesState = {
       ],
     },
   ],
-  companyFormValues: {},
 };
 
 export default companiesState;

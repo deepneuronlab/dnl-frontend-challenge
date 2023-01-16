@@ -12,9 +12,6 @@ const companiesGetters: GetterTree<CompaniesState, BaseState> = {
   companyForm(state) {
     return state.companyForm;
   },
-  formValues(state) {
-    return state.companyFormValues;
-  },
 };
 
 export default companiesGetters;

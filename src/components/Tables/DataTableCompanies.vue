@@ -13,7 +13,7 @@
             text="Edit"
             icon="mdi-pencil"
             :disabled="false"
-            @clickAction="$emit('showEditDialog', item.companyId)"
+            @clickAction="$emit('showEditDialog', item)"
           />
           <BtnTableAction
             text="Delete"

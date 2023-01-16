@@ -20,14 +20,16 @@
         :formStructure="formStructure"
         @close="closeAddCompanyDialogVisible()"
         @onSave="createCompany"
+        :formData="formData"
       />
       <FormDialog
         v-if="formStructure"
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
-        @close="isEditCompanyDialogVisible = false"
+        @close="closeEditCompanyDialogVisible()"
         @onSave="updateCompany"
+        :formData="formData"
       />
       <DeleteDialog
         :isVisible="isDeleteDialogVisible"
@@ -47,12 +49,14 @@ import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
+import { Company, CompanyArbitraryValues } from '@/store/companies-types';
 
 declare interface BaseComponentData {
   isEditCompanyDialogVisible: boolean;
   isAddCompanyDialogVisible: boolean;
   isDeleteDialogVisible: boolean;
   selectedCompanyId: string | null;
+  formData: CompanyArbitraryValues;
 }
 
 export default Vue.extend({
@@ -63,6 +67,7 @@ export default Vue.extend({
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
     selectedCompanyId: null,
+    formData: {}
   }),
   computed: {
     ...mapGetters({
@@ -71,22 +76,36 @@ export default Vue.extend({
       formStructure: 'companies/companyForm',
     }),
   },
+  created(){
+    this.formStructure?.forEach((v: string) => {
+      this.formData[v] = ''
+    })
+  },
   methods: {
+    clearForm(){
+      this.formData = Object.assign({});
+    },
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+      this.clearForm();
+    },
+    closeEditCompanyDialogVisible() {
+      this.isEditCompanyDialogVisible = false;
+      this.formData = Object.assign({});
     },
     showDeleteDialog(companyId: string) {
       this.isDeleteDialogVisible = true;
       this.selectedCompanyId = companyId;
     },
-    showEditDialog(companyId: string) {
+    showEditDialog(company: Company) {
       this.isEditCompanyDialogVisible = true;
-      this.selectedCompanyId = companyId;
+      this.formData = { ...company };
+      this.selectedCompanyId = company?.companyId;
     },
     createCompany() {
-      this.$store.dispatch('companies/saveForm').then(() => {
+      this.$store.dispatch('companies/saveForm', this.formData).then(() => {
         this.isAddCompanyDialogVisible = false;
-        this.$store.commit('companies/clearForm');
+        this.clearForm();
       });
     },
     updateCompany() {
@@ -95,9 +114,9 @@ export default Vue.extend({
         return;
       }
 
-      this.$store.dispatch('companies/updateCompany', this.selectedCompanyId).then(() => {
+      this.$store.dispatch('companies/updateCompany', {companyId: this.selectedCompanyId, formValues: this.formData}).then(() => {
         this.isEditCompanyDialogVisible = false;
-        this.$store.commit('companies/clearForm');
+        this.clearForm();
       });
     },
     deleteCompany() {

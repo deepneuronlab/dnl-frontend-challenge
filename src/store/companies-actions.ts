@@ -4,7 +4,8 @@ import { CompaniesState, Company } from './companies-types';
 import { BaseState } from './types';
 
 const companiesActions: ActionTree<CompaniesState, BaseState> = {
-  saveForm(context) {
+  saveForm(context, payload) {
+    console.log(context, payload)
     const intermediaryFormData: Partial<Company> = {
       companyId:
         Date.now().toString(36) +
@@ -16,13 +17,13 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
       updatedAt: Date.now().toString(),
     };
 
-    const company = { ...intermediaryFormData, ...context.state.companyFormValues } as Company;
+    const company = { ...intermediaryFormData, ...payload } as Company;
 
     console.log('Submitting new: ', company);
 
     context.commit('addCompany', company);
   },
-  updateCompany(context, companyId: string) {
+  updateCompany(context, {companyId, formValues}: {companyId: string, formValues: {}}) {
 
     const companyIdx = context.state.companies?.findIndex(
       company => company.companyId === companyId,
@@ -37,8 +38,7 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
 
     newCompanies[companyIdx] = {
       ...newCompanies[companyIdx],
-      // updatedAt: Date.now().toString(),
-      ...context.state.companyFormValues,
+      ...formValues
     };
 
     context.commit('updateCompanies', newCompanies);
@@ -52,7 +52,7 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
       return;
     }
 
-    context.state.companies?.splice(foundCompanyIdx, 1);
+    context.commit('deleteCompany', foundCompanyIdx);
   },
 };
 

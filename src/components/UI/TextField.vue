@@ -2,11 +2,10 @@
   <v-text-field
     :label="label"
     :placeholder="placeholder"
-    :value="value"
     :required="required"
     type="text"
+    v-model="formData[inputKey]"
     clearable
-    @input="$emit('onChange', $event)"
   />
 </template>
 
@@ -19,7 +18,9 @@ export default Vue.extend({
     label: { type: String, required: false },
     placeholder: { type: String, required: false, default: 'Type here...' },
     value: { type: String, required: false },
+    inputKey: { type: String, required: true },
     required: { type: Boolean, required: false },
+    formData: { type: Object, required: true }
   },
 });
 </script>

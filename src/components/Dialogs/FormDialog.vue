@@ -7,7 +7,7 @@
 
       <v-card-text>
         <v-container>
-          <DynamicForm :formStructure="formStructure" />
+          <DynamicForm :formStructure="formStructure" :formData="formData" />
         </v-container>
       </v-card-text>
 
@@ -45,6 +45,10 @@ export default Vue.extend({
       required: false,
       default: 'create',
     },
+    formData: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {};

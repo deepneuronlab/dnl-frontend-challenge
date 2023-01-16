@@ -6,9 +6,9 @@
           v-if="input.type === 'textField'"
           :label="input.label"
           :placeholder="input.placeholder"
-          :value="formValues[input.key]"
           :required="input.required"
-          @onChange="updateFormValue($event, input.key)"
+          :formData="formData"
+          :inputKey="input.key"
         />
 
         <SelectField
@@ -16,18 +16,18 @@
           :items="input.items"
           :label="input.label"
           :placeholder="input.placeholder"
-          :value="formValues[input.key] ? formValues[input.key] : ''"
           :required="input.required"
-          @onChange="updateFormValue($event, input.key)"
+          :formData="formData"
+          :inputKey="input.key"
         />
 
         <RadioGroup
           v-else-if="input.type === 'radioGroup'"
           :items="input.items"
           :label="input.label"
-          :value="formValues[input.key] ? formValues[input.key] : ''"
           :required="input.required"
-          @onChange="updateFormValue($event, input.key)"
+          :formData="formData"
+          :inputKey="input.key"
         />
       </v-row>
     </v-container>
@@ -51,21 +51,14 @@ export default Vue.extend({
       type: Array as PropType<Array<FormElements>>,
       required: true,
     },
+    formData: {
+      type: Object, required: true
+    }
   },
   data() {
     return {
       isFormValid: false,
     };
-  },
-  computed: {
-    ...mapGetters({
-      formValues: 'companies/formValues',
-    }),
-  },
-  methods: {
-    updateFormValue(value: string, key: string) {
-      this.$store.commit('companies/updateFormValue', { key, value });
-    },
   },
 });
 </script>
