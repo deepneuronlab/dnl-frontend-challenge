@@ -12,6 +12,10 @@ const companiesMutations: MutationTree<CompaniesState> = {
   updateCompanies(state, companies) {
     state.companies = companies;
   },
+  clearForm(state) {
+    console.log('Clearing form');
+    state.companyFormValues = {};
+  },
 };
 
 export default companiesMutations;

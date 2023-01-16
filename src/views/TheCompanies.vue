@@ -11,6 +11,7 @@
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
         @showDeleteDialog="showDeleteDialog"
+        @showEditDialog="showEditDialog"
       />
       <FormDialog
         v-if="formStructure"
@@ -18,6 +19,7 @@
         :isVisible="isAddCompanyDialogVisible"
         :formStructure="formStructure"
         @close="closeAddCompanyDialogVisible()"
+        @onSave="createCompany"
       />
       <FormDialog
         v-if="formStructure"
@@ -25,6 +27,7 @@
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
         @close="isEditCompanyDialogVisible = false"
+        @onSave="updateCompany"
       />
       <DeleteDialog
         :isVisible="isDeleteDialogVisible"
@@ -49,7 +52,7 @@ declare interface BaseComponentData {
   isEditCompanyDialogVisible: boolean;
   isAddCompanyDialogVisible: boolean;
   isDeleteDialogVisible: boolean;
-  selectedCompany?: string;
+  selectedCompanyId: string | null;
 }
 
 export default Vue.extend({
@@ -59,7 +62,7 @@ export default Vue.extend({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    selectedCompany: undefined,
+    selectedCompanyId: null,
   }),
   computed: {
     ...mapGetters({
@@ -74,14 +77,35 @@ export default Vue.extend({
     },
     showDeleteDialog(companyId: string) {
       this.isDeleteDialogVisible = true;
-      this.selectedCompany = companyId;
+      this.selectedCompanyId = companyId;
+    },
+    showEditDialog(companyId: string) {
+      this.isEditCompanyDialogVisible = true;
+      this.selectedCompanyId = companyId;
+    },
+    createCompany() {
+      this.$store.dispatch('companies/saveForm').then(() => {
+        this.isAddCompanyDialogVisible = false;
+        this.$store.commit('companies/clearForm');
+      });
+    },
+    updateCompany() {
+      if (this.selectedCompanyId === null) {
+        // show error
+        return;
+      }
+
+      this.$store.dispatch('companies/updateCompany', this.selectedCompanyId).then(() => {
+        this.isEditCompanyDialogVisible = false;
+        this.$store.commit('companies/clearForm');
+      });
     },
     deleteCompany() {
       this.$store
-        .dispatch('companies/deleteCompany', this.selectedCompany)
+        .dispatch('companies/deleteCompany', this.selectedCompanyId)
         .then(() => {
           this.isDeleteDialogVisible = false;
-          this.selectedCompany = undefined;
+          this.selectedCompanyId = null;
         })
         .catch(error => {
           console.log(error);
