@@ -9,7 +9,13 @@ export interface FormSelect {
   required: boolean;
 }
 
-interface FormTextField {
+type RuleFunction = (value: string) => string | boolean;
+
+export interface FormRule {
+  [key: string]: Array<RuleFunction>;
+}
+
+export interface FormTextField {
   type: 'textField';
   key: string;
   label: string;

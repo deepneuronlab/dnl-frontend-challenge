@@ -1,33 +1,26 @@
 <template>
-  <v-form v-model="isFormValid" class="dynamic-form">
+  <v-form class="dynamic-form" ref="elFormRef">
     <v-container fluid>
       <v-row v-for="input in formStructure" :key="input.key">
         <TextField
           v-if="input.type === 'textField'"
-          :label="input.label"
-          :placeholder="input.placeholder"
-          :required="input.required"
+          :input="input"
+          :error="formErrors[input.key]"
           :formData="formData"
-          :inputKey="input.key"
         />
 
         <SelectField
           v-else-if="input.type === 'selectField'"
-          :items="input.items"
-          :label="input.label"
-          :placeholder="input.placeholder"
-          :required="input.required"
           :formData="formData"
-          :inputKey="input.key"
+          :error="formErrors[input.key]"
+          :input="input"
         />
 
         <RadioGroup
           v-else-if="input.type === 'radioGroup'"
-          :items="input.items"
-          :label="input.label"
-          :required="input.required"
+          :error="formErrors[input.key]"
           :formData="formData"
-          :inputKey="input.key"
+          :input="input"
         />
       </v-row>
     </v-container>
@@ -35,12 +28,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import TextField from '@/components/UI/TextField.vue';
 import SelectField from '@/components/UI/SelectField.vue';
 import RadioGroup from '@/components/UI/RadioGroup.vue';
-import { PropType } from 'vue';
-import { FormElements } from '@/store/form-types';
+import { FormElements, FormRule } from '@/store/form-types';
+import { CompanyArbitraryValues } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'DynamicForm',
@@ -51,14 +44,13 @@ export default Vue.extend({
       required: true,
     },
     formData: {
-      type: Object,
+      type: Object as PropType<CompanyArbitraryValues>,
       required: true,
     },
-  },
-  data() {
-    return {
-      isFormValid: false,
-    };
+    formErrors: {
+      type: Object as PropType<FormRule>,
+      required: true,
+    },
   },
 });
 </script>

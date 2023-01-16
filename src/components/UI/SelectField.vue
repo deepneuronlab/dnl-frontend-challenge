@@ -1,28 +1,28 @@
 <template>
   <v-select
-    :items="items"
+    :items="input.items"
     item-text="text"
     item-value="value"
-    :label="label"
+    :label="input.label"
+    :required="input.required"
+    :rules="error"
     return-object
-    v-model="formData[inputKey]"
-    value="text"
+    v-model="formData[input.key]"
   >
   </v-select>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { FormItem } from '@/store/form-types';
-import { PropType } from 'vue';
+import Vue, { PropType } from 'vue';
+import { FormSelect } from '@/store/form-types';
+import { CompanyArbitraryValues } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'SelectField',
   props: {
-    label: { type: String, required: false },
-    items: { type: Array as PropType<Array<FormItem>>, required: true },
-    formData: { type: Object, required: true },
-    inputKey: { type: String, required: true },
+    formData: { type: Object as PropType<CompanyArbitraryValues>, required: true },
+    error: { type: Array as PropType<Array<Function>>, required: false, default: [] },
+    input: { type: Object as PropType<FormSelect>, required: true },
   },
 });
 </script>

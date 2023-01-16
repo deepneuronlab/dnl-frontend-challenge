@@ -1,26 +1,27 @@
 <template>
   <v-text-field
-    :label="label"
-    :placeholder="placeholder"
-    :required="required"
+    :label="input.label"
+    :placeholder="input.placeholder"
     type="text"
-    v-model="formData[inputKey]"
+    :name="input.key"
+    v-model="formData[input.key]"
+    :required="input.required"
+    :rules="error"
     clearable
   />
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
+import { FormTextField } from '@/store/form-types';
+import { CompanyArbitraryValues } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TextField',
   props: {
-    label: { type: String, required: false },
-    placeholder: { type: String, required: false, default: 'Type here...' },
-    value: { type: String, required: false },
-    inputKey: { type: String, required: true },
-    required: { type: Boolean, required: false },
-    formData: { type: Object, required: true },
+    formData: { type: Object as PropType<CompanyArbitraryValues>, required: true },
+    error: { type: Array as PropType<Array<Function>>, required: false, default: [] },
+    input: { type: Object as PropType<FormTextField>, required: true },
   },
 });
 </script>

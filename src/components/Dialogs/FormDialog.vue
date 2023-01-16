@@ -7,29 +7,36 @@
 
       <v-card-text>
         <v-container>
-          <DynamicForm :formStructure="formStructure" :formData="formData" />
+          <DynamicForm
+            :formStructure="formStructure"
+            :formData="formData"
+            :formErrors="formErrors"
+            ref="formRef"
+          />
         </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="$emit('onSave')"> Save </v-btn>
+        <v-btn color="blue darken-1" text @click="saveForm()"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { FormElements, FormRule } from '@/store/form-types';
+import { CompanyArbitraryValues } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
     formStructure: {
-      type: Array,
+      type: Array as PropType<Array<FormElements>>,
       required: true,
     },
     isVisible: {
@@ -40,18 +47,38 @@ export default Vue.extend({
       type: String,
       required: true,
     },
-    type: {
-      type: String,
-      required: false,
-      default: 'create',
-    },
     formData: {
-      type: Object,
+      type: Object as PropType<CompanyArbitraryValues>,
       required: true,
     },
   },
-  data() {
-    return {};
+  computed: {
+    formErrors(): FormRule {
+      const rules: FormRule = {};
+      this.formStructure?.forEach(struct => {
+        if (struct.required) {
+          const ruleFn = (value: string) => !!value || `${struct.label} is required.`;
+          rules[struct.key] = [ruleFn];
+        } else {
+          rules[struct.key] = [];
+        }
+      });
+      return rules;
+    },
+  },
+  watch: {
+    isVisible() {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const formRef = this?.$refs?.formRef as any;
+      formRef?.$refs?.elFormRef?.resetValidation();
+    },
+  },
+  methods: {
+    saveForm: function() {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const formRef = this.$refs.formRef as any;
+      if (formRef.$refs.elFormRef.validate()) this.$emit('onSave');
+    },
   },
 });
 </script>

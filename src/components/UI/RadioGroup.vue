@@ -1,7 +1,12 @@
 <template>
-  <v-radio-group :label="label" v-model="formData[inputKey]" row>
+  <v-radio-group
+    :label="input.label"
+    v-model="formData[input.key]"
+    :required="input.required"
+    :rules="error"
+  >
     <v-radio
-      v-for="item in items"
+      v-for="item in input.items"
       :key="item.value"
       :label="item.text"
       :value="item.value"
@@ -11,16 +16,15 @@
 
 <script lang="ts">
 import Vue, { PropType } from 'vue';
-import { FormItem } from '@/store/form-types';
+import { FormRadioButtonGroup } from '@/store/form-types';
+import { CompanyArbitraryValues } from '@/store/companies-types';
 
 export default Vue.extend({
-  name: 'SelectField',
+  name: 'RadioGroup',
   props: {
-    label: { type: String, required: false },
-    items: { type: Array as PropType<Array<FormItem>>, required: true },
-    inputKey: { type: String, required: true },
-    required: { type: Boolean, required: false },
-    formData: { type: Object, required: true },
+    formData: { type: Object as PropType<CompanyArbitraryValues>, required: true },
+    error: { type: Array as PropType<Array<Function>>, required: false, default: [] },
+    input: { type: Object as PropType<FormRadioButtonGroup>, required: true },
   },
 });
 </script>

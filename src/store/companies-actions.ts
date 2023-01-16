@@ -6,7 +6,6 @@ import { BaseState } from './types';
 
 const companiesActions: ActionTree<CompaniesState, BaseState> = {
   saveForm(context, payload) {
-    console.log(context, payload);
     const intermediaryFormData: Partial<Company> = {
       companyId:
         Date.now().toString(36) +
@@ -19,8 +18,6 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
     };
 
     const company = { ...intermediaryFormData, ...payload } as Company;
-
-    console.log('Submitting new: ', company);
 
     context.commit('addCompany', company);
   },

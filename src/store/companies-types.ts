@@ -10,13 +10,12 @@ export interface CompanyArbitraryValues {
   [key: string]: string | number | boolean;
 }
 
-export interface Company {
+export interface Company extends CompanyArbitraryValues {
   companyId: string;
   companyName: string;
   createdAt: string;
   updatedAt: string;
   className: string;
-  [key: string]: string | number | boolean;
 }
 
 export interface CompanyTableHeaderItem {
