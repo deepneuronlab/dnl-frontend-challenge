@@ -1,4 +1,66 @@
-import { CompaniesState } from './companies-types';
+import { CompaniesState, CompanyForm } from './companies-types';
+
+export const defaultCompanyForm: CompanyForm = [
+  {
+    type: 'textField',
+    key: 'companyName',
+    label: 'Company Name',
+    placeholder: 'Type name',
+    required: true,
+    value: '',
+  },
+  {
+    type: 'selectField',
+    key: '2019',
+    label: 'Balance 2019',
+    placeholder: 'Type',
+    required: false,
+    items: [
+      {
+        text: 'Good',
+        value: 'good',
+      },
+      {
+        text: 'Bad',
+        value: 'bad',
+      },
+    ],
+  },
+
+  {
+    type: 'selectField',
+    key: '2020',
+    label: 'Balance 2018',
+    placeholder: 'Type',
+    required: false,
+    items: [
+      {
+        text: 'Good',
+        value: 'good',
+      },
+      {
+        text: 'Bad',
+        value: 'bad',
+      },
+    ],
+  },
+  {
+    type: 'radioGroup',
+    key: 'language',
+    label: 'Language',
+    required: false,
+    items: [
+      {
+        text: 'de',
+        value: 'de',
+      },
+      {
+        text: 'en',
+        value: 'en',
+      },
+    ],
+  },
+];
 
 const companiesState: CompaniesState = {
   companies: [
@@ -31,48 +93,7 @@ const companiesState: CompaniesState = {
     },
   ],
   companyTableHeaders: [{ text: 'Name', value: 'companyName' }],
-  companyForm: [
-    {
-      type: 'textField',
-      key: 'companyName',
-      label: 'Company Name',
-      placeholder: 'Type name',
-      required: true,
-    },
-    {
-      type: 'selectField',
-      key: '2019',
-      label: 'Balance 2019',
-      placeholder: 'Type',
-      required: false,
-      items: [
-        {
-          text: 'Good',
-          value: 'good',
-        },
-        {
-          text: 'Bad',
-          value: 'bad',
-        },
-      ],
-    },
-    {
-      type: 'radioGroup',
-      key: 'language',
-      label: 'Language',
-      required: false,
-      items: [
-        {
-          text: 'de',
-          value: 'de',
-        },
-        {
-          text: 'en',
-          value: 'en',
-        },
-      ],
-    },
-  ],
+  companyForm: [...defaultCompanyForm],
 };
 
 export default companiesState;

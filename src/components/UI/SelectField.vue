@@ -7,7 +7,8 @@
     :required="input.required"
     :rules="error"
     return-object
-    v-model="formData[input.key]"
+    :value="input.value"
+    @input="$emit('onChange', { newValue: $event.value, key: input.key })"
   >
   </v-select>
 </template>
@@ -15,12 +16,10 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import { FormSelect } from '@/store/form-types';
-import { CompanyArbitraryValues } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'SelectField',
   props: {
-    formData: { type: Object as PropType<CompanyArbitraryValues>, required: true },
     error: { type: Array as PropType<Array<Function>>, required: false, default: [] },
     input: { type: Object as PropType<FormSelect>, required: true },
   },

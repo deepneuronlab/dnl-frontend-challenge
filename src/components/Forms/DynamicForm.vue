@@ -1,26 +1,26 @@
 <template>
   <v-form class="dynamic-form" ref="elFormRef">
     <v-container fluid>
-      <v-row v-for="input in formStructure" :key="input.key">
+      <v-row v-for="input in formStructur" :key="input.key">
         <TextField
           v-if="input.type === 'textField'"
           :input="input"
           :error="formErrors[input.key]"
-          :formData="formData"
+          @onChange="setFormValue"
         />
 
         <SelectField
           v-else-if="input.type === 'selectField'"
-          :formData="formData"
           :error="formErrors[input.key]"
           :input="input"
+          @onChange="setFormValue"
         />
 
         <RadioGroup
           v-else-if="input.type === 'radioGroup'"
           :error="formErrors[input.key]"
-          :formData="formData"
           :input="input"
+          @onChange="setFormValue"
         />
       </v-row>
     </v-container>
@@ -32,24 +32,32 @@ import Vue, { PropType } from 'vue';
 import TextField from '@/components/UI/TextField.vue';
 import SelectField from '@/components/UI/SelectField.vue';
 import RadioGroup from '@/components/UI/RadioGroup.vue';
-import { FormElements, FormRule } from '@/store/form-types';
-import { CompanyArbitraryValues } from '@/store/companies-types';
+import { FormRule } from '@/store/form-types';
+import { CompanyForm } from '@/store/companies-types';
+import { mapMutations, mapState } from 'vuex';
 
 export default Vue.extend({
   name: 'DynamicForm',
   components: { TextField, SelectField, RadioGroup },
   props: {
-    formStructure: {
-      type: Array as PropType<Array<FormElements>>,
-      required: true,
-    },
-    formData: {
-      type: Object as PropType<CompanyArbitraryValues>,
-      required: true,
-    },
     formErrors: {
       type: Object as PropType<FormRule>,
       required: true,
+    },
+  },
+  methods: {
+    ...mapMutations('companies', ['setFormValue']),
+  },
+  computed: {
+    ...mapState({ companies: 'companies' }),
+    formStructur: {
+      get(): CompanyForm {
+        console.log(this.companies.companyForm);
+        return this.companies.companyForm;
+      },
+      set(value: CompanyForm): void {
+        this.setFormValue(value);
+      },
     },
   },
 });

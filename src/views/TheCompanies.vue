@@ -20,16 +20,15 @@
         :formStructure="formStructure"
         @close="closeAddCompanyDialogVisible()"
         @onSave="createCompany"
-        :formData="formData"
       />
       <FormDialog
         v-if="formStructure"
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
+        :selectedCompany="selectedCompany"
         @close="closeEditCompanyDialogVisible()"
         @onSave="updateCompany"
-        :formData="formData"
       />
       <DeleteDialog
         :isVisible="isDeleteDialogVisible"
@@ -49,15 +48,15 @@ import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { Company, CompanyArbitraryValues } from '@/store/companies-types';
+import { Company, CompanyForm } from '@/store/companies-types';
 import { FormElements, FormRule } from '@/store/form-types';
+import { cloneDeep } from 'lodash';
 
 declare interface BaseComponentData {
   isEditCompanyDialogVisible: boolean;
   isAddCompanyDialogVisible: boolean;
   isDeleteDialogVisible: boolean;
-  selectedCompanyId: string | null;
-  formData: CompanyArbitraryValues;
+  selectedCompany: Company | null;
   formErrors: FormRule;
 }
 
@@ -68,8 +67,7 @@ export default Vue.extend({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    selectedCompanyId: null,
-    formData: {},
+    selectedCompany: null,
     formErrors: {},
   }),
   computed: {
@@ -79,14 +77,9 @@ export default Vue.extend({
       formStructure: 'companies/companyForm',
     }),
   },
-  created() {
-    this.formStructure?.forEach((struct: FormElements) => {
-      this.formData[struct.key] = '';
-    });
-  },
   methods: {
     clearForm() {
-      this.formData = {};
+      this.$store.commit('companies/setDefaultFormStructure');
     },
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
@@ -94,44 +87,48 @@ export default Vue.extend({
     },
     closeEditCompanyDialogVisible() {
       this.isEditCompanyDialogVisible = false;
-      this.formData = {};
+      this.clearForm();
+      this.selectedCompany = null;
     },
-    showDeleteDialog(companyId: string) {
+    showDeleteDialog(company: Company) {
       this.isDeleteDialogVisible = true;
-      this.selectedCompanyId = companyId;
+      this.selectedCompany = company;
     },
     showEditDialog(company: Company) {
+      this.clearForm();
       this.isEditCompanyDialogVisible = true;
-      this.formData = { ...company };
-      this.selectedCompanyId = company?.companyId;
+      this.selectedCompany = cloneDeep({ ...company }) as Company;
+
+      const tempStruct: CompanyForm = [];
+
+      const keys = Object.keys(this.selectedCompany as Company);
+      this.formStructure.forEach((struct: FormElements) => {
+        // struct.key in selectedCompanyKeys
+        if (keys.includes(struct.key)) {
+          tempStruct.push({
+            ...struct,
+            value: (this.selectedCompany as Company)[struct.key] as string,
+          });
+        }
+      });
+
+      this.$store.commit('companies/setFormStructure', tempStruct);
     },
     createCompany() {
       this.$store
-        .dispatch('companies/saveForm', this.formData)
-        .then(() => {
-          this.isAddCompanyDialogVisible = false;
-          this.clearForm();
-        })
+        .dispatch('companies/createCompany')
+        .then(this.closeAddCompanyDialogVisible)
         .catch(error => {
           console.log(error);
           // show toast message or some other error UI
         });
     },
     updateCompany() {
-      if (this.selectedCompanyId === null) {
-        // show error
-        return;
-      }
+      console.log('update: ', this.formStructure);
 
       this.$store
-        .dispatch('companies/updateCompany', {
-          companyId: this.selectedCompanyId,
-          formValues: this.formData,
-        })
-        .then(() => {
-          this.isEditCompanyDialogVisible = false;
-          this.clearForm();
-        })
+        .dispatch('companies/updateCompany', this.selectedCompany)
+        .then(this.closeEditCompanyDialogVisible)
         .catch(error => {
           console.log(error);
           // show toast message or some other error UI
@@ -139,10 +136,10 @@ export default Vue.extend({
     },
     deleteCompany() {
       this.$store
-        .dispatch('companies/deleteCompany', this.selectedCompanyId)
+        .dispatch('companies/deleteCompany', this.selectedCompany?.companyId)
         .then(() => {
           this.isDeleteDialogVisible = false;
-          this.selectedCompanyId = null;
+          this.selectedCompany = null;
         })
         .catch(error => {
           console.log(error);

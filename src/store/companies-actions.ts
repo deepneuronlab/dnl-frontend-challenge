@@ -5,7 +5,7 @@ import { CompaniesState, Company } from './companies-types';
 import { BaseState } from './types';
 
 const companiesActions: ActionTree<CompaniesState, BaseState> = {
-  saveForm(context, payload) {
+  createCompany(context) {
     const intermediaryFormData: Partial<Company> = {
       companyId:
         Date.now().toString(36) +
@@ -17,13 +17,18 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
       updatedAt: Date.now().toString(),
     };
 
-    const company = { ...intermediaryFormData, ...payload } as Company;
+    context.state.companyForm?.forEach(struct => {
+      if (struct.value) {
+        intermediaryFormData[struct.key] = struct.value;
+      }
+    });
+    const company = { ...intermediaryFormData, ...intermediaryFormData } as Company;
 
     context.commit('addCompany', company);
   },
-  updateCompany(context, { companyId, formValues }: { companyId: string; formValues: {} }) {
+  updateCompany(context, company: Company) {
     const companyIdx = context.state.companies?.findIndex(
-      company => company.companyId === companyId,
+      cmpny => cmpny.companyId === company.companyId,
     );
 
     if (!context.state.companies || companyIdx === undefined || companyIdx === -1) {
@@ -33,10 +38,11 @@ const companiesActions: ActionTree<CompaniesState, BaseState> = {
 
     const newCompanies = cloneDeep(context.state.companies);
 
-    newCompanies[companyIdx] = {
-      ...newCompanies[companyIdx],
-      ...formValues,
-    };
+    context.state.companyForm?.forEach(struct => {
+      if (struct.value) {
+        newCompanies[companyIdx][struct.key] = struct.value;
+      }
+    });
 
     context.commit('updateCompanies', newCompanies);
   },

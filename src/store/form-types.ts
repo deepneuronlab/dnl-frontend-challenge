@@ -7,6 +7,7 @@ export interface FormSelect {
   items: FormItem[];
   placeholder: string;
   required: boolean;
+  value?: string | number;
 }
 
 type RuleFunction = (value: string) => string | boolean;
@@ -21,6 +22,7 @@ export interface FormTextField {
   label: string;
   placeholder: string;
   required: boolean;
+  value?: string | number;
 }
 
 export interface FormRadioButtonGroup {
@@ -29,6 +31,7 @@ export interface FormRadioButtonGroup {
   label: string;
   items: FormItem[];
   required: boolean;
+  value?: string | number;
 }
 
 export interface FormItem {
