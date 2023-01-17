@@ -58,7 +58,6 @@ export default Vue.extend({
           rules[struct.key] = [];
         }
       });
-      console.log('RULES: ', rules);
       return rules;
     },
   },
@@ -73,7 +72,6 @@ export default Vue.extend({
     saveForm: function() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const formRef = this.$refs.formRef as any;
-      console.log('VALIDATE: ', formRef.$refs.elFormRef.validate());
       if (formRef.$refs.elFormRef.validate()) this.$emit('onSave');
     },
   },

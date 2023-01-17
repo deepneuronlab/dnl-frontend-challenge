@@ -124,8 +124,6 @@ export default Vue.extend({
         });
     },
     updateCompany() {
-      console.log('update: ', this.formStructure);
-
       this.$store
         .dispatch('companies/updateCompany', this.selectedCompany)
         .then(this.closeEditCompanyDialogVisible)

@@ -1,7 +1,7 @@
 <template>
   <v-form class="dynamic-form" ref="elFormRef">
     <v-container fluid>
-      <v-row v-for="input in formStructur" :key="input.key">
+      <v-row v-for="input in formStructure" :key="input.key">
         <TextField
           v-if="input.type === 'textField'"
           :input="input"
@@ -50,9 +50,8 @@ export default Vue.extend({
   },
   computed: {
     ...mapState({ companies: 'companies' }),
-    formStructur: {
+    formStructure: {
       get(): CompanyForm {
-        console.log(this.companies.companyForm);
         return this.companies.companyForm;
       },
       set(value: CompanyForm): void {
