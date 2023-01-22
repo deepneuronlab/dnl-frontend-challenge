@@ -15,9 +15,10 @@ export interface Company {
   [key: string]: string | number | boolean;
 }
 
+export type NewCompanyFormPayload = Omit<Company, 'className' | 'createdAt' | 'updatedAt'>;
+
 export interface CompanyTableHeaderItem {
   text: string | number;
   value: string | number;
 }
 export type CompanyForm = FormElements[];
-
