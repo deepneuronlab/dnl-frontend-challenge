@@ -6,21 +6,28 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm
+            :formStructure="formStructure"
+            :companyData="currentCompanyData"
+            @onCompanyFieldUpdated="updateCompanyField"
+          />
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { Company } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'FormDialog',
@@ -28,6 +35,10 @@ export default Vue.extend({
   props: {
     formStructure: {
       type: Array,
+      required: true,
+    },
+    companyData: {
+      type: Object as PropType<Company>,
       required: true,
     },
     isVisible: {
@@ -40,9 +51,23 @@ export default Vue.extend({
     },
   },
   data() {
-    return {};
+    return {
+      currentCompanyData: {} as Company,
+    };
   },
-  methods: {},
+  watch: {
+    companyData(newCurrentCompany) {
+      this.currentCompanyData = newCurrentCompany;
+    },
+  },
+  methods: {
+    updateCompanyField(key: string, value: string) {
+      this.currentCompanyData[key] = value;
+    },
+    save() {
+      this.$emit('onSave', this.currentCompanyData);
+    },
+  },
 });
 </script>
 
