@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isVisible" @click:outside="$emit('close')" max-width="500px">
+  <v-dialog v-model="isVisible" @click:outside="$emit('close')" max-width="500px" eager>
     <v-card>
       <v-card-title>
         <span class="headline">{{ title }}</span>
@@ -8,6 +8,7 @@
       <v-card-text>
         <v-container>
           <DynamicForm
+            ref="dynamicForm"
             :formStructure="formStructure"
             :companyData="currentCompanyData"
             @onCompanyFieldUpdated="updateCompanyField"
@@ -59,13 +60,19 @@ export default Vue.extend({
     companyData(newCurrentCompany) {
       this.currentCompanyData = newCurrentCompany;
     },
+    isVisible(value) {
+      if (value === false) this.$refs.dynamicForm.resetValidation();
+    },
   },
   methods: {
     updateCompanyField(key: string, value: string) {
       this.currentCompanyData[key] = value;
     },
     save() {
-      this.$emit('onSave', this.currentCompanyData);
+      this.$refs.dynamicForm.triggerValidation();
+      if (this.$refs.dynamicForm.isFormValid) {
+        this.$emit('onSave', this.currentCompanyData);
+      }
     },
   },
 });

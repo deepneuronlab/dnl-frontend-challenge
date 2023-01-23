@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="isFormValid" class="dynamic-form">
+  <v-form v-model="isFormValid" class="dynamic-form" ref="dynamicForm">
     <v-container fluid>
       <component
         v-for="formElement in filteredFormStructure"
@@ -62,6 +62,12 @@ export default Vue.extend({
         case 'radioGroup':
           return FormRadioButtonGroup;
       }
+    },
+    triggerValidation() {
+      this.$refs.dynamicForm.validate();
+    },
+    resetValidation() {
+      this.$refs.dynamicForm.resetValidation();
     },
   },
 });

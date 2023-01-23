@@ -1,7 +1,11 @@
 <template>
   <div class="d-flex align-center">
-    <div class="mr-4">{{ formElement.label }}:</div>
-    <v-radio-group :value="value" @change="$emit('onCompanyFieldUpdated', formElement.key, $event)">
+    <div class="mr-4">{{ formElement.label }} {{ formElement.required ? '*' : '' }}:</div>
+    <v-radio-group
+      :value="value"
+      @change="$emit('onCompanyFieldUpdated', formElement.key, $event)"
+      :rules="formElement.required ? required : []"
+    >
       <v-radio
         v-for="item in formElement.items"
         :key="item.value"
@@ -25,6 +29,11 @@ export default Vue.extend({
       type: Object as PropType<FormRadioButtonGroup>,
       required: true,
     },
+  },
+  data() {
+    return {
+      required: [(v: string) => !!v || `${this?.formElement.label} is required`],
+    };
   },
 });
 </script>
