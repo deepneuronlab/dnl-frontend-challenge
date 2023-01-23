@@ -1,6 +1,6 @@
 <template>
   <v-container class="px-0" fluid>
-    <v-radio-group :label="label">
+    <v-radio-group :label="label" :value="value">
       <v-radio
         v-for="option in options"
         :key="option.value"
@@ -15,6 +15,6 @@
 import Vue from 'vue';
 
 export default Vue.extend({
-  props: ['options', 'label'],
+  props: ['options', 'label', 'value'],
 });
 </script>

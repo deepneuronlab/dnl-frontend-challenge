@@ -10,6 +10,7 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @editItem="company => setCurrentCompanyForEdit(company)"
       />
       <FormDialog
         v-if="formStructure"
@@ -22,6 +23,7 @@
         v-if="formStructure"
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
+        :data="selectedCompany"
         :formStructure="formStructure"
         @close="isEditCompanyDialogVisible = false"
       />
@@ -39,16 +41,20 @@ import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapGetters } from 'vuex';
+import { Company } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
-  data: () => ({
-    isEditCompanyDialogVisible: false,
-    isAddCompanyDialogVisible: false,
-    isDeleteDialogVisible: false,
-    formStructure: [],
-  }),
+  data() {
+    return {
+      isEditCompanyDialogVisible: false,
+      isAddCompanyDialogVisible: false,
+      isDeleteDialogVisible: false,
+      formStructure: this.$store.state.companies.companyForm,
+      selectedCompany: {} as Company,
+    };
+  },
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
@@ -58,6 +64,10 @@ export default Vue.extend({
   methods: {
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    setCurrentCompanyForEdit(company: Company) {
+      this.isEditCompanyDialogVisible = true;
+      this.selectedCompany = company;
     },
   },
 });

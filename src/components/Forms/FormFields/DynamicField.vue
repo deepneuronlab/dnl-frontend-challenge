@@ -6,26 +6,27 @@ import RadioGroup from './RadioGroup.vue';
 
 export default Vue.component('DynamicField', {
   components: { SelectField },
-  props: ['field'],
+  props: ['field', 'value'],
   //   template: `<SelectField>{{field.label}}</SelectField>`,
   render: function(createElement) {
     let dynamicField;
     const field = this.$props.field;
+    const value = this.$props.value;
 
     switch (field.type) {
       case 'selectField':
         dynamicField = createElement(SelectField, {
-          props: { label: field.label, options: field.items },
+          props: { label: field.label, options: field.items, value },
         });
         break;
       case 'textField':
         dynamicField = createElement(TextField, {
-          props: { label: field.label, placeholder: field.placeholder },
+          props: { label: field.label, placeholder: field.placeholder, value },
         });
         break;
       case 'radioGroup':
         dynamicField = createElement(RadioGroup, {
-          props: { options: field.items, label: field.label },
+          props: { options: field.items, label: field.label, value: value },
         });
         break;
 

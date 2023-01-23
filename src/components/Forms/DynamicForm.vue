@@ -2,8 +2,8 @@
   <v-form v-model="isFormValid" class="dynamic-form">
     <v-container fluid>
       <ol>
-        <li v-for="field of companyFields" v-bind:key="{ name: field.label }">
-          <DynamicField :field="field" />
+        <li v-for="field of formStructure" v-bind:key="{ name: field.label }">
+          <DynamicField :field="field" :value="data ? data[field.key] : null" />
         </li>
       </ol>
     </v-container>
@@ -11,18 +11,16 @@
 </template>
 
 <script lang="ts">
-import companiesState from '@/store/companies-state';
 import DynamicField from './FormFields/DynamicField.vue';
 import Vue from 'vue';
 
 export default Vue.extend({
   name: 'DynamicForm',
   components: { DynamicField },
-  props: {},
+  props: ['formStructure', 'data'],
   data() {
     return {
       isFormValid: false,
-      companyFields: companiesState.companyForm,
     };
   },
 });
