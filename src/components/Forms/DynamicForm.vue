@@ -8,6 +8,8 @@
             :options="field.items"
             :items="field.items"
             :label="field.label"
+            :placeholder="field.placeholder"
+            :required="field.required"
             :name="field.key"
             :value="data[field.key]"
             @input="value => $emit('change', value, field.key)"

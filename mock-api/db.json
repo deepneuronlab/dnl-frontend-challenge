@@ -7,7 +7,8 @@
       "companyName": "Company X",
       "createdAt": "string",
       "updatedAt": "string",
-      "language": "de"
+      "language": "de",
+      "country": "Germany"
     },
     {
       "2021": "bad",
@@ -16,16 +17,24 @@
       "companyName": "Company Y",
       "createdAt": "string",
       "updatedAt": "string",
-      "language": "de"
+      "language": "fr",
+      "foundedYear": "2012"
     },
     {
       "2019": "good",
       "id": "id3",
       "className": "company-item",
-      "companyName": "Company Z",
+      "companyName": "Z inc",
       "createdAt": "string",
       "updatedAt": "string",
-      "language": "en"
+      "language": "de",
+      "employeeCount": "1000"
+    },
+    {
+      "2019": "good",
+      "companyName": "Y incorporated",
+      "language": "en",
+      "id": "bDyAlbx"
     }
   ],
   "forms": [
@@ -86,6 +95,123 @@
             {
               "text": "en",
               "value": "en"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id1",
+      "formStructure": [
+        {
+          "type": "textField",
+          "key": "companyName",
+          "label": "Company Name",
+          "placeholder": "Type name",
+          "required": true
+        },
+        {
+          "type": "textField",
+          "key": "country",
+          "label": "Country",
+          "placeholder": "Germany, France..",
+          "required": true
+        },
+        {
+          "type": "radioGroup",
+          "key": "language",
+          "label": "Language",
+          "required": false,
+          "items": [
+            {
+              "text": "de",
+              "value": "de"
+            },
+            {
+              "text": "en",
+              "value": "en"
+            },
+            {
+              "text": "fr",
+              "value": "fr"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id2",
+      "formStructure": [
+        {
+          "type": "textField",
+          "key": "companyName",
+          "label": "Company Name",
+          "placeholder": "Type name",
+          "required": true
+        },
+        {
+          "type": "textField",
+          "key": "foundedYear",
+          "label": "Founded Year",
+          "placeholder": "2020",
+          "required": true
+        },
+        {
+          "type": "radioGroup",
+          "key": "language",
+          "label": "Language",
+          "required": false,
+          "items": [
+            {
+              "text": "es",
+              "value": "es"
+            },
+            {
+              "text": "en",
+              "value": "en"
+            },
+            {
+              "text": "fr",
+              "value": "fr"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "id3",
+      "formStructure": [
+        {
+          "type": "textField",
+          "key": "companyName",
+          "label": "Company Name",
+          "placeholder": "Type name",
+          "required": true
+        },
+        {
+          "type": "textField",
+          "key": "employeeCount",
+          "label": "Number of employees",
+          "placeholder": "100+, 1000+",
+          "required": true
+        },
+        {
+          "type": "radioGroup",
+          "key": "language",
+          "label": "Language",
+          "required": false,
+          "items": [
+            {
+              "text": "de",
+              "value": "de"
+            },
+            {
+              "text": "it",
+              "value": "it"
+            },
+            {
+              "text": "fr",
+              "value": "fr"
             }
           ]
         }
