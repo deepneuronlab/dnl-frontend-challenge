@@ -9,7 +9,7 @@
         <v-container>
           <DynamicForm
             @change="handleInputChange"
-            :data="{ ...data }"
+            :data="formState"
             :formStructure="formStructure"
           />
         </v-container>
@@ -17,7 +17,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
+        <v-btn color="blue darken-1" text @click="clearFormAndClose()"> Cancel </v-btn>
         <v-btn color="blue darken-1" type="submit" text @click="$emit('save', formState)">
           Save
         </v-btn>
@@ -29,6 +29,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { Company } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'FormDialog',
@@ -52,16 +53,24 @@ export default Vue.extend({
   },
   data() {
     return {
-      formState: { ...(this.$props.data || {}) },
+      formState: {} as Company,
     };
   },
-
-  updated() {
-    this.formState = { ...this.$props.data };
+  watch: {
+    data: {
+      handler(val) {
+        this.formState = { ...val };
+      },
+    },
   },
+
   methods: {
     handleInputChange(value: string, key: string) {
       this.formState[key] = value;
+    },
+    clearFormAndClose() {
+      this.formState = {} as Company;
+      this.$emit('close');
     },
   },
 });
