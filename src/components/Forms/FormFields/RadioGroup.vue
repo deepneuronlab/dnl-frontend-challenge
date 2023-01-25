@@ -6,6 +6,7 @@
         :key="option.value"
         :label="option.text"
         :value="option.value"
+        @change="$emit('change', option.value)"
       ></v-radio>
     </v-radio-group>
   </v-container>

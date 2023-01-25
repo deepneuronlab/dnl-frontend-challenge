@@ -6,13 +6,21 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm :data="data" :formStructure="formStructure"/></v-container>
+        <v-container>
+          <DynamicForm
+            @change="handleInputChange"
+            :data="{ ...data }"
+            :formStructure="formStructure"
+          />
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" type="submit" text @click="$emit('save', formState)">
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -43,9 +51,19 @@ export default Vue.extend({
     },
   },
   data() {
-    return {};
+    return {
+      formState: { ...(this.$props.data || {}) },
+    };
   },
-  methods: {},
+
+  updated() {
+    this.formState = { ...this.$props.data };
+  },
+  methods: {
+    handleInputChange(value: string, key: string) {
+      this.formState[key] = value;
+    },
+  },
 });
 </script>
 

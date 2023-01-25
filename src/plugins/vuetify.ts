@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import Vuetify from 'vuetify/lib/framework';
+// Had to edit this import to fix component registration for v-text-input
+import Vuetify from 'vuetify';
 
 Vue.use(Vuetify);
 

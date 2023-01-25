@@ -7,7 +7,7 @@ export interface CompaniesState {
 }
 
 export interface Company {
-  companyId: string;
+  id: string;
   companyName: string;
   createdAt: string;
   updatedAt: string;
@@ -20,4 +20,3 @@ export interface CompanyTableHeaderItem {
   value: string | number;
 }
 export type CompanyForm = FormElements[];
-

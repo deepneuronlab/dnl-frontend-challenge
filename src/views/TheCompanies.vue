@@ -4,19 +4,22 @@
     <MainContainer>
       <v-row justify="space-between" align="center" class="mr-0 ml-0 mt-10 mb-1">
         <h2 class="grey--text text--darken-4">Companies</h2>
-        <BtnMain text="Company" icon="mdi-plus" @click="isAddCompanyDialogVisible = true" />
+        <BtnMain text="Company" icon="mdi-plus" @click="handleAddCompany" />
       </v-row>
       <DataTableCompanies
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
         @editItem="company => setCurrentCompanyForEdit(company)"
+        @deleteItem="company => setCurrentCompanyForDelete(company)"
       />
       <FormDialog
         v-if="formStructure"
         title="Add Company"
         :isVisible="isAddCompanyDialogVisible"
         :formStructure="formStructure"
+        :data="{}"
+        @save="company => addCompany(company)"
         @close="closeAddCompanyDialogVisible()"
       />
       <FormDialog
@@ -25,9 +28,14 @@
         :isVisible="isEditCompanyDialogVisible"
         :data="selectedCompany"
         :formStructure="formStructure"
+        @save="company => saveCompany(company)"
         @close="isEditCompanyDialogVisible = false"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog
+        :isVisible="isDeleteDialogVisible"
+        @close="isDeleteDialogVisible = false"
+        @delete="deleteCompany()"
+      />
     </MainContainer>
   </div>
 </template>
@@ -51,23 +59,48 @@ export default Vue.extend({
       isEditCompanyDialogVisible: false,
       isAddCompanyDialogVisible: false,
       isDeleteDialogVisible: false,
-      formStructure: this.$store.state.companies.companyForm,
       selectedCompany: {} as Company,
     };
+  },
+  created() {
+    this.$store.dispatch('companies/fetchCompanies');
   },
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      formStructure: 'companies/companyForm',
     }),
   },
   methods: {
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
     },
-    setCurrentCompanyForEdit(company: Company) {
+    async setCurrentCompanyForEdit(company: Company) {
+      await this.$store.dispatch('companies/fetchFormStructure', 'default' || company.id);
       this.isEditCompanyDialogVisible = true;
       this.selectedCompany = company;
+    },
+    async handleAddCompany() {
+      await this.$store.dispatch('companies/fetchFormStructure', 'default');
+      this.isAddCompanyDialogVisible = true;
+    },
+    async saveCompany(company: Company) {
+      await this.$store.dispatch('companies/saveCompany', company);
+      this.isEditCompanyDialogVisible = false;
+    },
+    async addCompany(company: Company) {
+      await this.$store.dispatch('companies/addCompany', company);
+      this.isAddCompanyDialogVisible = false;
+    },
+    async deleteCompany() {
+      await this.$store.dispatch('companies/deleteCompany', this.selectedCompany);
+      this.isDeleteDialogVisible = false;
+      this.selectedCompany = {} as Company;
+    },
+    setCurrentCompanyForDelete(company: Company) {
+      this.selectedCompany = company;
+      this.isDeleteDialogVisible = true;
     },
   },
 });
