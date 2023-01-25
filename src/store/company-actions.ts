@@ -21,6 +21,15 @@ export const fetchFormStructure = async ({ commit }: { commit: Commit }, company
     .then(res => {
       if (res.ok) {
         return res.json();
+      } else if (res.status === 404) {
+        console.log('Fetching default form structure');
+        return fetch(`${API_ROUTE}/forms/default`).then(res => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error('Failed to fetch form for company');
+          }
+        });
       } else {
         throw new Error('Failed to fetch form for company');
       }

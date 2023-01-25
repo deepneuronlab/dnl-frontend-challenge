@@ -77,7 +77,7 @@ export default Vue.extend({
       this.isAddCompanyDialogVisible = false;
     },
     async setCurrentCompanyForEdit(company: Company) {
-      await this.$store.dispatch('companies/fetchFormStructure', 'default' || company.id);
+      await this.$store.dispatch('companies/fetchFormStructure', company.id);
       this.isEditCompanyDialogVisible = true;
       this.selectedCompany = company;
     },
