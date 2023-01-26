@@ -10,6 +10,8 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @deleteItem="askDeleteCompany"
+        @editItem="editCompany"
       />
       <FormDialog
         v-if="formStructure"
@@ -23,22 +25,29 @@
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
+        :initialData="editCompanyData"
         @close="isEditCompanyDialogVisible = false"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog
+        :isVisible="isDeleteDialogVisible"
+        :item-name="(deleteCompanyCandidate || {}).companyName"
+        @close="isDeleteDialogVisible = false"
+        @delete="deleteCompany"
+      />
     </MainContainer>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapGetters } from 'vuex';
 import AppBar from '@/components/UI/AppBar.vue';
 import MainContainer from '@/components/Containers/MainContainer.vue';
 import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { mapGetters } from 'vuex';
+import { Company } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
@@ -47,17 +56,31 @@ export default Vue.extend({
     isEditCompanyDialogVisible: false,
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    formStructure: [],
+    deleteCompanyCandidate: {},
+    editCompanyData: {},
   }),
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      formStructure: 'companies/companyForm',
     }),
   },
   methods: {
+    askDeleteCompany(company: Company) {
+      this.deleteCompanyCandidate = company;
+      this.isDeleteDialogVisible = true;
+    },
+    deleteCompany() {
+      this.$store.commit('companies/deleteCompany', this.deleteCompanyCandidate);
+      this.isDeleteDialogVisible = false;
+    },
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    editCompany(company: Company) {
+      this.editCompanyData = company;
+      this.isEditCompanyDialogVisible = true;
     },
   },
 });
