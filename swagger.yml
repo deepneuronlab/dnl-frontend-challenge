@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: Swagger DNL assesment - OpenAPI 3.0
+  description: |-
+    DNL endpoint schema proposal
+  version: 1.0.11
+servers:
+  - url: https://dnl.example.com/api/v3
+
+paths:
+  /company:
+    post:
+      summary: Crate new company
+      requestBody:
+        description: Create a new company
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Company'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+        '405':
+          description: Invalid input
+
+  /company/{companyId}:
+    post:
+      summary: Updates a company
+      parameters:
+        - name: companyId
+          in: path
+          description: ID of a company to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Company's payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Company'
+        required: true
+      responses:
+        '405':
+          description: Invalid input
+    delete:
+      summary: Deletes a company
+      parameters:
+        - name: companyId
+          in: path
+          description: Company ID to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid company value
+
+components:
+  schemas:
+    Company:
+      required:
+        - companyName
+        - language
+      type: object
+      properties:
+        companyId:
+          type: string
+        companyName:
+          type: string
+        language:
+          type: string
+          enum:
+            - en
+            - de
+        balance:
+          type: array
+          items:
+            $ref: '#/components/schemas/Balance'
+    Balance:
+      type: object
+      properties:
+        year:
+          type: number
+          example: 2022
+        result:
+          type: string
+          enum:
+            - good
+            - bad
