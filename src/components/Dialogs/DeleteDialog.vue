@@ -2,11 +2,11 @@
   <v-dialog v-model="isVisible" @click:outside="$emit('close')" max-width="500px">
     <v-card>
       <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
+      <v-card-text>{{ text }}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')">Cancel</v-btn>
         <v-btn color="blue darken-1" text @click="$emit('delete')">OK</v-btn>
-        <v-spacer></v-spacer>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -21,6 +21,19 @@ export default Vue.extend({
     isVisible: {
       type: Boolean,
       required: true,
+    },
+    itemName: {
+      type: String,
+      required: false,
+    },
+  },
+  computed: {
+    text() {
+      if (!this.itemName) {
+        return '';
+      }
+
+      return `${this.itemName} will be deleted.`;
     },
   },
 });

@@ -6,13 +6,20 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm
+            :form-structure="formStructure"
+            :initial-data="initialData"
+            @form-state-change="onFormStateChange"
+            ref="form"
+          />
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn color="blue darken-1" text @click="save()" :disabled="saveDisabled"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -20,6 +27,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 
 export default Vue.extend({
@@ -38,11 +46,29 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    initialData: {
+      type: Object,
+      required: false,
+    },
   },
   data() {
-    return {};
+    return {
+      saveDisabled: true,
+    };
   },
-  methods: {},
+  methods: {
+    onFormStateChange(isValid: boolean) {
+      this.saveDisabled = !isValid;
+    },
+    save() {
+      // Not an ideal case and actually antipattern in reactive apps
+      // worth to discuss options, e.g. handle save here and "pass" form values to the form itself
+      // to have form data in the same place where it is saved
+      if (this.$refs.form.save()) {
+        this.$emit('close');
+      }
+    },
+  },
 });
 </script>
 
