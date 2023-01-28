@@ -1,7 +1,7 @@
 import { FormElements } from '@/store/form-types';
 
 export interface CompaniesState {
-  companies: Company[] | null;
+  companies: Company[] | null; // note to devs: better to have an empty collections instead of nulls for such properties.
   companyTableHeaders: CompanyTableHeaderItem[] | null;
   companyForm: CompanyForm | null;
 }

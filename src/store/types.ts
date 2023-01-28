@@ -4,20 +4,20 @@ export interface BaseState {
   companies: CompaniesState;
 }
 
-export enum COMPANY_MUTATIONS {
+export enum COMPANIES_MUTATIONS {
   CREATE = 'create',
   DELETE = 'delete',
   UPDATE = 'update',
 }
 
-export enum COMPANY_NAMESPACE_MUTATIONS {
-  CREATE = 'company/create',
-  DELETE = 'company/delete',
-  UPDATE = 'company/update',
+export enum COMPANIES_NAMESPACE_MUTATIONS {
+  CREATE = 'companies/create',
+  DELETE = 'companies/delete',
+  UPDATE = 'companies/update',
 }
 
-export enum COMPANY_NAMESPACE_ACTIONS {
-  CREATE = 'company/create',
-  DELETE = 'company/delete',
-  UPDATE = 'company/update',
+export enum COMPANIES_NAMESPACE_ACTIONS {
+  CREATE = 'companies/create',
+  DELETE = 'companies/delete',
+  UPDATE = 'companies/update',
 }
