@@ -21,6 +21,7 @@
         :isVisible="isAddCompanyDialogVisible"
         :formStructure="formStructure"
         @close="closeAddCompanyDialog()"
+        @save="onAddCompanyConfirmation"
       />
       <FormDialog
         v-if="formStructure && isEditCompanyDialogVisible"
@@ -29,6 +30,7 @@
         :formStructure="formStructure"
         :originalCompany="activeCompany"
         @close="closeEditDialog"
+        @save="onEditCompanyConfirmation"
       />
       <DeleteDialog
         v-if="isDeleteDialogVisible"
@@ -83,6 +85,13 @@ export default Vue.extend({
     closeAddCompanyDialog(): void {
       this.isAddCompanyDialogVisible = false;
     },
+    onAddCompanyConfirmation(company: Company): void {
+      if (!company) {
+        return;
+      }
+
+      this.createCompany(company);
+    },
     openDeleteDialog(company: Company): void {
       this.isDeleteDialogVisible = true;
       this.activeCompany = company;
@@ -90,6 +99,14 @@ export default Vue.extend({
     closeDeleteDialog(): void {
       this.isDeleteDialogVisible = false;
       this.activeCompany = null;
+    },
+    onDeleteConfirmation(company: Company): void {
+      if (!company) {
+        return;
+      }
+
+      this.deleteCompany(company);
+      this.closeDeleteDialog();
     },
     openEditDialog(company: Company): void {
       if (!company) {
@@ -104,13 +121,12 @@ export default Vue.extend({
       this.isEditCompanyDialogVisible = false;
       this.activeCompany = null;
     },
-    onDeleteConfirmation(company: Company): void {
+    onEditCompanyConfirmation(company: Company): void {
       if (!company) {
         return;
       }
 
-      this.deleteCompany(company);
-      this.closeDeleteDialog();
+      this.updateCompany(company);
     },
   },
 });

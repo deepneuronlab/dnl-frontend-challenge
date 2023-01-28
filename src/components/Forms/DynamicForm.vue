@@ -32,6 +32,9 @@ export default Vue.extend({
   // mb we should rebuild it on watch?
   beforeMount(): void {
     console.log('before form dialog mount');
+    // todo: build a from state from a structure
+    // todo: transform currentCompany into form values if exists
+    // this.$emit('updateCompany', {}, this.isFormValid);
   },
 });
 </script>

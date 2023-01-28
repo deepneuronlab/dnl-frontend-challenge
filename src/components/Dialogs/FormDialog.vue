@@ -9,6 +9,7 @@
           <DynamicForm
             :formStructure="formStructure"
             :originalCompany="originalCompany"
+            @updateCompany="onCompanyUpdate"
           />
         </v-container>
         <div>
@@ -58,7 +59,24 @@ export default Vue.extend({
       valid: false,
     };
   },
-  methods: {},
+  methods: {
+    onCompanyUpdate(company: Company, valid: boolean): void {
+      console.log('onCompanyUpdate: ', company);
+      console.log('valid: ', valid);
+      this.company = company;
+      this.valid = valid;
+    },
+
+    save(): void {
+      if (!this.valid || !this.company) {
+        console.log('not valid or no company');
+        return;
+      }
+
+      this.$emit('save', this.company);
+    }
+
+  },
 });
 
 interface FormDialogState {
