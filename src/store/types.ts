@@ -21,3 +21,9 @@ export enum COMPANIES_NAMESPACE_ACTIONS {
   DELETE = 'companies/delete',
   UPDATE = 'companies/update',
 }
+
+export enum FORM_FIELD_TYPE {
+  SELECT = 'selectField',
+  TEXT = 'textField',
+  RADIO = 'radioGroup',
+}

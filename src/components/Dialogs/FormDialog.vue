@@ -4,11 +4,19 @@
       <v-card-title>
         <span class="headline">{{ title }}</span>
       </v-card-title>
-
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm
+            :formStructure="formStructure"
+            :originalCompany="originalCompany"
+          />
+        </v-container>
+        <div>
+          valid: {{valid}}<br>
+          originalCompany: {{originalCompany}}<br>
+          company: {{company}}<br>
+        </div>
       </v-card-text>
-
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
@@ -19,8 +27,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { Company } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'FormDialog',
@@ -29,6 +38,10 @@ export default Vue.extend({
     formStructure: {
       type: Array,
       required: true,
+    },
+    originalCompany: {
+      type: Object as PropType<Company>,
+      required: false,
     },
     isVisible: {
       type: Boolean,
@@ -39,11 +52,19 @@ export default Vue.extend({
       required: true,
     },
   },
-  data() {
-    return {};
+  data(): FormDialogState {
+    return {
+      company: null,
+      valid: false,
+    };
   },
   methods: {},
 });
+
+interface FormDialogState {
+  company: Company | null;
+  valid: boolean;
+}
 </script>
 
 <style lang="scss" scoped></style>

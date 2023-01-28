@@ -1,7 +1,9 @@
+import { FORM_FIELD_TYPE } from './types';
+
 export type FormElements = FormRadioButtonGroup | FormSelect | FormTextField;
 
 export interface FormSelect {
-  type: 'selectField';
+  type: FORM_FIELD_TYPE.SELECT;
   key: string;
   label: string;
   items: FormItem[];
@@ -10,7 +12,7 @@ export interface FormSelect {
 }
 
 interface FormTextField {
-  type: 'textField';
+  type: FORM_FIELD_TYPE.TEXT;
   key: string;
   label: string;
   placeholder: string;
@@ -18,7 +20,7 @@ interface FormTextField {
 }
 
 export interface FormRadioButtonGroup {
-  type: 'radioGroup';
+  type: FORM_FIELD_TYPE.RADIO;
   key: string;
   label: string;
   items: FormItem[];

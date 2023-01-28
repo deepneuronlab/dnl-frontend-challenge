@@ -5,7 +5,7 @@
     <MainContainer>
       <v-row justify="space-between" align="center" class="mr-0 ml-0 mt-10 mb-1">
         <h2 class="grey--text text--darken-4">Companies</h2>
-        <BtnMain text="Company" icon="mdi-plus" @click="isAddCompanyDialogVisible = true" />
+        <BtnMain text="Company" icon="mdi-plus" @click="openAddCompanyDialog" />
       </v-row>
       <DataTableCompanies
         v-if="tableHeaders && tableItems"
@@ -14,21 +14,24 @@
         @deleteItem="openDeleteDialog"
         @editItem="openEditDialog"
       />
+<!--      I would like to have dialog components not to be initialized until they are called.-->
       <FormDialog
-        v-if="formStructure"
+        v-if="formStructure && isAddCompanyDialogVisible"
         title="Add Company"
         :isVisible="isAddCompanyDialogVisible"
         :formStructure="formStructure"
         @close="closeAddCompanyDialog()"
       />
       <FormDialog
-        v-if="formStructure"
+        v-if="formStructure && isEditCompanyDialogVisible"
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
+        :originalCompany="activeCompany"
         @close="closeEditDialog"
       />
       <DeleteDialog
+        v-if="isDeleteDialogVisible"
         :isVisible="isDeleteDialogVisible"
         @close="closeDeleteDialog"
         @delete="onDeleteConfirmation(activeCompany)"
@@ -47,9 +50,7 @@ import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapActions, mapGetters } from 'vuex';
 import { COMPANIES_NAMESPACE_ACTIONS } from '@/store/types';
-import { Company } from "@/store/companies-types";
-import companiesActions from "@/store/companies-actions";
-import CompaniesActions from "@/store/companies-actions";
+import { Company, CompanyForm } from '@/store/companies-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
@@ -75,21 +76,28 @@ export default Vue.extend({
       deleteCompany: COMPANIES_NAMESPACE_ACTIONS.DELETE,
       updateCompany: COMPANIES_NAMESPACE_ACTIONS.UPDATE,
     }),
-    closeAddCompanyDialog() {
+    openAddCompanyDialog(): void {
+      this.activeCompany = null;
+      this.isAddCompanyDialogVisible = true;
+    },
+    closeAddCompanyDialog(): void {
       this.isAddCompanyDialogVisible = false;
     },
     openDeleteDialog(company: Company): void {
-      console.log('company to delete: ', company);
       this.isDeleteDialogVisible = true;
       this.activeCompany = company;
     },
     closeDeleteDialog(): void {
-      console.log('close delete dialog');
       this.isDeleteDialogVisible = false;
       this.activeCompany = null;
     },
     openEditDialog(company: Company): void {
+      if (!company) {
+        return;
+      }
+
       console.log('edit company: ', company);
+      this.activeCompany = company;
       this.isEditCompanyDialogVisible = true;
     },
     closeEditDialog(): void {
@@ -98,10 +106,9 @@ export default Vue.extend({
     },
     onDeleteConfirmation(company: Company): void {
       if (!company) {
-        console.log('no company to delete?');
         return;
       }
-      console.log('we are deleting company: ', company);
+
       this.deleteCompany(company);
       this.closeDeleteDialog();
     },
@@ -112,8 +119,8 @@ interface TheCompaniesState {
   isEditCompanyDialogVisible: boolean;
   isAddCompanyDialogVisible: boolean;
   isDeleteDialogVisible: boolean;
-  activeCompany: null | Company;
-  formStructure: any[]; // todo
+  activeCompany: Company | null;
+  formStructure: CompanyForm;
 }
 </script>
 

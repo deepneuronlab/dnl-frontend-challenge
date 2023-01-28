@@ -1,4 +1,5 @@
 import { CompaniesState } from './companies-types';
+import { FORM_FIELD_TYPE } from './types';
 
 const companiesState: CompaniesState = {
   companies: [
@@ -33,14 +34,14 @@ const companiesState: CompaniesState = {
   companyTableHeaders: [{ text: 'Name', value: 'companyName' }],
   companyForm: [
     {
-      type: 'textField',
+      type: FORM_FIELD_TYPE.TEXT,
       key: 'companyName',
       label: 'Company Name',
       placeholder: 'Type name',
       required: true,
     },
     {
-      type: 'selectField',
+      type: FORM_FIELD_TYPE.SELECT,
       key: '2019',
       label: 'Balance 2019',
       placeholder: 'Type',
@@ -57,7 +58,7 @@ const companiesState: CompaniesState = {
       ],
     },
     {
-      type: 'radioGroup',
+      type: FORM_FIELD_TYPE.RADIO,
       key: 'language',
       label: 'Language',
       required: false,
