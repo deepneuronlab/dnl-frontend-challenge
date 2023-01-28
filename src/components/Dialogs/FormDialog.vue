@@ -31,13 +31,14 @@
 import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 import { Company } from '@/store/companies-types';
+import { FormElements } from '@/store/form-types';
 
 export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
     formStructure: {
-      type: Array,
+      type: Array as PropType<FormElements[]>,
       required: true,
     },
     originalCompany: {

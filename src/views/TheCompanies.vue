@@ -63,13 +63,13 @@ export default Vue.extend({
       isAddCompanyDialogVisible: false,
       isDeleteDialogVisible: false,
       activeCompany: null,
-      formStructure: [],
     };
   },
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      formStructure: 'companies/companyForm',
     }),
   },
   methods: {
@@ -136,7 +136,6 @@ interface TheCompaniesState {
   isAddCompanyDialogVisible: boolean;
   isDeleteDialogVisible: boolean;
   activeCompany: Company | null;
-  formStructure: CompanyForm;
 }
 </script>
 
