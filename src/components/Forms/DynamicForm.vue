@@ -4,6 +4,18 @@
 
       isFormValid: {{!$v.$invalid}}<br>
       companyForm: {{companyForm}}
+      <div v-for="formElement in formStructure" :key="formElement.key">
+<!--        <template v-if="formElement.type === 'textField'">-->
+          <v-text-field
+            v-if="formElement.type === FORM_FIELD_TYPE.TEXT"
+            :label="formElement.label"
+            :placeholder="formElement.placeholder"
+            v-model="companyForm[formElement.key]"
+            :required="formElement.required"
+            hide-details="auto"
+          />
+
+      </div>
     </v-container>
   </form>
 </template>
@@ -14,6 +26,7 @@ import { Company } from '@/store/companies-types';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
 import { FormElements } from '@/store/form-types';
+import { FORM_FIELD_TYPE } from '@/store/types';
 
 export default Vue.extend({
   name: 'DynamicForm',
@@ -32,6 +45,7 @@ export default Vue.extend({
   data() {
     return {
       companyForm: null,
+      FORM_FIELD_TYPE: FORM_FIELD_TYPE,
     };
   },
   validations() {
@@ -46,6 +60,13 @@ export default Vue.extend({
       handler() {
         this.$data.companyForm = buildFormState(this.formStructure, this.originalCompany);
         console.log('this.$data.companyForm: ', this.$data.companyForm);
+      },
+    },
+    companyForm: {
+      deep: true,
+      handler(form): void {
+        console.log('newForm: ', form);
+        this.$emit('updateCompany', form, !this.$v.$invalid);
       },
     },
   },
@@ -71,6 +92,11 @@ export default Vue.extend({
       // this.$data.companyForm = buildFormState(this.formStructure, this.originalCompany);
       // this.comp
     },
+    onFormFieldChange(event: Event, key: string): void {
+      console.log('on form field change event: ', event);
+      console.log('on form field change key: ', key);
+    },
+
 
   },
 });

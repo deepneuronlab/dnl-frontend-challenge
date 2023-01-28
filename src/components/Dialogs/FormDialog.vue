@@ -45,6 +45,7 @@ export default Vue.extend({
       type: Object as PropType<Company>,
       required: false,
     },
+    // todo: there's a warning about avoiding prop mutation in child on "Esc" click (see https://stackoverflow.com/questions/66571662/avoid-mutating-a-prop-directly-error-in-vuetify-dialog-box)
     isVisible: {
       type: Boolean,
       required: true,
