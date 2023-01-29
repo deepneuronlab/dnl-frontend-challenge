@@ -1,17 +1,14 @@
 <template>
   <form class="dynamic-form" v-if="companyForm">
     <v-container fluid>
-
-      isFormValid: {{!$v.$invalid}}<br>
-      companyForm: {{companyForm}}
       <div v-for="formElement in formStructure" :key="formElement.key">
         <v-text-field
           v-if="formElement.type === FORM_FIELD_TYPE.TEXT"
           :label="formElement.label"
           :placeholder="formElement.placeholder"
           v-model="companyForm[formElement.key]"
-          @input="$v[formElement.key].$touch()"
-          @blur="$v[formElement.key].$touch()"
+          @input="$v.companyForm[formElement.key].$touch()"
+          @blur="$v.companyForm[formElement.key].$touch()"
           :error-messages="getFieldErrors(formElement)"
         />
         <v-select
@@ -19,12 +16,30 @@
           v-model="companyForm[formElement.key]"
           :label="formElement.label"
           :placeholder="formElement.placeholder"
-          @input="$v[formElement.key].$touch()"
-          @blur="$v[formElement.key].$touch()"
           :items="formElement.items"
+          @input="$v.companyForm[formElement.key].$touch()"
+          @blur="$v.companyForm[formElement.key].$touch()"
           :error-messages="getFieldErrors(formElement)"
         />
 
+        <v-radio-group
+          v-else-if="formElement.type === FORM_FIELD_TYPE.RADIO"
+          v-model="companyForm[formElement.key]"
+          :mandatory="formElement.required"
+          @input="$v.companyForm[formElement.key].$touch()"
+          @blur="$v.companyForm[formElement.key].$touch()"
+          :error-messages="getFieldErrors(formElement)"
+        >
+          <template v-slot:label>
+            {{ formElement.label }}:
+          </template>
+          <v-radio
+            v-for="item in formElement.items"
+            :key="item.value"
+            :label="item.text"
+            :value="item.value"
+          />
+        </v-radio-group>
       </div>
 
     </v-container>
@@ -36,7 +51,7 @@ import Vue, { PropType } from 'vue';
 import { Company } from '@/store/companies-types';
 import { validationMixin } from 'vuelidate';
 import { required } from 'vuelidate/lib/validators';
-import { FormElements } from '@/store/form-types';
+import { FormElements, CompanyFormState } from '@/store/form-types';
 import { FORM_FIELD_TYPE } from '@/store/types';
 
 export default Vue.extend({
@@ -60,7 +75,6 @@ export default Vue.extend({
     };
   },
   validations() {
-    console.log('validate');
     return buildValidators(this.formStructure);
   },
 
@@ -71,14 +85,12 @@ export default Vue.extend({
       handler() {
         // we consider props are the freshest ones (todo: check this)
         this.$data.companyForm = buildFormState(this.formStructure, this.originalCompany);
-        console.log('this.$data.companyForm: ', this.$data.companyForm);
       },
     },
     companyForm: {
       deep: true,
       handler(form): void {
-        console.log('newForm: ', form);
-        // todo: convert to a plain object from the form/reactive
+        // todo: convert to a plain object from the form/reactive?
         this.$emit('updateCompany', form, !this.$v.$invalid);
       },
     },
@@ -89,20 +101,11 @@ export default Vue.extend({
       return this.$props.formStructure && this.originalCompany;
     },
   },
-  beforeMount(): void {
-    console.log('before form dialog mount');
-    console.log('formStructure: ', this.formStructure);
-    console.log('$v: ', this.$v);
-
-    // todo: build a from state from a structure
-    // todo: transform currentCompany into form values if exists
-    // this.$emit('updateCompany', {}, this.isFormValid);
-  },
-
   methods: {
     // We intentionally don't limit input length, because there's no requirements about. In "real life" We would ask about db limits, at least.
     getFieldErrors(formElement: FormElements): string[] {
-      if (!formElement || !this.$v[formElement.key].$dirty) {
+      // todo: make a method out of this condition?
+      if (!formElement || !this.$data.companyForm || !this.$v.companyForm || !this.$v.companyForm[formElement.key]?.$dirty) {
         return [];
       }
 
@@ -117,15 +120,17 @@ export default Vue.extend({
 
 // todo: use vuelidate typings, see https://github.com/vuelidate/vuelidate/issues/175
 function buildValidators(formStructure: FormElements[]): any {
-  const validations: any = {};
+  const validations: {companyForm: any} = {
+    companyForm: {},
+  };
   if (!formStructure) {
     return validations;
   }
 
   formStructure.forEach((formElement: FormElements) => {
-    validations[formElement.key] = {};
+    validations.companyForm[formElement.key] = {};
     if (formElement.required) {
-      validations[formElement.key].required = required;
+      validations.companyForm[formElement.key].required = required;
     }
   });
 
@@ -133,8 +138,8 @@ function buildValidators(formStructure: FormElements[]): any {
 }
 
 // note for devs - should we also have "valueType" field, "default value" etc? Or everything is string and empty string is default?
-function buildFormState(formStructure: FormElements[], originalCompany?: Company): FormState {
-  const formState: FormState = {};
+function buildFormState(formStructure: FormElements[], originalCompany?: Company): CompanyFormState {
+  const formState: CompanyFormState = {};
   if (!formStructure) {
     return formState;
   }
@@ -142,16 +147,11 @@ function buildFormState(formStructure: FormElements[], originalCompany?: Company
   formStructure.forEach((formElement: FormElements) => {
     formState[formElement.key] = originalCompany ? originalCompany[formElement.key] : '';
   });
-  console.log('formState: ' , formState);
   return formState;
 }
 
 interface DynamicFormState {
-  companyForm: FormState | null;
-}
-
-interface FormState {
-  [key: string]: unknown;
+  companyForm: CompanyFormState | null;
 }
 </script>
 

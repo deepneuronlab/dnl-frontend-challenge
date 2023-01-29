@@ -1,4 +1,5 @@
 <template>
+  <!--  there's a bug with v-model="isVisible" for v-dialog when you close the modal with ESC. We will not fix it, but should be working with computed properties-->
   <v-dialog v-model="isVisible" @click:outside="$emit('close')" max-width="500px">
     <v-card>
       <v-card-title>
@@ -12,16 +13,11 @@
             @updateCompany="onCompanyUpdate"
           />
         </v-container>
-        <div>
-          valid: {{valid}}<br>
-          originalCompany: {{originalCompany}}<br>
-          company: {{company}}<br>
-        </div>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn :disabled="!valid" color="blue darken-1" text @click="save()"> Save </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -31,7 +27,7 @@
 import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
 import { Company } from '@/store/companies-types';
-import { FormElements } from '@/store/form-types';
+import { FormElements, CompanyFormState } from '@/store/form-types';
 
 export default Vue.extend({
   name: 'FormDialog',
@@ -57,32 +53,32 @@ export default Vue.extend({
   },
   data(): FormDialogState {
     return {
-      company: null,
+      form: null,
       valid: false,
     };
   },
   methods: {
-    onCompanyUpdate(company: Company, valid: boolean): void {
-      console.log('onCompanyUpdate: ', company);
+    onCompanyUpdate(form: CompanyFormState, valid: boolean): void {
+      console.log('onCompanyUpdate: ', form);
       console.log('valid: ', valid);
-      this.company = company;
+      this.form = form;
       this.valid = valid;
     },
 
     save(): void {
-      if (!this.valid || !this.company) {
+      if (!this.valid || !this.form) {
         console.log('not valid or no company');
         return;
       }
 
-      this.$emit('save', this.company);
+      this.$emit('save', this.form);
     }
 
   },
 });
 
 interface FormDialogState {
-  company: Company | null;
+  form: CompanyFormState | null;
   valid: boolean;
 }
 </script>

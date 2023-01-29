@@ -31,3 +31,7 @@ export interface FormItem {
   text: string;
   value: string;
 }
+
+export interface CompanyFormState {
+  [key: string]: unknown;
+}
