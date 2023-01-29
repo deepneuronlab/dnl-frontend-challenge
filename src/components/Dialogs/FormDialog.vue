@@ -10,7 +10,7 @@
           <DynamicForm
             :formStructure="formStructure"
             :originalCompany="originalCompany"
-            @updateCompany="onCompanyUpdate"
+            @formUpdate="onFormUpdate"
           />
         </v-container>
       </v-card-text>
@@ -58,8 +58,8 @@ export default Vue.extend({
     };
   },
   methods: {
-    onCompanyUpdate(form: CompanyFormState, valid: boolean): void {
-      console.log('onCompanyUpdate: ', form);
+    onFormUpdate(form: CompanyFormState, valid: boolean): void {
+      console.log('onFormUpdate: ', form);
       console.log('valid: ', valid);
       this.form = form;
       this.valid = valid;
@@ -72,8 +72,7 @@ export default Vue.extend({
       }
 
       this.$emit('save', this.form);
-    }
-
+    },
   },
 });
 

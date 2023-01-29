@@ -53,6 +53,7 @@ import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapActions, mapGetters } from 'vuex';
 import { COMPANIES_NAMESPACE_ACTIONS } from '@/store/types';
 import { Company, CompanyForm } from '@/store/companies-types';
+import { CompanyFormState } from '@/store/form-types';
 
 export default Vue.extend({
   name: 'TheCompanies',
@@ -85,12 +86,14 @@ export default Vue.extend({
     closeAddCompanyDialog(): void {
       this.isAddCompanyDialogVisible = false;
     },
-    onAddCompanyConfirmation(company: Company): void {
-      if (!company) {
+    onAddCompanyConfirmation(companyForm: CompanyFormState): void {
+      if (!companyForm) {
         return;
       }
 
-      this.createCompany(company);
+      this.createCompany(companyForm);
+      // we know the creation operation is sync, so we can just close the modal window
+      this.closeAddCompanyDialog();
     },
     openDeleteDialog(company: Company): void {
       this.isDeleteDialogVisible = true;
@@ -121,12 +124,14 @@ export default Vue.extend({
       this.isEditCompanyDialogVisible = false;
       this.activeCompany = null;
     },
-    onEditCompanyConfirmation(company: Company): void {
-      if (!company) {
+    onEditCompanyConfirmation(companyForm: CompanyFormState): void {
+      if (!companyForm || !this.activeCompany) {
         return;
       }
 
-      this.updateCompany(company);
+      this.updateCompany(companyForm);
+      // we know the creation operation is sync, so we can just close the modal window
+      this.closeEditDialog();
     },
   },
 });
