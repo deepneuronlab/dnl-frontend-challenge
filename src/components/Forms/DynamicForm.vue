@@ -5,14 +5,15 @@
       isFormValid: {{!$v.$invalid}}<br>
       companyForm: {{companyForm}}
       <div v-for="formElement in formStructure" :key="formElement.key">
-<!--        <template v-if="formElement.type === 'textField'">-->
           <v-text-field
             v-if="formElement.type === FORM_FIELD_TYPE.TEXT"
             :label="formElement.label"
             :placeholder="formElement.placeholder"
             v-model="companyForm[formElement.key]"
-            :required="formElement.required"
             hide-details="auto"
+            @input="$v[formElement.key].$touch()"
+            @blur="$v[formElement.key].$touch()"
+            :error-messages="getFieldErrors(formElement)"
           />
 
       </div>
@@ -58,6 +59,7 @@ export default Vue.extend({
     combinedProps: {
       immediate: true,
       handler() {
+        // we consider props are the freshest ones (todo: check this)
         this.$data.companyForm = buildFormState(this.formStructure, this.originalCompany);
         console.log('this.$data.companyForm: ', this.$data.companyForm);
       },
@@ -76,7 +78,6 @@ export default Vue.extend({
       return this.$props.formStructure && this.originalCompany;
     },
   },
-  // mb we should rebuild it on watch?
   beforeMount(): void {
     console.log('before form dialog mount');
     console.log('formStructure: ', this.formStructure);
@@ -88,16 +89,17 @@ export default Vue.extend({
   },
 
   methods: {
-    rebuildForm(): void {
-      // this.$data.companyForm = buildFormState(this.formStructure, this.originalCompany);
-      // this.comp
-    },
-    onFormFieldChange(event: Event, key: string): void {
-      console.log('on form field change event: ', event);
-      console.log('on form field change key: ', key);
-    },
+    getFieldErrors(formElement: FormElements): string[] {
+      if (!formElement || !this.$v[formElement.key].$dirty) {
+        return [];
+      }
 
-
+      const errors: string[] = [];
+      if (formElement.required && !this.$data.companyForm[formElement.key]) {
+        errors.push('Required');
+      }
+      return errors;
+    },
   },
 });
 
@@ -134,7 +136,6 @@ function buildFormState(formStructure: FormElements[], originalCompany?: Company
 
 interface DynamicFormState {
   companyForm: FormState | null;
-  // companyForm: string;
 }
 
 interface FormState {
