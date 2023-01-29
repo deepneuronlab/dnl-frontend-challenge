@@ -30,7 +30,7 @@ const companiesMutations: MutationTree<CompaniesState> = {
       return;
     }
 
-    // note for devs: this could be "just" like state.companies.filter(currentCompany => currentCompany === company), but we probably don't want to create a new array
+    // this could be "just" like state.companies.filter(currentCompany => currentCompany === company), but we probably don't want to create a new array
     const index = state.companies.indexOf(company);
     if (index === -1) {
       return;

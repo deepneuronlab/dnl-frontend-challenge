@@ -77,12 +77,12 @@ export default Vue.extend({
     return buildValidators(this.formStructure);
   },
 
-  // to rebuild the form state in case props changed
   watch: {
+    // to rebuild the form state in case props changed
     combinedProps: {
       immediate: true,
       handler() {
-        // we consider props are the freshest ones (todo: check this)
+        // we consider props are the freshest ones (is it?)
         this.$data.companyForm = buildFormState(this.formStructure, this.originalCompany);
       },
     },
@@ -106,7 +106,7 @@ export default Vue.extend({
   methods: {
     // We intentionally don't limit input length, because there's no requirements about. In "real life" We would ask about db limits, at least.
     getFieldErrors(formElement: FormElements): string[] {
-      // todo: make a method out of this condition?
+      // we can make a methods out of this condition, but it's pretty readable (despite what prettier says about)
       if (!formElement || !this.$data.companyForm || !this.$v.companyForm || !this.$v.companyForm[formElement.key]?.$dirty) {
         return [];
       }
@@ -120,7 +120,7 @@ export default Vue.extend({
   },
 });
 
-// todo: use vuelidate typings, see https://github.com/vuelidate/vuelidate/issues/175
+// we should use vuelidate typings instead of "any" here in a "production-grade" project, but the documentation is not so great https://github.com/vuelidate/vuelidate/issues/175
 function buildValidators(formStructure: FormElements[]): any {
   const validations: {companyForm: any} = {
     companyForm: {},
@@ -139,7 +139,6 @@ function buildValidators(formStructure: FormElements[]): any {
   return validations;
 }
 
-// note for devs - should we also have "valueType" field, "default value" etc? Or everything is string and empty string is default?
 function buildFormState(formStructure: FormElements[], originalCompany?: Company): CompanyFormState {
   const formState: CompanyFormState = {};
   if (!formStructure) {

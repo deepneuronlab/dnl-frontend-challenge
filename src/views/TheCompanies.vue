@@ -69,7 +69,7 @@ export default Vue.extend({
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
-      formStructure: 'companies/companyForm',
+      formStructure: 'companies/companyForm', // maybe worth rename it in store to "formStructure" then?
     }),
   },
   methods: {
