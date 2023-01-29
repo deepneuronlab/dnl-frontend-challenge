@@ -6,7 +6,7 @@
           v-if="formElement.type === FORM_FIELD_TYPE.TEXT"
           :label="formElement.label"
           :placeholder="formElement.placeholder"
-          v-model="companyForm[formElement.key]"
+          v-model.trim="companyForm[formElement.key]"
           @input="$v.companyForm[formElement.key].$touch()"
           @blur="$v.companyForm[formElement.key].$touch()"
           :error-messages="getFieldErrors(formElement)"
@@ -68,10 +68,9 @@ export default Vue.extend({
       required: false,
     },
   },
-  data() {
+  data(): DynamicFormState {
     return {
       companyForm: null,
-      FORM_FIELD_TYPE: FORM_FIELD_TYPE,
     };
   },
   validations() {
@@ -99,6 +98,9 @@ export default Vue.extend({
   computed: {
     combinedProps() {
       return this.$props.formStructure && this.originalCompany;
+    },
+    FORM_FIELD_TYPE() {
+      return FORM_FIELD_TYPE;
     },
   },
   methods: {

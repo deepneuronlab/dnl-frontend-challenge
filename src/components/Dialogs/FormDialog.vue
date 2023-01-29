@@ -59,15 +59,12 @@ export default Vue.extend({
   },
   methods: {
     onFormUpdate(form: CompanyFormState, valid: boolean): void {
-      console.log('onFormUpdate: ', form);
-      console.log('valid: ', valid);
       this.form = form;
       this.valid = valid;
     },
 
     save(): void {
       if (!this.valid || !this.form) {
-        console.log('not valid or no company');
         return;
       }
 

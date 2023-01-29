@@ -116,7 +116,6 @@ export default Vue.extend({
         return;
       }
 
-      console.log('edit company: ', company);
       this.activeCompany = company;
       this.isEditCompanyDialogVisible = true;
     },
