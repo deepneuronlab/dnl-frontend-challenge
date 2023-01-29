@@ -21,298 +21,95 @@ paths:
       summary: Get a list of companies
       responses:
         '200':
-          description: Successful operation
+          description: Successful get
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Company'
-
-
-
-  /pet:
     put:
       tags:
-        - pet
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
+        - companies
+      summary: create a company
       requestBody:
-        description: Update an existent pet in the store
+        description: A new company object with required fields
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/CompanyCreateForm'
         required: true
       responses:
-        '200':
-          description: Successful operation
+        '204':
+          description: |
+            Company created. 
+            To devs: it actually depends on the app. If we have only 1 user and no concurrency, we can return 1 item as it's described here.
+            If we have a chance for multiple users operating on same companies list (especially if order is important), we need to either return the full list or a list with changes (if the whole list is too long).
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/Company'
         '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-    post:
-      tags:
-        - pet
-      summary: Add a new pet to the store
-      description: Add a new pet to the store
-      operationId: addPet
-      requestBody:
-        description: Create a new pet in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Pet'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
+          description: You did something wrong
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '405':
-          description: Invalid input
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/findByStatus:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by status
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
-      parameters:
-        - name: status
-          in: query
-          description: Status values that need to be considered for filter
-          required: false
-          explode: true
-          schema:
-            type: string
-            default: available
-            enum:
-              - available
-              - pending
-              - sold
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid status value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/findByTags:
-    get:
-      tags:
-        - pet
-      summary: Finds Pets by tags
-      description: Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
-      operationId: findPetsByTags
-      parameters:
-        - name: tags
-          in: query
-          description: Tags to filter by
-          required: false
-          explode: true
-          schema:
-            type: array
-            items:
-              type: string
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid tag value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}:
-    get:
-      tags:
-        - pet
-      summary: Find pet by ID
-      description: Returns a single pet
-      operationId: getPetById
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to return
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-      security:
-        - api_key: []
-        - petstore_auth:
-            - write:pets
-            - read:pets
-    post:
-      tags:
-        - pet
-      summary: Updates a pet in the store with form data
-      description: ''
-      operationId: updatePetWithForm
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet that needs to be updated
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: name
-          in: query
-          description: Name of pet that needs to be updated
-          schema:
-            type: string
-        - name: status
-          in: query
-          description: Status of pet that needs to be updated
-          schema:
-            type: string
-      responses:
-        '405':
-          description: Invalid input
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
+                $ref: '#/components/schemas/GenericNetworkError'
+  /companies/{companyId}:
     delete:
       tags:
-        - pet
-      summary: Deletes a pet
-      description: delete a pet
-      operationId: deletePet
+        - companies
+      summary: delete a company
       parameters:
-        - name: api_key
-          in: header
-          description: ''
-          required: false
-          schema:
-            type: string
-        - name: petId
+        - name: companyId
           in: path
-          description: Pet id to delete
+          description: company ID
           required: true
           schema:
-            type: integer
-            format: int64
-      responses:
-        '400':
-          description: Invalid pet value
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}/uploadImage:
-    post:
-      tags:
-        - pet
-      summary: uploads an image
-      description: ''
-      operationId: uploadFile
-      parameters:
-        - name: petId
-          in: path
-          description: ID of pet to update
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: additionalMetadata
-          in: query
-          description: Additional Metadata
-          required: false
-          schema:
             type: string
-      requestBody:
-        content:
-          application/octet-stream:
-            schema:
-              type: string
-              format: binary
+            example: id1
       responses:
         '200':
-          description: successful operation
+          description: Deleted
+        '404':
+          description: Company not found
+    post:
+      tags:
+        - companies
+      summary: update a company
+      parameters:
+        - name: companyId
+          in: path
+          description: company ID
+          required: true
+          schema:
+            type: string
+            example: id1
+      requestBody:
+        description: Fields which should be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyUpdateForm'
+        required: true
+      responses:
+        '200':
+          description: |
+            Company updated. 
+            To devs: it actually depends on the app. If we have only 1 user and no concurrency, we can return 1 item as it's described here.
+            If we have a chance for multiple users operating on same companies list, we need to either return the full list or a list with changes (if the whole list is too long).
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
+                $ref: '#/components/schemas/Company'
+        '400':
+          description: You did something wrong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericNetworkError'
+        '404':
+          description: Company not found
 
 components:
   schemas:
@@ -396,5 +193,43 @@ components:
             - type: string
             - type: integer
           example: 42
+    CompanyCreateForm:
+      required: [ companyName, className ]
+      properties:
+        companyName:
+          type: string
+          example: Company X
+        className:
+          type: string
+          example: company-item
+      additionalProperties:
+        oneOf:
+          - type: string
+          - type: integer
+          - type: boolean
+        example: "additional prop value"
+    CompanyUpdateForm:
+      properties:
+        companyName:
+          type: string
+          example: Company X
+        className:
+          type: string
+          example: company-item
+      additionalProperties:
+        oneOf:
+          - type: string
+          - type: integer
+          - type: boolean
+        example: "additional prop value"
+    GenericNetworkError:
+      required: [errorCode, message]
+      properties:
+        errorCode:
+          type: string
+          example: somethingWrongHappened
+        message:
+          type: string
+          example: You've broken everything. Please fix it.
 
 
