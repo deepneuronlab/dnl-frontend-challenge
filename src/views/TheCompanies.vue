@@ -1,4 +1,3 @@
-<!--todo: add consistency in methods names-->
 <template>
   <div class="fill-height">
     <AppBar />
@@ -14,7 +13,7 @@
         @deleteItem="openDeleteDialog"
         @editItem="openEditDialog"
       />
-<!--      I would like to have dialog components not to be initialized until they are called.-->
+      <!-- We would like to have dialog components not to be initialized until they are called.-->
       <FormDialog
         v-if="formStructure && isAddCompanyDialogVisible"
         title="Add Company"
@@ -52,7 +51,7 @@ import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
 import { mapActions, mapGetters } from 'vuex';
 import { COMPANIES_NAMESPACE_ACTIONS } from '@/store/types';
-import { Company, CompanyForm } from '@/store/companies-types';
+import { Company } from '@/store/companies-types';
 import { CompanyFormState } from '@/store/form-types';
 
 export default Vue.extend({

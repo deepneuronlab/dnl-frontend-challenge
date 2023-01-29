@@ -20,4 +20,3 @@ export interface CompanyTableHeaderItem {
   value: string | number;
 }
 export type CompanyForm = FormElements[];
-
