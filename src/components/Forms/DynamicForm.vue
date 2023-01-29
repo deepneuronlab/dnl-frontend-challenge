@@ -90,7 +90,7 @@ export default Vue.extend({
     companyForm: {
       deep: true,
       handler(form): void {
-        // todo: convert to a plain object from the form/reactive?
+        // we are not going to mutate the form, but safer would be to emit a new object
         this.$emit('formUpdate', form, !this.$v.$invalid);
       },
     },

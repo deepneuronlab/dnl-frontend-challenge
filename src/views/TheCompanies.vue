@@ -129,7 +129,7 @@ export default Vue.extend({
         return;
       }
 
-      this.updateCompany(companyForm);
+      this.updateCompany([this.activeCompany, companyForm]);
       // we know the creation operation is sync, so we can just close the modal window
       this.closeEditDialog();
     },

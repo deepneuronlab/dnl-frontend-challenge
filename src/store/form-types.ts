@@ -33,5 +33,5 @@ export interface FormItem {
 }
 
 export interface CompanyFormState {
-  [key: string]: unknown;
+  [key: string]: string | number | boolean;
 }
