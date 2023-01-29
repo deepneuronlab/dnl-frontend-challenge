@@ -5,18 +5,28 @@
       isFormValid: {{!$v.$invalid}}<br>
       companyForm: {{companyForm}}
       <div v-for="formElement in formStructure" :key="formElement.key">
-          <v-text-field
-            v-if="formElement.type === FORM_FIELD_TYPE.TEXT"
-            :label="formElement.label"
-            :placeholder="formElement.placeholder"
-            v-model="companyForm[formElement.key]"
-            hide-details="auto"
-            @input="$v[formElement.key].$touch()"
-            @blur="$v[formElement.key].$touch()"
-            :error-messages="getFieldErrors(formElement)"
-          />
+        <v-text-field
+          v-if="formElement.type === FORM_FIELD_TYPE.TEXT"
+          :label="formElement.label"
+          :placeholder="formElement.placeholder"
+          v-model="companyForm[formElement.key]"
+          @input="$v[formElement.key].$touch()"
+          @blur="$v[formElement.key].$touch()"
+          :error-messages="getFieldErrors(formElement)"
+        />
+        <v-select
+          v-else-if="formElement.type === FORM_FIELD_TYPE.SELECT"
+          v-model="companyForm[formElement.key]"
+          :label="formElement.label"
+          :placeholder="formElement.placeholder"
+          @input="$v[formElement.key].$touch()"
+          @blur="$v[formElement.key].$touch()"
+          :items="formElement.items"
+          :error-messages="getFieldErrors(formElement)"
+        />
 
       </div>
+
     </v-container>
   </form>
 </template>
@@ -68,6 +78,7 @@ export default Vue.extend({
       deep: true,
       handler(form): void {
         console.log('newForm: ', form);
+        // todo: convert to a plain object from the form/reactive
         this.$emit('updateCompany', form, !this.$v.$invalid);
       },
     },
@@ -89,6 +100,7 @@ export default Vue.extend({
   },
 
   methods: {
+    // We intentionally don't limit input length, because there's no requirements about. In "real life" We would ask about db limits, at least.
     getFieldErrors(formElement: FormElements): string[] {
       if (!formElement || !this.$v[formElement.key].$dirty) {
         return [];
