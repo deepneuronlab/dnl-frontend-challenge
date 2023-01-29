@@ -11,14 +11,15 @@ servers:
 tags:
   - name: companies
     description: companies CRUD
-  - name: table
-  - name: form
 paths:
   /companies:
     get:
       tags:
         - companies
-      summary: Get a list of companies
+      summary: | 
+        Get a list of all companies.
+      description: |
+        To devs: if the list is too long we need to introduce pagination.
       responses:
         '200':
           description: Successful get
@@ -110,6 +111,37 @@ paths:
                 $ref: '#/components/schemas/GenericNetworkError'
         '404':
           description: Company not found
+  /companies/table-headers:
+    get:
+      tags:
+        - companies
+      summary: |
+        Get a list of table headers.
+      responses:
+        '200':
+          description: Successful get
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanyTableHeaderItem'
+  /companies/form-structure:
+    get:
+      tags:
+        - companies
+      summary: |
+        Get a list of company form fields.
+      responses:
+        '200':
+          description: Successful get
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FormField'
+
 
 components:
   schemas:
@@ -179,6 +211,7 @@ components:
             - type: string
             - type: integer
             - type: boolean
+          example: dropdownItem1
     CompanyTableHeaderItem:
       type: object
       required: [text, value]
@@ -231,5 +264,3 @@ components:
         message:
           type: string
           example: You've broken everything. Please fix it.
-
-
