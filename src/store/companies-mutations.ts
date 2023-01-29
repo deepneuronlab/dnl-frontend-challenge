@@ -62,7 +62,9 @@ function generateCompanyId(): string {
 }
 
 function getNow(): string {
-  return (new Date()).toISOString();
+  // prettier is way too picky. I don't see any problems with "(new Date()).toISOString();" but he - does.
+  const now = new Date();
+  return now.toISOString();
 }
 
 export default companiesMutations;
