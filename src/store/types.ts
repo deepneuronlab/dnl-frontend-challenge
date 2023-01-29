@@ -10,12 +10,6 @@ export enum COMPANIES_MUTATIONS {
   UPDATE = 'update',
 }
 
-export enum COMPANIES_NAMESPACE_MUTATIONS {
-  CREATE = 'companies/create',
-  DELETE = 'companies/delete',
-  UPDATE = 'companies/update',
-}
-
 export enum COMPANIES_NAMESPACE_ACTIONS {
   CREATE = 'companies/create',
   DELETE = 'companies/delete',

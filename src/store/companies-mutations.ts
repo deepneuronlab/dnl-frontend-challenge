@@ -4,8 +4,26 @@ import { CompanyFormState } from '@/store/form-types';
 import Vue from 'vue';
 
 const companiesMutations: MutationTree<CompaniesState> = {
-  create(state, company: Company): void {
-    console.log('todo create, ', state, company);
+  create(state, form: CompanyFormState): void {
+    // we create the company locally, but most fields will be there from backend.
+    const now = getNow();
+    const newCompany: Company = {
+      companyId: generateCompanyId(),
+      className: 'company-item',
+      createdAt: now,
+      updatedAt: now,
+      // companyName is declared as required in Company, so we expect it will be in the form all times
+      companyName: '',
+    };
+
+    for (const [key, value] of Object.entries(form)) {
+      newCompany[key] = value;
+    }
+
+    if (!state.companies) {
+      state.companies = [];
+    }
+    state.companies.push(newCompany);
   },
   delete(state, company: Company): void {
     if (!state.companies) {
@@ -30,10 +48,21 @@ const companiesMutations: MutationTree<CompaniesState> = {
     // as we are doing everything locally, we can just mutate existing object
     // in case we have a new one (from api, for instance), we need to implement finding and replacement.
     for (const [key, value] of Object.entries(form)) {
-      company[key] = value;
       Vue.set(company, key, value);
     }
+    const now = getNow();
+    Vue.set(company, 'updatedAt', now);
   },
 };
+
+// some naive implementation to generate id
+// we can use uuid for better uniqueness or just have it from db or backend
+function generateCompanyId(): string {
+  return `id${Math.floor(Math.random() * Math.pow(10, 15))}`;
+}
+
+function getNow(): string {
+  return (new Date()).toISOString();
+}
 
 export default companiesMutations;
