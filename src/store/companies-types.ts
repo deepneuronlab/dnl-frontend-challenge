@@ -18,6 +18,6 @@ export interface Company {
 export interface CompanyTableHeaderItem {
   text: string | number;
   value: string | number;
+  sortable?: boolean;
 }
 export type CompanyForm = FormElements[];
-
