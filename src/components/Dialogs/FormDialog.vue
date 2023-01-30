@@ -7,11 +7,7 @@
 
       <v-card-text>
         <v-container
-          ><DynamicForm
-            :formStructure="formStructure"
-            :formData="selectedItem"
-            @formRef="formRef"
-            :isFormValid="isFormValid"
+          ><DynamicForm :formStructure="formStructure" :formData="selectedItem" @formRef="formRef"
         /></v-container>
       </v-card-text>
 
@@ -53,11 +49,9 @@ export default Vue.extend({
   },
   data(): {
     vFormReference: VForm | undefined;
-    isFormValid: boolean;
   } {
     return {
       vFormReference: undefined,
-      isFormValid: true,
     };
   },
   methods: {
@@ -65,8 +59,6 @@ export default Vue.extend({
       if (this.$data.vFormReference.validate()) {
         this.$emit('save', this.selectedItem);
         this.$emit('close');
-        // TODO: Form should be reset after save functionality completed.
-        // this.resetForm();
       }
     },
     formRef(vForm: VForm) {
@@ -75,6 +67,13 @@ export default Vue.extend({
     resetForm() {
       this.$data.vFormReference.reset();
       this.$data.vFormReference.resetValidation();
+    },
+  },
+  watch: {
+    isVisible: function(val) {
+      if (val && this.$data.vFormReference) {
+        this.$data.vFormReference.resetValidation();
+      }
     },
   },
 });

@@ -4,6 +4,8 @@ import { CompaniesState, Company } from './companies-types';
 
 const companiesMutations: MutationTree<CompaniesState> = {
   CREATE_COMPANY(state, company: Company) {
+    // TODO: Adding company id for have a unique key, this will be removed after the backend implementation.
+    company.companyId = Date.now().toString();
     state.companies?.push(company);
   },
   UPDATE_COMPANY(state, company: Company) {

@@ -4,7 +4,7 @@
     <MainContainer>
       <v-row justify="space-between" align="center" class="mr-0 ml-0 mt-10 mb-1">
         <h2 class="grey--text text--darken-4">Companies</h2>
-        <BtnMain text="Company" icon="mdi-plus" @click="isAddCompanyDialogVisible = true" />
+        <BtnMain text="Company" icon="mdi-plus" @click="openAddCompanyDialog" />
       </v-row>
       <DataTableCompanies
         v-if="tableHeaders && tableItems"
@@ -67,7 +67,11 @@ export default Vue.extend({
       isAddCompanyDialogVisible: false,
       isDeleteDialogVisible: false,
       selectedItem: null,
-      newCompany: {},
+      newCompany: {
+        companyName: '',
+        language: '',
+        balanceIn: '',
+      },
     };
   },
   computed: {
@@ -88,6 +92,14 @@ export default Vue.extend({
       removeCompany: 'companies/removeCompany',
     }),
     // Add
+    openAddCompanyDialog() {
+      this.newCompany = {
+        companyName: '',
+        language: '',
+        balanceIn: '',
+      };
+      this.isAddCompanyDialogVisible = true;
+    },
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
     },
