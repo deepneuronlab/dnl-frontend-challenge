@@ -6,7 +6,13 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container
+          ><DynamicForm
+            :formStructure="formStructure"
+            :formData="selectedItem"
+            @formRef="formRef"
+            :isFormValid="isFormValid"
+        /></v-container>
       </v-card-text>
 
       <v-card-actions>
@@ -19,16 +25,22 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { FormElements } from '@/store/form-types';
+import { Company } from '@/store/companies-types';
+import { VForm } from '../Forms/types';
 
 export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
     formStructure: {
-      type: Array,
+      type: Array as PropType<FormElements[]>,
       required: true,
+    },
+    selectedItem: {
+      type: Object as PropType<Company>,
     },
     isVisible: {
       type: Boolean,
@@ -39,10 +51,32 @@ export default Vue.extend({
       required: true,
     },
   },
-  data() {
-    return {};
+  data(): {
+    vFormReference: VForm | undefined;
+    isFormValid: boolean;
+  } {
+    return {
+      vFormReference: undefined,
+      isFormValid: true,
+    };
   },
-  methods: {},
+  methods: {
+    save() {
+      if (this.$data.vFormReference.validate()) {
+        this.$emit('save', this.selectedItem);
+        this.$emit('close');
+        // TODO: Form should be reset after save functionality completed.
+        // this.resetForm();
+      }
+    },
+    formRef(vForm: VForm) {
+      this.$data.vFormReference = vForm;
+    },
+    resetForm() {
+      this.$data.vFormReference.reset();
+      this.$data.vFormReference.resetValidation();
+    },
+  },
 });
 </script>
 

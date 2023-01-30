@@ -10,6 +10,7 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @editItem="openEditDialog"
         @deleteItem="openDeleteDialog"
       />
       <FormDialog
@@ -17,14 +18,18 @@
         title="Add Company"
         :isVisible="isAddCompanyDialogVisible"
         :formStructure="formStructure"
+        :selectedItem="newCompany"
         @close="closeAddCompanyDialogVisible()"
+        @save="createCompany"
       />
       <FormDialog
         v-if="formStructure"
         title="Edit Company"
         :isVisible="isEditCompanyDialogVisible"
         :formStructure="formStructure"
-        @close="isEditCompanyDialogVisible = false"
+        :selectedItem="selectedItem"
+        @close="closeEditCompanyDialogVisible()"
+        @save="updateCompany"
       />
       <DeleteDialog
         :isVisible="isDeleteDialogVisible"
@@ -54,21 +59,22 @@ export default Vue.extend({
     isEditCompanyDialogVisible: boolean;
     isAddCompanyDialogVisible: boolean;
     isDeleteDialogVisible: boolean;
-    formStructure: Array<unknown>;
     selectedItem: Company | null;
+    newCompany: Company | {};
   } {
     return {
       isEditCompanyDialogVisible: false,
       isAddCompanyDialogVisible: false,
       isDeleteDialogVisible: false,
-      formStructure: [],
       selectedItem: null,
+      newCompany: {},
     };
   },
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      formStructure: 'companies/companyForm',
     }),
     // delete
     deleteTitle(): string {
@@ -81,8 +87,19 @@ export default Vue.extend({
       updateCompany: 'companies/updateCompany',
       removeCompany: 'companies/removeCompany',
     }),
+    // Add
     closeAddCompanyDialogVisible() {
       this.isAddCompanyDialogVisible = false;
+    },
+    // Edit
+    openEditDialog(company: Company): void {
+      if (company) {
+        this.selectedItem = company;
+        this.isEditCompanyDialogVisible = true;
+      }
+    },
+    closeEditCompanyDialogVisible() {
+      this.isEditCompanyDialogVisible = false;
     },
     // Delete
     closeDeleteCompanyDialogVisible() {
