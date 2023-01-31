@@ -6,6 +6,10 @@ export interface CompaniesState {
   companyForm: CompanyForm | null;
 }
 
+export interface Balance {
+  [key: number]: string;
+}
+
 export interface Company {
   companyId: string;
   companyName: string;
@@ -20,4 +24,3 @@ export interface CompanyTableHeaderItem {
   value: string | number;
 }
 export type CompanyForm = FormElements[];
-

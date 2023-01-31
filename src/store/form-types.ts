@@ -1,4 +1,7 @@
 export type FormElements = FormRadioButtonGroup | FormSelect | FormTextField;
+export type FormElementsWithValue = FormElements & {
+  value: string | number | boolean;
+};
 
 export interface FormSelect {
   type: 'selectField';

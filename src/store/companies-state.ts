@@ -30,7 +30,13 @@ const companiesState: CompaniesState = {
       2019: 'good',
     },
   ],
-  companyTableHeaders: [{ text: 'Name', value: 'companyName' }],
+  companyTableHeaders: [
+    { text: 'Name', value: 'companyName' },
+    { text: 'Balance 2019', value: '2019' },
+    { text: 'Balance 2020', value: '2020' },
+    { text: 'Balance 2021', value: '2021' },
+    { text: 'Language', value: 'language' },
+  ],
   companyForm: [
     {
       type: 'textField',
@@ -43,6 +49,40 @@ const companiesState: CompaniesState = {
       type: 'selectField',
       key: '2019',
       label: 'Balance 2019',
+      placeholder: 'Type',
+      required: false,
+      items: [
+        {
+          text: 'Good',
+          value: 'good',
+        },
+        {
+          text: 'Bad',
+          value: 'bad',
+        },
+      ],
+    },
+    {
+      type: 'selectField',
+      key: '2020',
+      label: 'Balance 2020',
+      placeholder: 'Type',
+      required: false,
+      items: [
+        {
+          text: 'Good',
+          value: 'good',
+        },
+        {
+          text: 'Bad',
+          value: 'bad',
+        },
+      ],
+    },
+    {
+      type: 'selectField',
+      key: '2021',
+      label: 'Balance 2021',
       placeholder: 'Type',
       required: false,
       items: [

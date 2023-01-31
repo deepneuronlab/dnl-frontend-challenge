@@ -6,7 +6,9 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container
+          ><DynamicForm :formStructure="formStructure" :isVisible="isVisible" ref="dynamicForm"
+        /></v-container>
       </v-card-text>
 
       <v-card-actions>
@@ -20,7 +22,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import DynamicForm, { DynamicFormRef } from '@/components/Forms/DynamicForm.vue';
+import { Company } from '../../store/companies-types';
 
 export default Vue.extend({
   name: 'FormDialog',
@@ -42,7 +45,26 @@ export default Vue.extend({
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    save() {
+      const dynamicFormInstance = this.$refs.dynamicForm as DynamicFormRef;
+      const formInstance = dynamicFormInstance.$refs.form as HTMLFormElement;
+
+      formInstance.validate();
+      if (dynamicFormInstance.isFormValid) {
+        const formData: Partial<Company> = dynamicFormInstance.formData;
+        const partialCompanyRecord: Partial<Company> = {};
+
+        // Add company record to store
+        for (const key in formData) {
+          if (formData[key]) {
+            partialCompanyRecord[key] = formData[key];
+          }
+        }
+        this.$emit('saveCompany', partialCompanyRecord);
+      }
+    },
+  },
 });
 </script>
 
