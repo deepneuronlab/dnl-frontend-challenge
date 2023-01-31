@@ -296,11 +296,72 @@ await axios.get<GetCompanyResponse>(`${base}/companies/${companyId}`, {
 }
 ```
 
+## Get company editable form fields
+
+---
+
+This endpoint provide the unique editable fields of a company information.
+As mentioned in the document, every company has unique elements.
+
+| Authentication | Not required                             |
+| -------------- | ---------------------------------------- |
+| Authentication | Not required                             |
+| URL            | `/companies/{companyId}/editable-fields` |
+| METHOD         | `GET`                                    |
+
+### _Example Request_
+
+```ts
+import axios from 'axios';
+
+const companyID = 'id1';
+await axios.get<GetCompaniesResponse>(`${base}/companies/${companyID}/editable-fields`, {
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+});
+```
+
+### Response Parameters
+
+| Parameter   | Type                                                | Description                                                         |
+| ----------- | --------------------------------------------------- | ------------------------------------------------------------------- |
+| type        | string (Enum: [textField, selectField, radioGroup]) | Input type identifier.                                              |
+| key         | string                                              | Company information field key.                                      |
+| label       | string                                              | Label of the input field.                                           |
+| placeholder | string                                              | Placeholder of the input field.                                     |
+| required    | boolean                                             | This option will determine the input field is required or optional. |
+
+### _Example Response_
+
+```json
+{
+  "data": [
+    {
+      "type": "textField",
+      "key": "companyName",
+      "label": "Company Name",
+      "placeholder": "Type name",
+      "required": true
+    }
+  ]
+}
+```
+
+### _Example Empty Response_
+
+```json
+{
+  "data": []
+}
+```
+
 ## Get companies
 
 ---
 
-Get all companies from the system.
+Get all companies from the system and provide the configurations to display the column on the data table.
 
 | Authentication | Not required |
 | -------------- | ------------ |
@@ -323,6 +384,8 @@ await axios.get<GetCompaniesResponse>(`${base}/companies`, {
 
 ### Response Parameters
 
+#### Company.
+
 | Parameter   | Type                      | Description                                                 |
 | ----------- | ------------------------- | ----------------------------------------------------------- |
 | companyId   | string                    | Id of the company.                                          |
@@ -332,6 +395,14 @@ await axios.get<GetCompaniesResponse>(`${base}/companies`, {
 | createdAt   | string                    | Date of the company information created in the system.      |
 | updatedAt   | string                    | Date of the company information last updated in the system. |
 | className   | string                    |                                                             |
+
+#### Data Table Configuration.
+
+| Parameter | Type    | Description                        |
+| --------- | ------- | ---------------------------------- |
+| text      | string  | Table header label.                |
+| value     | string  | Company information field key.     |
+| sortable  | boolean | Configuration to short the column. |
 
 ### _Example Response_
 
@@ -347,7 +418,16 @@ await axios.get<GetCompaniesResponse>(`${base}/companies`, {
       "language": "en",
       "2019": "bad"
     }
-  ]
+  ],
+  "meta": {
+    "dataTableConfigs": [
+      {
+        "text": "Name",
+        "value": "companyName"
+        "sortable": true
+      }
+    ]
+  }
 }
 ```
 
