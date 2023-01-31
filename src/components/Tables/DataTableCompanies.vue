@@ -13,13 +13,13 @@
             text="Edit"
             icon="mdi-pencil"
             :disabled="false"
-            @clickAction="$emit('editItem', item)"
+            @clickAction="$emit('editItem', theCompany(item))"
           />
           <BtnTableAction
             text="Delete"
             icon="mdi-delete"
             :disabled="false"
-            @clickAction="$emit('deleteItem', item)"
+            @clickAction="$emit('deleteItem', theCompany(item))"
           />
         </template>
       </v-data-table>
@@ -28,29 +28,36 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import BtnTableAction from '@/components/UI/BtnTableAction.vue';
+import { Company, CompanyTableHeaderItem } from '@/store/companies-types';
+import { cloneDeep } from 'lodash';
 
 export default Vue.extend({
   name: 'DataTableCompanies',
   components: { BtnTableAction },
   props: {
     tableHeaders: {
-      type: Array,
+      type: Array as PropType<CompanyTableHeaderItem[]>,
       required: true,
     },
     tableItems: {
-      type: Array,
+      type: Array as PropType<Company[]>,
       required: true,
     },
   },
   computed: {
-    allTableHeaders() {
-      const newTableHeaders = [
+    allTableHeaders(): CompanyTableHeaderItem[] {
+      const newTableHeaders: CompanyTableHeaderItem[] = [
         ...this.tableHeaders,
         { text: 'Actions', value: 'actions', sortable: false },
       ];
       return newTableHeaders;
+    },
+  },
+  methods: {
+    theCompany(company: Company): Company {
+      return cloneDeep(company) as Company;
     },
   },
 });
