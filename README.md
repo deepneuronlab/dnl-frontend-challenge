@@ -1,24 +1,28 @@
-# Hey 👋 
+# Hello 👋 
 
-Thanks for taking the time to do our coding challenge! 🙂
+I think I'm done with the challenge 🙂
 
-💻 Start with cloning the project and setting it up. 
+# API documentation for the endpoints
 
-The companies screen you see on `/companies` when you run the project is part of our product.
-In this step, the user can add companies for whom she wants to upload balance sheets at a later point in the app.
-The user should be able to perform all CRUD actions on this screen.
+## /companies
 
-🎉 To make things easier for the challenge, you don't need to code the API connection and will only work with the Vuex store to achieve that. 
-But we are nevertheless interested in what the implementation would look like.
+### GET /companies/
 
-Since we have different customer requirements, the data a company consists of requires a dynamic form. This structure comes from the backend, and its elements are rendered dynamically. Have a look inside the store to see the type definitions. You can also find the companies store module there. It holds all the related companies' data inside the state that the backend created for you.
+HTTP GET to `/companies/` is returning all companies.
 
-✅ A coworker already started with the challenge but didn't finish it; please complete it for him and create a Pull Request.
+If we have thousands of companies and the `*` query takes too long - let's page it with some query params, i suggest `start` for offset, `pageSize` for page size and so on. Some additional meta data like `pageCount` or `totalCount` would be needed then too, but as of it is now - we're good with just flat `select * from companies` no filtering, no sorting, no nothing
 
-ℹ️ While you work on the implementation, the backend team would need to implement the real API endpoints based on what you suggest to them.
+### POST /companies/
 
-## Tasks 
+HTTP POST to `/companies/` updates the entity we're POST-ing as HTTP POST Payload. 
 
-1. Get the DynamicForm working with the provided data structure in the store
-2. Update the store according to the changes in the form, so the data is consistent
-3. Write the API documentation for the endpoints that you would need to connect the app to the backend
+The numeric keys used in example store, for example `{ 2009: [...]}` are making `company` NOT a valid JSON object, so we either need a custom serialization-deserialization layer or perhaps can just stick with string-only keys. If ID isn't found - this would respond 404, if ID/other mandatory fields aren't present in payload - i'd expect a 400, response is just a 200 with an updated entity
+
+
+### PUT /companies/
+
+HTTP PUT to `/companies/` inserts a company. Returns an entity with an `id` field populated. Trying to sneak a hardcoded `id` in should result in 400. If there are any kinds of constraints on company name being unique or something - those are HTTP 400 too, i expect.
+
+### DELETE /companies/{companyId}
+
+HTTP DELETE to `/companies/` deletes a company. Response is an HTTP 200 with entity that was deleted. 404 for missing IDs, 400 for malformed requests/missing id/invalid ids

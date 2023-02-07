@@ -10,54 +10,93 @@
         v-if="tableHeaders && tableItems"
         :tableHeaders="tableHeaders"
         :tableItems="tableItems"
+        @editItem="item => (companyToEdit = item)"
+        @deleteItem="showDeleteConfirmation"
       />
       <FormDialog
         v-if="formStructure"
         title="Add Company"
         :isVisible="isAddCompanyDialogVisible"
         :formStructure="formStructure"
-        @close="closeAddCompanyDialogVisible()"
+        @close="isAddCompanyDialogVisible = false"
+        @save="insertNewCompany"
       />
       <FormDialog
-        v-if="formStructure"
+        v-if="formStructure && companyToEdit"
         title="Edit Company"
-        :isVisible="isEditCompanyDialogVisible"
+        :isVisible="!!companyToEdit"
         :formStructure="formStructure"
-        @close="isEditCompanyDialogVisible = false"
+        v-model="companyToEdit"
+        @close="companyToEdit = null"
+        @save="updateCompany"
       />
-      <DeleteDialog :isVisible="isDeleteDialogVisible" @close="isDeleteDialogVisible = false" />
+      <DeleteDialog
+        :isVisible="isDeleteDialogVisible"
+        @close="isDeleteDialogVisible = false"
+        @delete="deleteCompany"
+      />
     </MainContainer>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import { mapActions, mapGetters } from 'vuex';
 import AppBar from '@/components/UI/AppBar.vue';
 import MainContainer from '@/components/Containers/MainContainer.vue';
 import DataTableCompanies from '@/components/Tables/DataTableCompanies.vue';
 import BtnMain from '@/components/UI/BtnMain.vue';
 import FormDialog from '@/components/Dialogs/FormDialog.vue';
 import DeleteDialog from '@/components/Dialogs/DeleteDialog.vue';
-import { mapGetters } from 'vuex';
+import { Company, CompanyFormSerialized } from '@/store/companies-types';
+
+interface TheCompaniesDataType {
+  isAddCompanyDialogVisible: boolean;
+  isDeleteDialogVisible: boolean;
+  companyToEdit: Company | null;
+  companyToDelete: Company | null;
+}
 
 export default Vue.extend({
   name: 'TheCompanies',
   components: { AppBar, MainContainer, DataTableCompanies, BtnMain, FormDialog, DeleteDialog },
-  data: () => ({
-    isEditCompanyDialogVisible: false,
+  data: (): TheCompaniesDataType => ({
     isAddCompanyDialogVisible: false,
     isDeleteDialogVisible: false,
-    formStructure: [],
+    companyToEdit: null,
+    companyToDelete: null,
   }),
   computed: {
     ...mapGetters({
       tableItems: 'companies/companies',
       tableHeaders: 'companies/companyTableHeaders',
+      formStructure: 'companies/formStructure',
     }),
   },
   methods: {
-    closeAddCompanyDialogVisible() {
+    ...mapActions({
+      addCompany: 'companies/addCompany',
+      editCompany: 'companies/editCompany',
+      removeCompany: 'companies/deleteCompany',
+    }),
+    async insertNewCompany(payload: CompanyFormSerialized) {
+      await this.addCompany(payload);
       this.isAddCompanyDialogVisible = false;
+    },
+    showDeleteConfirmation(companyToDelete: Company) {
+      this.companyToDelete = companyToDelete;
+      this.isDeleteDialogVisible = true;
+    },
+    async deleteCompany() {
+      if (this.companyToDelete) {
+        await this.removeCompany(this.companyToDelete);
+        this.isDeleteDialogVisible = false;
+        this.companyToDelete = null;
+      }
+    },
+    async updateCompany(company: Company) {
+      await this.editCompany(company);
+      this.companyToEdit = null;
     },
   },
 });

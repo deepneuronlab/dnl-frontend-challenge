@@ -1,28 +1,27 @@
 export type FormElements = FormRadioButtonGroup | FormSelect | FormTextField;
+export type FormElementType = 'selectField' | 'textField' | 'radioGroup';
 
-export interface FormSelect {
+export interface FormFieldBase {
+  type: FormElementType;
+  key: string;
+  label: string;
+  required: boolean;
+}
+
+export interface FormSelect extends FormFieldBase {
   type: 'selectField';
-  key: string;
-  label: string;
   items: FormItem[];
   placeholder: string;
-  required: boolean;
 }
 
-interface FormTextField {
+interface FormTextField extends FormFieldBase {
   type: 'textField';
-  key: string;
-  label: string;
   placeholder: string;
-  required: boolean;
 }
 
-export interface FormRadioButtonGroup {
+export interface FormRadioButtonGroup extends FormFieldBase {
   type: 'radioGroup';
-  key: string;
-  label: string;
   items: FormItem[];
-  required: boolean;
 }
 
 export interface FormItem {

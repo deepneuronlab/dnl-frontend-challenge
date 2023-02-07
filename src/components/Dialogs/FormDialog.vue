@@ -4,15 +4,28 @@
       <v-card-title>
         <span class="headline">{{ title }}</span>
       </v-card-title>
-
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm
+            v-if="isVisible && valueInternal"
+            :meta="formStructure"
+            v-model="valueInternal"
+            @isValid="valid => (canSubmit = valid)"
+          />
+        </v-container>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="$emit('close')"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save()"> Save </v-btn>
+        <v-btn
+          color="blue darken-1"
+          :disabled="!canSubmit"
+          text
+          @click="$emit('save', valueInternal)"
+        >
+          Save
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -25,6 +38,7 @@ import DynamicForm from '@/components/Forms/DynamicForm.vue';
 export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
+  data: () => ({ canSubmit: false, valueInternal: null }),
   props: {
     formStructure: {
       type: Array,
@@ -38,11 +52,17 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    value: {
+      type: Object,
+      required: false,
+    },
   },
-  data() {
-    return {};
+  mounted() {
+    this.valueInternal = this.value || {};
+    this.$watch('valueInternal', () => {
+      this.$emit('input', this.valueInternal);
+    });
   },
-  methods: {},
 });
 </script>
 
