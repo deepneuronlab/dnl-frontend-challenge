@@ -6,7 +6,9 @@
       </v-card-title>
 
       <v-card-text>
-        <v-container><DynamicForm /></v-container>
+        <v-container>
+          <DynamicForm :formStructure="formStructure" :formValues="formValues" ref="formRef"
+        /></v-container>
       </v-card-text>
 
       <v-card-actions>
@@ -19,16 +21,21 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { PropType } from 'vue';
 import DynamicForm from '@/components/Forms/DynamicForm.vue';
+import { Company } from '@/store/companies-types';
+import { FormElements } from '@/store/form-types';
 
 export default Vue.extend({
   name: 'FormDialog',
   components: { DynamicForm },
   props: {
     formStructure: {
-      type: Array,
+      type: Array as PropType<FormElements[]>,
       required: true,
+    },
+    formValues: {
+      type: Object as PropType<Company>,
     },
     isVisible: {
       type: Boolean,
@@ -42,7 +49,13 @@ export default Vue.extend({
   data() {
     return {};
   },
-  methods: {},
+  methods: {
+    save() {
+      if ((this.$refs.formRef as any).isFormValid) {
+        this.$emit('save');
+      }
+    },
+  }
 });
 </script>
 
